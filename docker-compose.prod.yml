@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yapli_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-yapli_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMeSecurePassword123!}
+      POSTGRES_DB: ${POSTGRES_DB:-yapli_n8n}
+    volumes:
+      - postgres_storage:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-yapli_admin} -d ${POSTGRES_DB:-yapli_n8n}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yapli_network
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: yapli_n8n
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB:-yapli_n8n}
+      - DB_POSTGRESDB_USER=${POSTGRES_USER:-yapli_admin}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD:-ChangeMeSecurePassword123!}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_HOST=${DOMAIN:-app.yapli.ai}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${DOMAIN:-app.yapli.ai}/
+      - GENERIC_TIMEZONE=${TIMEZONE:-Asia/Kolkata}
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=336
+      - EXECUTIONS_DATA_PRUNE_MAX_COUNT=50000
+      - N8N_LOG_LEVEL=info
+    volumes:
+      - n8n_storage:/home/node/.n8n
+    networks:
+      - yapli_network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: yapli_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN:-app.yapli.ai}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - n8n
+    networks:
+      - yapli_network
+
+volumes:
+  postgres_storage:
+  n8n_storage:
+  caddy_data:
+  caddy_config:
+
+networks:
+  yapli_network:
+    driver: bridge
+

@@ -1,0 +1,14 @@
+{$DOMAIN} {
+    reverse_proxy n8n:5678 {
+        flush_interval -1
+    }
+
+    encode gzip zstd
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}
+

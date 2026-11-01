@@ -1,0 +1,2070 @@
+{
+  "id": "YsCFPr3CQYHlffvQ",
+  "name": "1. WhatsApp AI Receptionist – Gemini Free Edition",
+  "description": null,
+  "active": true,
+  "activeVersionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+  "createdAt": "2026-10-31T13:52:02.463Z",
+  "updatedAt": "2026-10-31T15:08:31.686Z",
+  "isArchived": false,
+  "versionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+  "versionCounter": 22,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
+  "nodes": [
+    {
+      "id": "7d10fb18-347b-4b4a-afdb-8c0c1ed497a5",
+      "name": "WhatsApp Trigger",
+      "webhookId": "db2adc11-0230-40dc-bee8-6e59fe27ddc9",
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "29Urn1dAsf5pq3sR",
+          "name": "WhatsApp Trigger Mock API"
+        }
+      }
+    },
+    {
+      "id": "f790be1a-0cb2-45fe-8b10-39fa49e6f898",
+      "name": "Only Customer Messages",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9ef1bd1c-8448-4267-8e8f-356de4e57d91",
+              "leftValue": "={{ $json.messages }}",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      }
+    },
+    {
+      "id": "2cb4cb87-79a0-48cd-b209-cde49ef887d6",
+      "name": "Message Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        480,
+        300
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7ad291ec-62d0-4f5d-9d0e-488068a0d1bc",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "text"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fa7d5998-73a3-48d3-9dc8-5c4b09201065",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "audio"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b713fbc8-6bb5-4cee-832e-e0817784a4ec",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "image"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3c21c3de-c50d-405c-a97e-1c0c85989a81",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "button"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "button"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      }
+    },
+    {
+      "id": "0880bfb6-937f-45f3-a461-19046743e0a1",
+      "name": "Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        760,
+        0
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e790190a-f853-4e6b-a2c8-18ceb3f4fbdc",
+              "name": "message",
+              "value": "={{ $json.messages[0].text.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "4101d49e-c9d7-4ec9-8015-5a1eca47a94a",
+      "name": "Get Voice Note",
+      "webhookId": "64f7edff-1912-4f11-9660-cb4c2eafbe51",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        220
+      ],
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].audio.id }}"
+      },
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "id": "1d04ee61-7ae5-4368-b2f8-97b2532238a6",
+      "name": "Download Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        220
+      ],
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "id": "20be7ee9-1f71-48b7-af86-4a61c062171f",
+      "name": "Transcribe Voice Note",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        220
+      ],
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "data",
+        "options": {},
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.8-flash",
+          "mode": "id"
+        }
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pc3IysFEYjHZVQaj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "0c4be721-a4a2-4a98-aa20-7d9c3ebfd75f",
+      "name": "Voice → Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        220
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba378705-6d5a-4efb-bd44-58747a5a0142",
+              "name": "message",
+              "value": "=[Voice note] {{ $json.text || $json.content?.parts[0]?.text || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "24e6bae7-b273-4959-a823-2fc442e6c181",
+      "name": "Get Image",
+      "webhookId": "48193d4a-f12b-4502-8ff7-d64459ca5c4f",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        440
+      ],
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].image.id }}"
+      },
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "id": "27a89f40-3085-4b9a-b3ef-23aae0629796",
+      "name": "Download Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        440
+      ],
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "id": "11024e23-9237-4b87-8392-ab1482610260",
+      "name": "Read the Image",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        440
+      ],
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "binaryPropertyName": "data",
+        "prompt": "Describe what this customer sent in 1-2 sentences (hairstyle reference, haircut style, hair issue, product screenshot, or receipt). Read any visible text.",
+        "options": {},
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.8-flash",
+          "mode": "id"
+        }
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pc3IysFEYjHZVQaj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "f27433d3-6e58-4f1b-a45a-9f5237fcdfa2",
+      "name": "Image → Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        440
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a35db8e1-1591-4460-9946-766bcfe3c61d",
+              "name": "message",
+              "value": "=[Customer sent an image: {{ $json.text || $json.content?.parts[0]?.text || '' }}] {{ $('WhatsApp Trigger').item.json.messages[0].image.caption || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "79d7e3ac-930c-41d9-a663-f83cba25f780",
+      "name": "Button Reply",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        760,
+        680
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce4cb329-7431-43e3-af7d-61a2cd7b15c8",
+              "name": "message",
+              "value": "=[Tapped button] {{ $('WhatsApp Trigger').item.json.messages[0].button.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c4412621-7ae3-45f0-a602-d344e722218c",
+      "name": "AI Receptionist",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1820,
+        300
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "=Customer name: {{ $('Only Customer Messages').item.json.contacts[0].profile.name }}\nCustomer phone: {{ $('Only Customer Messages').item.json.messages[0].from }}\nTime now: {{ $now.toFormat('cccc d LLL, h:mm a') }}\n\nMessage: {{ $json.message }}",
+        "options": {
+          "systemMessage": "You are the WhatsApp receptionist for Glow Studio (Hair & Beauty Salon in Chennai). You help customers with appointment inquiries, haircut/styling prices, bookings, and salon policies. Nothing else.\n\nHow to talk:\n- Reply in the customer's language. If they write Roman Urdu or Tanglish/Hinglish, reply naturally in the same style. Keep it short, warm, like a friendly front-desk receptionist. 1-3 short lines. Max 1 emoji.\n- Never invent prices, timings or policies. Always check **Business Info** first.\n\nWhat to do:\n- Services, haircut/styling prices, timings, location, policies → read **Business Info**.\n- Customer wants to book an appointment → ask for preferred day/time and name → use **Check Availability** → offer the slot → use **Book Appointment** (save their phone number in the calendar description).\n- Customer tapped \"Reschedule\" → ask for the new preferred slot, check availability, and update the booking.\n- Real customer interest (asks price, wants to book a haircut/treatment) → call **Save Lead** with status hot/warm.\n- Angry customer, complaint, refund, or complex issue → call **Talk to Owner**, and tell the customer a team member will reply shortly.\n- Off-topic questions (coding, general knowledge, homework) → politely mention you can only assist with salon appointments and services.\n- If customer says STOP or unsubscribe → acknowledge and call **Save Lead** with status opted_out.",
+          "maxIterations": 8
+        }
+      }
+    },
+    {
+      "id": "c794f737-8ee5-4a3d-87cb-455419b75e9f",
+      "name": "Send WhatsApp Reply",
+      "webhookId": "e3798566-b70b-4304-9bff-d3f25be86792",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        2200,
+        300
+      ],
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "YOUR_WHATSAPP_PHONE_NUMBER_ID",
+        "recipientPhoneNumber": "={{ $('Only Customer Messages').item.json.messages[0].from }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "id": "25ae0862-4ee7-49f3-bd30-8f35b110c4af",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        700
+      ],
+      "parameters": {
+        "modelName": "models/gemini-3.8-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pc3IysFEYjHZVQaj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "fd9be44b-bd53-4fde-bdda-f6d8be8effc0",
+      "name": "Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1700,
+        700
+      ],
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Only Customer Messages').item.json.messages[0].from }}",
+        "contextWindowLength": 12
+      }
+    },
+    {
+      "id": "9e3226d3-2eed-4b4f-829c-de024f862bac",
+      "name": "Business Info",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        1880,
+        700
+      ],
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Read the salon FAQ: services, haircut prices, timings, location, and policies. Always use this before answering questions.",
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Business Info",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LcfWe9ulrfuVwEXk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "id": "bedb477f-ab9f-4d6b-b410-e23c291bcc61",
+      "name": "Check Availability",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2040,
+        700
+      ],
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Check if a calendar slot is free before booking.",
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "venkatnarayanan10.10@gmail.com",
+          "mode": "id"
+        },
+        "timeMin": "={{ $fromAI('start', 'Slot start, ISO 8601 with timezone', 'string') }}",
+        "timeMax": "={{ $fromAI('end', 'Slot end, ISO 8601 with timezone', 'string') }}",
+        "options": {
+          "outputFormat": "availability"
+        }
+      },
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "rmqcjqmuX5ayNRTk",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "id": "a756a335-05d2-442a-a6d5-b49750354fe3",
+      "name": "Book Appointment",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2200,
+        700
+      ],
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Book a confirmed salon appointment into Google Calendar.",
+        "calendar": {
+          "__rl": true,
+          "value": "venkatnarayanan10.10@gmail.com",
+          "mode": "id"
+        },
+        "start": "={{ $fromAI('start', 'Start, ISO 8601', 'string') }}",
+        "end": "={{ $fromAI('end', 'End, ISO 8601', 'string') }}",
+        "additionalFields": {
+          "summary": "={{ $fromAI('title', 'Service + customer name', 'string') }}",
+          "description": "={{ $fromAI('details', 'Customer phone number and appointment notes', 'string') }}"
+        }
+      },
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "rmqcjqmuX5ayNRTk",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "id": "7b4154c2-cec4-43b2-b75d-da4d9dd2c18e",
+      "name": "Save Lead",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        2380,
+        700
+      ],
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Save or update client record in the Leads tab.",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $('Only Customer Messages').item.json.messages[0].from }}",
+            "name": "={{ $('Only Customer Messages').item.json.contacts[0].profile.name }}",
+            "interest": "={{ $fromAI('interest', 'What salon service or hairstyle they asked for', 'string') }}",
+            "status": "={{ $fromAI('status', 'hot, warm, booked or opted_out', 'string') }}",
+            "last_message_at": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "interest",
+              "displayName": "interest",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_message_at",
+              "displayName": "last_message_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LcfWe9ulrfuVwEXk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "id": "8cad3d97-41da-4d08-ab9d-dc29879de591",
+      "name": "Talk to Owner",
+      "webhookId": "8b7313ec-ef63-48cf-96cd-58d8ab85f409",
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        2540,
+        700
+      ],
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Alert the salon owner via Telegram when human intervention is needed (complaints, custom requests, cancellations).",
+        "chatId": "1999726968",
+        "text": "=🙋 Salon Staff Needed\nClient: {{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }} (+{{ $('WhatsApp Trigger').item.json.messages[0].from }})\nDetails: {{ $fromAI('summary', 'Summary of customer inquiry or issue', 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "atcHmNRlXtWpeQRc",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "id": "manual-webhook-trigger-wf1",
+      "name": "Manual Webhook Trigger",
+      "webhookId": "wf1-test-trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        450
+      ],
+      "parameters": {
+        "path": "wf1-test-trigger",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      }
+    },
+    {
+      "id": "normalize-payload-wf1",
+      "name": "Normalize Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        450
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => ({ json: item.json.body || item.json }));"
+      }
+    }
+  ],
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Only Customer Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only Customer Messages": {
+      "main": [
+        [
+          {
+            "node": "Message Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message Type": {
+      "main": [
+        [
+          {
+            "node": "Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Voice Note",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Button Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Voice Note": {
+      "main": [
+        [
+          {
+            "node": "Download Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Audio": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Voice Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Voice Note": {
+      "main": [
+        [
+          {
+            "node": "Voice → Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Read the Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the Image": {
+      "main": [
+        [
+          {
+            "node": "Image → Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text": {
+      "main": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice → Text": {
+      "main": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image → Text": {
+      "main": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Button Reply": {
+      "main": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Receptionist": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Business Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Appointment": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Talk to Owner": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Payload": {
+      "main": [
+        [
+          {
+            "node": "Only Customer Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "saveDataSuccessExecution": "all",
+    "saveDataErrorExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "pinData": {},
+  "meta": null,
+  "tags": [],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "YsCFPr3CQYHlffvQ",
+      "projectId": "JIjXWFAfxvlM7ipU",
+      "project": {
+        "id": "JIjXWFAfxvlM7ipU",
+        "name": "venkat naryanan <venkatnarayanan10.10@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "8f834f77-05a3-4e71-a608-85405229fee9",
+        "createdAt": "2026-10-29T17:22:31.447Z",
+        "updatedAt": "2026-10-29T17:26:39.830Z"
+      },
+      "createdAt": "2026-10-31T13:52:02.465Z",
+      "updatedAt": "2026-10-31T13:52:02.465Z"
+    }
+  ],
+  "activeVersion": {
+    "versionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+    "workflowId": "YsCFPr3CQYHlffvQ",
+    "nodes": [
+      {
+        "id": "7d10fb18-347b-4b4a-afdb-8c0c1ed497a5",
+        "name": "WhatsApp Trigger",
+        "webhookId": "db2adc11-0230-40dc-bee8-6e59fe27ddc9",
+        "type": "n8n-nodes-base.whatsAppTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "updates": [
+            "messages"
+          ],
+          "options": {}
+        },
+        "credentials": {
+          "whatsAppTriggerApi": {
+            "id": "29Urn1dAsf5pq3sR",
+            "name": "WhatsApp Trigger Mock API"
+          }
+        }
+      },
+      {
+        "id": "f790be1a-0cb2-45fe-8b10-39fa49e6f898",
+        "name": "Only Customer Messages",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          240,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "9ef1bd1c-8448-4267-8e8f-356de4e57d91",
+                "leftValue": "={{ $json.messages }}",
+                "operator": {
+                  "type": "array",
+                  "operation": "exists",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        }
+      },
+      {
+        "id": "2cb4cb87-79a0-48cd-b209-cde49ef887d6",
+        "name": "Message Type",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          480,
+          300
+        ],
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "7ad291ec-62d0-4f5d-9d0e-488068a0d1bc",
+                      "leftValue": "={{ $json.messages[0].type }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "text"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "text"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "fa7d5998-73a3-48d3-9dc8-5c4b09201065",
+                      "leftValue": "={{ $json.messages[0].type }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "audio"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "audio"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "b713fbc8-6bb5-4cee-832e-e0817784a4ec",
+                      "leftValue": "={{ $json.messages[0].type }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "image"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "image"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3c21c3de-c50d-405c-a97e-1c0c85989a81",
+                      "leftValue": "={{ $json.messages[0].type }}",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "rightValue": "button"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "button"
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        }
+      },
+      {
+        "id": "0880bfb6-937f-45f3-a461-19046743e0a1",
+        "name": "Text",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          760,
+          0
+        ],
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e790190a-f853-4e6b-a2c8-18ceb3f4fbdc",
+                "name": "message",
+                "value": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "4101d49e-c9d7-4ec9-8015-5a1eca47a94a",
+        "name": "Get Voice Note",
+        "webhookId": "64f7edff-1912-4f11-9660-cb4c2eafbe51",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          760,
+          220
+        ],
+        "parameters": {
+          "resource": "media",
+          "operation": "mediaUrlGet",
+          "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].audio.id }}"
+        },
+        "credentials": {
+          "whatsAppApi": {
+            "id": "FLNobig6mXUL6LB5",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "id": "1d04ee61-7ae5-4368-b2f8-97b2532238a6",
+        "name": "Download Audio",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1000,
+          220
+        ],
+        "parameters": {
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "whatsAppApi",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file"
+              }
+            }
+          }
+        },
+        "credentials": {
+          "whatsAppApi": {
+            "id": "FLNobig6mXUL6LB5",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "id": "20be7ee9-1f71-48b7-af86-4a61c062171f",
+        "name": "Transcribe Voice Note",
+        "type": "@n8n/n8n-nodes-langchain.googleGemini",
+        "typeVersion": 1,
+        "position": [
+          1240,
+          220
+        ],
+        "parameters": {
+          "resource": "audio",
+          "operation": "transcribe",
+          "binaryPropertyName": "data",
+          "options": {},
+          "modelId": {
+            "__rl": true,
+            "value": "models/gemini-3.8-flash",
+            "mode": "id"
+          }
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "pc3IysFEYjHZVQaj",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "id": "0c4be721-a4a2-4a98-aa20-7d9c3ebfd75f",
+        "name": "Voice → Text",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1480,
+          220
+        ],
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ba378705-6d5a-4efb-bd44-58747a5a0142",
+                "name": "message",
+                "value": "=[Voice note] {{ $json.text || $json.content?.parts[0]?.text || '' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "24e6bae7-b273-4959-a823-2fc442e6c181",
+        "name": "Get Image",
+        "webhookId": "48193d4a-f12b-4502-8ff7-d64459ca5c4f",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          760,
+          440
+        ],
+        "parameters": {
+          "resource": "media",
+          "operation": "mediaUrlGet",
+          "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].image.id }}"
+        },
+        "credentials": {
+          "whatsAppApi": {
+            "id": "FLNobig6mXUL6LB5",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "id": "27a89f40-3085-4b9a-b3ef-23aae0629796",
+        "name": "Download Image",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1000,
+          440
+        ],
+        "parameters": {
+          "url": "={{ $json.url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "whatsAppApi",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file"
+              }
+            }
+          }
+        },
+        "credentials": {
+          "whatsAppApi": {
+            "id": "FLNobig6mXUL6LB5",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "id": "11024e23-9237-4b87-8392-ab1482610260",
+        "name": "Read the Image",
+        "type": "@n8n/n8n-nodes-langchain.googleGemini",
+        "typeVersion": 1,
+        "position": [
+          1240,
+          440
+        ],
+        "parameters": {
+          "resource": "image",
+          "operation": "analyze",
+          "binaryPropertyName": "data",
+          "prompt": "Describe what this customer sent in 1-2 sentences (hairstyle reference, haircut style, hair issue, product screenshot, or receipt). Read any visible text.",
+          "options": {},
+          "modelId": {
+            "__rl": true,
+            "value": "models/gemini-3.8-flash",
+            "mode": "id"
+          }
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "pc3IysFEYjHZVQaj",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "id": "f27433d3-6e58-4f1b-a45a-9f5237fcdfa2",
+        "name": "Image → Text",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1480,
+          440
+        ],
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "a35db8e1-1591-4460-9946-766bcfe3c61d",
+                "name": "message",
+                "value": "=[Customer sent an image: {{ $json.text || $json.content?.parts[0]?.text || '' }}] {{ $('WhatsApp Trigger').item.json.messages[0].image.caption || '' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "79d7e3ac-930c-41d9-a663-f83cba25f780",
+        "name": "Button Reply",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          760,
+          680
+        ],
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ce4cb329-7431-43e3-af7d-61a2cd7b15c8",
+                "name": "message",
+                "value": "=[Tapped button] {{ $('WhatsApp Trigger').item.json.messages[0].button.text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "c4412621-7ae3-45f0-a602-d344e722218c",
+        "name": "AI Receptionist",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.7,
+        "position": [
+          1820,
+          300
+        ],
+        "parameters": {
+          "promptType": "define",
+          "text": "=Customer name: {{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}\nCustomer phone: {{ $('WhatsApp Trigger').item.json.messages[0].from }}\nTime now: {{ $now.toFormat('cccc d LLL, h:mm a') }}\n\nMessage: {{ $json.message }}",
+          "options": {
+            "systemMessage": "You are the WhatsApp receptionist for Glow Studio (Hair & Beauty Salon in Chennai). You help customers with appointment inquiries, haircut/styling prices, bookings, and salon policies. Nothing else.\n\nHow to talk:\n- Reply in the customer's language. If they write Roman Urdu or Tanglish/Hinglish, reply naturally in the same style. Keep it short, warm, like a friendly front-desk receptionist. 1-3 short lines. Max 1 emoji.\n- Never invent prices, timings or policies. Always check **Business Info** first.\n\nWhat to do:\n- Services, haircut/styling prices, timings, location, policies → read **Business Info**.\n- Customer wants to book an appointment → ask for preferred day/time and name → use **Check Availability** → offer the slot → use **Book Appointment** (save their phone number in the calendar description).\n- Customer tapped \"Reschedule\" → ask for the new preferred slot, check availability, and update the booking.\n- Real customer interest (asks price, wants to book a haircut/treatment) → call **Save Lead** with status hot/warm.\n- Angry customer, complaint, refund, or complex issue → call **Talk to Owner**, and tell the customer a team member will reply shortly.\n- Off-topic questions (coding, general knowledge, homework) → politely mention you can only assist with salon appointments and services.\n- If customer says STOP or unsubscribe → acknowledge and call **Save Lead** with status opted_out.",
+            "maxIterations": 8
+          }
+        }
+      },
+      {
+        "id": "c794f737-8ee5-4a3d-87cb-455419b75e9f",
+        "name": "Send WhatsApp Reply",
+        "webhookId": "e3798566-b70b-4304-9bff-d3f25be86792",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          2200,
+          300
+        ],
+        "parameters": {
+          "operation": "send",
+          "phoneNumberId": "YOUR_WHATSAPP_PHONE_NUMBER_ID",
+          "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+          "textBody": "={{ $json.output }}",
+          "additionalFields": {}
+        },
+        "credentials": {
+          "whatsAppApi": {
+            "id": "FLNobig6mXUL6LB5",
+            "name": "WhatsApp account"
+          }
+        }
+      },
+      {
+        "id": "25ae0862-4ee7-49f3-bd30-8f35b110c4af",
+        "name": "Google Gemini Chat Model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1540,
+          700
+        ],
+        "parameters": {
+          "modelName": "models/gemini-3.8-flash",
+          "options": {
+            "temperature": 0.4
+          }
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "pc3IysFEYjHZVQaj",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "id": "fd9be44b-bd53-4fde-bdda-f6d8be8effc0",
+        "name": "Chat Memory",
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          1700,
+          700
+        ],
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+          "contextWindowLength": 12
+        }
+      },
+      {
+        "id": "9e3226d3-2eed-4b4f-829c-de024f862bac",
+        "name": "Business Info",
+        "type": "n8n-nodes-base.googleSheetsTool",
+        "typeVersion": 4.5,
+        "position": [
+          1880,
+          700
+        ],
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Read the salon FAQ: services, haircut prices, timings, location, and policies. Always use this before answering questions.",
+          "operation": "read",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Business Info",
+            "mode": "name"
+          },
+          "options": {}
+        },
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "LcfWe9ulrfuVwEXk",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "id": "bedb477f-ab9f-4d6b-b410-e23c291bcc61",
+        "name": "Check Availability",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          2040,
+          700
+        ],
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Check if a calendar slot is free before booking.",
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "venkatnarayanan10.10@gmail.com",
+            "mode": "id"
+          },
+          "timeMin": "={{ $fromAI('start', 'Slot start, ISO 8601 with timezone', 'string') }}",
+          "timeMax": "={{ $fromAI('end', 'Slot end, ISO 8601 with timezone', 'string') }}",
+          "options": {
+            "outputFormat": "availability"
+          }
+        },
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "rmqcjqmuX5ayNRTk",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "id": "a756a335-05d2-442a-a6d5-b49750354fe3",
+        "name": "Book Appointment",
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          2200,
+          700
+        ],
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Book a confirmed salon appointment into Google Calendar.",
+          "calendar": {
+            "__rl": true,
+            "value": "venkatnarayanan10.10@gmail.com",
+            "mode": "id"
+          },
+          "start": "={{ $fromAI('start', 'Start, ISO 8601', 'string') }}",
+          "end": "={{ $fromAI('end', 'End, ISO 8601', 'string') }}",
+          "additionalFields": {
+            "summary": "={{ $fromAI('title', 'Service + customer name', 'string') }}",
+            "description": "={{ $fromAI('details', 'Customer phone number and appointment notes', 'string') }}"
+          }
+        },
+        "credentials": {
+          "googleCalendarOAuth2Api": {
+            "id": "rmqcjqmuX5ayNRTk",
+            "name": "Google Calendar account"
+          }
+        }
+      },
+      {
+        "id": "7b4154c2-cec4-43b2-b75d-da4d9dd2c18e",
+        "name": "Save Lead",
+        "type": "n8n-nodes-base.googleSheetsTool",
+        "typeVersion": 4.5,
+        "position": [
+          2380,
+          700
+        ],
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Save or update client record in the Leads tab.",
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Leads",
+            "mode": "name"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "phone": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+              "name": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+              "interest": "={{ $fromAI('interest', 'What salon service or hairstyle they asked for', 'string') }}",
+              "status": "={{ $fromAI('status', 'hot, warm, booked or opted_out', 'string') }}",
+              "last_message_at": "={{ $now.toISO() }}"
+            },
+            "matchingColumns": [
+              "phone"
+            ],
+            "schema": [
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "name",
+                "displayName": "name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "interest",
+                "displayName": "interest",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "last_message_at",
+                "displayName": "last_message_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "LcfWe9ulrfuVwEXk",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "id": "8cad3d97-41da-4d08-ab9d-dc29879de591",
+        "name": "Talk to Owner",
+        "webhookId": "8b7313ec-ef63-48cf-96cd-58d8ab85f409",
+        "type": "n8n-nodes-base.telegramTool",
+        "typeVersion": 1.2,
+        "position": [
+          2540,
+          700
+        ],
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Alert the salon owner via Telegram when human intervention is needed (complaints, custom requests, cancellations).",
+          "chatId": "1999726968",
+          "text": "=🙋 Salon Staff Needed\nClient: {{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }} (+{{ $('WhatsApp Trigger').item.json.messages[0].from }})\nDetails: {{ $fromAI('summary', 'Summary of customer inquiry or issue', 'string') }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "credentials": {
+          "telegramApi": {
+            "id": "atcHmNRlXtWpeQRc",
+            "name": "Telegram account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "WhatsApp Trigger": {
+        "main": [
+          [
+            {
+              "node": "Only Customer Messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Only Customer Messages": {
+        "main": [
+          [
+            {
+              "node": "Message Type",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Message Type": {
+        "main": [
+          [
+            {
+              "node": "Text",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get Voice Note",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get Image",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Button Reply",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Voice Note": {
+        "main": [
+          [
+            {
+              "node": "Download Audio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download Audio": {
+        "main": [
+          [
+            {
+              "node": "Transcribe Voice Note",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Transcribe Voice Note": {
+        "main": [
+          [
+            {
+              "node": "Voice → Text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Image": {
+        "main": [
+          [
+            {
+              "node": "Download Image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download Image": {
+        "main": [
+          [
+            {
+              "node": "Read the Image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read the Image": {
+        "main": [
+          [
+            {
+              "node": "Image → Text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Text": {
+        "main": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Voice → Text": {
+        "main": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Image → Text": {
+        "main": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Button Reply": {
+        "main": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Receptionist": {
+        "main": [
+          [
+            {
+              "node": "Send WhatsApp Reply",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Business Info": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Availability": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Book Appointment": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Lead": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Talk to Owner": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Receptionist",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "venkat naryanan",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "createdAt": "2026-10-31T15:08:31.690Z",
+    "updatedAt": "2026-10-31T15:08:31.690Z",
+    "workflowPublishHistory": [
+      {
+        "id": 55,
+        "workflowId": "YsCFPr3CQYHlffvQ",
+        "versionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+        "event": "activated",
+        "userId": "8f834f77-05a3-4e71-a608-85405229fee9",
+        "createdAt": "2026-10-31T15:08:31.802Z"
+      },
+      {
+        "id": 56,
+        "workflowId": "YsCFPr3CQYHlffvQ",
+        "versionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+        "event": "deactivated",
+        "userId": "8f834f77-05a3-4e71-a608-85405229fee9",
+        "createdAt": "2026-10-31T15:08:31.984Z"
+      },
+      {
+        "id": 57,
+        "workflowId": "YsCFPr3CQYHlffvQ",
+        "versionId": "8ae8aa0c-8919-465a-94fe-93ef48fa2f76",
+        "event": "activated",
+        "userId": "8f834f77-05a3-4e71-a608-85405229fee9",
+        "createdAt": "2026-10-31T15:08:31.986Z"
+      }
+    ]
+  },
+  "parentFolder": null
+}
