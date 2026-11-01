@@ -1,0 +1,293 @@
+{
+  "name": "5. Customer Re-engagement Campaign",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "e4f10001-1111-4000-8000-000000000001",
+      "name": "Weekly Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "{{GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Customers",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "e4f10002-2222-4000-8000-000000000002",
+      "name": "Get Customers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        200
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LcfWe9ulrfuVwEXk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "opt1",
+              "leftValue": "={{ String($json.opted_in).toLowerCase() }}",
+              "operator": {
+                "type": "string",
+                "operation": "regex",
+                "singleValue": true
+              },
+              "rightValue": "true|yes|1"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e4f10003-3333-4000-8000-000000000003",
+      "name": "Filter Opted-In Clients",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the marketing assistant for a premier salon. Write a personal WhatsApp re-engagement message to a valued returning customer.\nCustomer Name: {{ $json.name }}\nLast Service: {{ $json.last_purchase }}\n\nIMPORTANT: Output ONLY the exact message text ready to send on WhatsApp with a 10% returning client discount. Do not include subject lines, multiple options, explanations, quotes, or markdown. Exactly 1-2 sentences.",
+        "options": {
+          "systemMessage": "You are marketing for a premier salon. Write a brief, warm 2-sentence WhatsApp re-engagement message inviting them back. Mention a 10% returning client discount. No emojis overload, max 1 emoji. Do not use quotes."
+        }
+      },
+      "id": "e4f10004-4444-4000-8000-000000000004",
+      "name": "Gemini Draft Re-engagement",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        660,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "{{GEMINI_MODEL}}",
+        "options": {
+          "temperature": 0.6
+        }
+      },
+      "id": "e4f10005-5555-4000-8000-000000000005",
+      "name": "Google Gemini Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        660,
+        400
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pc3IysFEYjHZVQaj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "{{WHATSAPP_PHONE_NUMBER_ID}}",
+        "recipientPhoneNumber": "={{ String($('Filter Opted-In Clients').item.json.phone).replace(/\\D/g, '') }}",
+        "textBody": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "e4f10006-6666-4000-8000-000000000006",
+      "name": "Send Re-engagement WhatsApp",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        200
+      ],
+      "credentials": {
+        "whatsAppApi": {
+          "id": "FLNobig6mXUL6LB5",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "{{GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Customers",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ String($('Filter Opted-In Clients').item.json.phone).replace(/\\D/g, '') }}",
+            "last_campaign_at": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "phone"
+          ]
+        },
+        "options": {}
+      },
+      "id": "e4f10007-7777-4000-8000-000000000007",
+      "name": "Update Customer Campaign Date",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1120,
+        200
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LcfWe9ulrfuVwEXk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "id": "manual-trigger-0qmpi5npzaqmelq1",
+      "name": "Manual Test Trigger",
+      "webhookId": "{{CLIENT_ID}}-wf5-trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "{{CLIENT_ID}}-wf5-trigger",
+        "httpMethod": "POST",
+        "responseMode": "lastNode"
+      }
+    }
+  ],
+  "connections": {
+    "Weekly Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Customers": {
+      "main": [
+        [
+          {
+            "node": "Filter Opted-In Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Opted-In Clients": {
+      "main": [
+        [
+          {
+            "node": "Gemini Draft Re-engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Draft Re-engagement": {
+      "main": [
+        [
+          {
+            "node": "Send Re-engagement WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini Draft Re-engagement",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Re-engagement WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Update Customer Campaign Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Test Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all",
+    "saveDataErrorExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  }
+}

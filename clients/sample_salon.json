@@ -1,0 +1,12 @@
+{
+  "clientId": "glow_studio",
+  "businessName": "Glow Studio",
+  "businessType": "Hair & Beauty Salon",
+  "city": "Sample City",
+  "sheetId": "YOUR_GOOGLE_SHEET_ID",
+  "whatsappPhoneId": "YOUR_WHATSAPP_PHONE_ID",
+  "ownerWhatsAppNumber": "15551234567",
+  "telegramChatId": "YOUR_TELEGRAM_CHAT_ID",
+  "calendarId": "primary",
+  "geminiModel": "models/gemini-3.8-flash"
+}
