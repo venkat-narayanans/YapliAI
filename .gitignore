@@ -12,6 +12,11 @@ prd_text.txt
 # Dependencies
 node_modules/
 
+# Custom Client Profiles (preserve sample & registry template)
+clients/*.json
+!clients/sample_salon.json
+!clients/registry.json
+
 # Logs & Temp files
 *.log
 npm-debug.log*

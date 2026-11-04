@@ -90,15 +90,40 @@ npm test
 npm run test:1
 ```
 
-### 5. Multi-Tenant Client Onboarding
-To provision a new client in under 10 seconds:
-```bash
-# Dry run validation
-npm run provision:dry
+### 5. Multi-Tenant Client Onboarding & Management
 
-# Deploy new client
-node provision_client.js --client clients/sample_salon.json
+#### A. Interactive CLI Onboarding (5 Questions)
+```bash
+# Answer 5 prompts to register and deploy a client in 10s:
+npm run onboard
+
+# Dry-run validation without deploying to n8n:
+npm run onboard:dry
 ```
+
+#### B. Client Management CLI
+```bash
+# List all registered clients with status & tier:
+npm run clients
+
+# View business MRR and conversion stats:
+npm run clients:stats
+
+# View detailed config for a client:
+node clients.js info glow_studio
+
+# Pause or Resume all workflows for a client:
+node clients.js deactivate glow_studio
+node clients.js activate glow_studio
+```
+
+#### C. Web Agency Hub (Browser GUI)
+Open `http://localhost:3000` and click **Agency Clients** in the top navigation bar to manage all clients, view live MRR, and provision new businesses directly from the browser!
+
+#### D. Zero-Code Client Customizations via Google Sheet
+Business owners customize their own AI without bugging you:
+- **FAQs, Prices & Services**: Owner edits `Business Info` tab $\to$ Gemini reads it in real-time.
+- **Tone, Language & Greeting**: Owner edits `AI Settings` tab $\to$ AI instantly switches persona (e.g. from English to Tamil, or Professional to Bubbly).
 
 ---
 
@@ -129,3 +154,4 @@ YapliAI/
 
 ## 📄 License
 MIT License. Built by the Yapli AI Team.
+

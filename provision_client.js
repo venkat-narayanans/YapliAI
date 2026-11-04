@@ -4,8 +4,12 @@
  *
  * Instantly provisions all 6 AI employee automations for a new business client.
  *
- * Usage:
+ * Usage (standalone):
  *   node provision_client.js <path/to/client_config.json> [--dry-run]
+ *
+ * Usage (programmatic):
+ *   const { provisionClient } = require('./provision_client.js');
+ *   const result = await provisionClient(configObject, { dryRun: false });
  */
 
 const fs = require('fs');
@@ -14,11 +18,6 @@ require('./n8n.js');
 
 const N8N_API_URL = (process.env.N8N_API_URL || 'http://localhost:5678').replace(/\/+$/, '');
 const N8N_API_KEY = process.env.N8N_API_KEY;
-
-if (!N8N_API_KEY) {
-  console.error('[Error] N8N_API_KEY is not defined in environment or .env');
-  process.exit(1);
-}
 
 const REQUIRED_FIELDS = [
   'clientId',
@@ -30,26 +29,31 @@ const REQUIRED_FIELDS = [
   'ownerWhatsAppNumber'
 ];
 
-async function provisionClient(configPath, isDryRun = false) {
-  if (!fs.existsSync(configPath)) {
-    console.error(`[Error] Client configuration file not found: ${configPath}`);
-    process.exit(1);
-  }
+/**
+ * Provision all 6 Yapli AI workflows for a client.
+ *
+ * @param {object} config - Client configuration object
+ * @param {object} [opts] - Options
+ * @param {boolean} [opts.dryRun=false] - If true, validate and prepare but don't push to n8n
+ * @param {boolean} [opts.silent=false] - If true, suppress console output
+ * @returns {Promise<{success: boolean, workflowIds: string[], deployedWorkflows: object[]}>}
+ */
+async function provisionClient(config, opts = {}) {
+  const { dryRun = false, silent = false } = opts;
+  const log = silent ? () => {} : console.log;
+  const warn = silent ? () => {} : console.warn;
+  const err = silent ? () => {} : console.error;
 
-  const rawConfig = fs.readFileSync(configPath, 'utf8');
-  let config;
-  try {
-    config = JSON.parse(rawConfig);
-  } catch (err) {
-    console.error(`[Error] Invalid JSON in ${configPath}:`, err.message);
-    process.exit(1);
+  if (!N8N_API_KEY) {
+    err('[Error] N8N_API_KEY is not defined in environment or .env');
+    return { success: false, workflowIds: [], deployedWorkflows: [], error: 'N8N_API_KEY not set' };
   }
 
   // Validate fields
   for (const field of REQUIRED_FIELDS) {
     if (!config[field]) {
-      console.error(`[Error] Missing required field in config: "${field}"`);
-      process.exit(1);
+      err(`[Error] Missing required field in config: "${field}"`);
+      return { success: false, workflowIds: [], deployedWorkflows: [], error: `Missing field: ${field}` };
     }
   }
 
@@ -58,10 +62,10 @@ async function provisionClient(configPath, isDryRun = false) {
   config.calendarId = config.calendarId || 'primary';
   config.telegramChatId = config.telegramChatId || '';
 
-  console.log('===============================================================');
-  console.log(`🚀 YAPLI AI: PROVISIONING CLIENT: "${config.businessName}"`);
-  console.log(`   Client ID: ${config.clientId} | City: ${config.city}`);
-  console.log('===============================================================\n');
+  log('===============================================================');
+  log(`🚀 YAPLI AI: PROVISIONING CLIENT: "${config.businessName}"`);
+  log(`   Client ID: ${config.clientId} | City: ${config.city}`);
+  log('===============================================================\n');
 
   const templatesDir = path.resolve(__dirname, 'templates');
   const templateFiles = [
@@ -74,11 +78,12 @@ async function provisionClient(configPath, isDryRun = false) {
   ];
 
   const deployedWorkflows = [];
+  const workflowIds = [];
 
   for (const t of templateFiles) {
     const tPath = path.join(templatesDir, t.file);
     if (!fs.existsSync(tPath)) {
-      console.warn(`[Warning] Template ${t.file} not found, skipping.`);
+      warn(`[Warning] Template ${t.file} not found, skipping.`);
       continue;
     }
 
@@ -100,9 +105,10 @@ async function provisionClient(configPath, isDryRun = false) {
     const clientWfName = `[${config.businessName}] ${t.name}`;
     wfJson.name = clientWfName;
 
-    if (isDryRun) {
-      console.log(`[DRY RUN] Prepared workflow: "${clientWfName}"`);
+    if (dryRun) {
+      log(`[DRY RUN] ✓ Prepared workflow: "${clientWfName}"`);
       deployedWorkflows.push({ num: t.num, name: clientWfName, id: 'DRY_RUN', active: true });
+      workflowIds.push('DRY_RUN');
       continue;
     }
 
@@ -115,7 +121,7 @@ async function provisionClient(configPath, isDryRun = false) {
 
     let wfId;
     if (existing) {
-      console.log(`🔄 Updating existing workflow for ${clientWfName} (ID: ${existing.id})...`);
+      log(`🔄 Updating existing workflow for ${clientWfName} (ID: ${existing.id})...`);
       const putRes = await fetch(`${N8N_API_URL}/api/v1/workflows/${existing.id}`, {
         method: 'PUT',
         headers: {
@@ -130,12 +136,12 @@ async function provisionClient(configPath, isDryRun = false) {
         })
       });
       if (!putRes.ok) {
-        console.error(`[Error] Failed to update ${clientWfName}:`, await putRes.text());
+        err(`[Error] Failed to update ${clientWfName}:`, await putRes.text());
         continue;
       }
       wfId = existing.id;
     } else {
-      console.log(`➕ Creating new workflow for ${clientWfName}...`);
+      log(`➕ Creating new workflow for ${clientWfName}...`);
       const postRes = await fetch(`${N8N_API_URL}/api/v1/workflows`, {
         method: 'POST',
         headers: {
@@ -150,7 +156,7 @@ async function provisionClient(configPath, isDryRun = false) {
         })
       });
       if (!postRes.ok) {
-        console.error(`[Error] Failed to create ${clientWfName}:`, await postRes.text());
+        err(`[Error] Failed to create ${clientWfName}:`, await postRes.text());
         continue;
       }
       const created = await postRes.json();
@@ -163,42 +169,75 @@ async function provisionClient(configPath, isDryRun = false) {
       headers: { 'X-N8N-API-KEY': N8N_API_KEY }
     });
     const active = actRes.ok;
-    console.log(`  ✓ Workflow Active: ${active}`);
+    log(`  ✓ Workflow Active: ${active}`);
 
-    deployedWorkflows.push({
-      num: t.num,
-      name: clientWfName,
-      id: wfId,
-      active
-    });
+    deployedWorkflows.push({ num: t.num, name: clientWfName, id: wfId, active });
+    workflowIds.push(wfId);
   }
 
-  console.log('\n===============================================================');
-  console.log('              CLIENT PROVISIONING COMPLETED                    ');
-  console.log('===============================================================\n');
-  console.table(deployedWorkflows.map(w => ({
-    '#': w.num,
-    'Workflow Name': w.name,
-    'n8n Workflow ID': w.id,
-    'Status': w.active ? 'ACTIVE' : 'INACTIVE'
-  })));
+  log('\n===============================================================');
+  log('              CLIENT PROVISIONING COMPLETED                    ');
+  log('===============================================================\n');
+  if (!silent) {
+    console.table(deployedWorkflows.map(w => ({
+      '#': w.num,
+      'Workflow Name': w.name,
+      'n8n Workflow ID': w.id,
+      'Status': w.active ? 'ACTIVE' : 'INACTIVE'
+    })));
+  }
 
-  console.log('\n📋 Next Client Onboarding Step:');
-  console.log(`In Meta Developer Dashboard for Phone ID ${config.whatsappPhoneId}:`);
-  console.log(`Set Webhook Callback URL to: ${N8N_API_URL}/webhook/${config.clientId}-wf1-trigger`);
-  console.log(`Verify Token: ${process.env.N8N_WEBHOOK_VERIFY_TOKEN || 'yapli_webhook_secret'}`);
-  console.log('All 6 automated workflows are ready and running for this client!\n');
+  log(`\n📋 Next Client Onboarding Step:`);
+  log(`In Meta Developer Dashboard for Phone ID ${config.whatsappPhoneId}:`);
+  log(`Set Webhook Callback URL to: ${N8N_API_URL}/webhook/${config.clientId}-wf1-trigger`);
+  log(`Verify Token: ${process.env.N8N_WEBHOOK_VERIFY_TOKEN || 'yapli_webhook_secret'}`);
+  log('All 6 automated workflows are ready and running for this client!\n');
+
+  return { success: true, workflowIds, deployedWorkflows };
 }
 
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.log(`Usage: node provision_client.js <client_config.json> [--dry-run]`);
-  console.log(`Example: node provision_client.js clients/sample_salon.json`);
-  process.exit(0);
+// --- CLI entrypoint ---
+if (require.main === module) {
+  const args = process.argv.slice(2);
+
+  // Support both old format (positional) and --client flag
+  let configPath = null;
+  let isDryRun = args.includes('--dry-run');
+
+  const clientFlagIdx = args.indexOf('--client');
+  if (clientFlagIdx !== -1 && args[clientFlagIdx + 1]) {
+    configPath = args[clientFlagIdx + 1];
+  } else {
+    // First arg that isn't a flag
+    configPath = args.find(a => !a.startsWith('--'));
+  }
+
+  if (!configPath) {
+    console.log(`Usage: node provision_client.js <client_config.json> [--dry-run]`);
+    console.log(`       node provision_client.js --client clients/bella_salon.json`);
+    console.log(`Example: node provision_client.js clients/sample_salon.json`);
+    process.exit(0);
+  }
+
+  if (!fs.existsSync(configPath)) {
+    console.error(`[Error] Client configuration file not found: ${configPath}`);
+    process.exit(1);
+  }
+
+  let config;
+  try {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  } catch (parseErr) {
+    console.error(`[Error] Invalid JSON in ${configPath}:`, parseErr.message);
+    process.exit(1);
+  }
+
+  provisionClient(config, { dryRun: isDryRun }).then(result => {
+    if (!result.success) process.exit(1);
+  }).catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
 }
 
-const configPath = args[0];
-const isDryRun = args.includes('--dry-run');
-
-provisionClient(configPath, isDryRun).catch(console.error);
-
+module.exports = { provisionClient };
