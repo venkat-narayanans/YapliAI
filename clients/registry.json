@@ -35,5 +35,19 @@
       "wf2_apex",
       "wf3_apex"
     ]
+  },
+  {
+    "clientId": "urban_fitness_studio",
+    "businessName": "Urban Fitness Studio",
+    "businessType": "Gym & Fitness Studio",
+    "city": "Bangalore",
+    "sheetId": "1AbCdEfGhIjKlMnOpQrStUvWxYz",
+    "whatsappPhoneId": "15559990001",
+    "ownerWhatsAppNumber": "15559990002",
+    "tier": "Growth Engine",
+    "status": "active",
+    "deployedAt": "2026-11-04T04:34:04.815Z",
+    "workflowIds": [],
+    "updatedAt": "2026-11-04T04:34:04.821Z"
   }
 ]
