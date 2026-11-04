@@ -12,6 +12,7 @@
     "provision": "node provision_client.js",
     "provision:dry": "node provision_client.js --client clients/sample_salon.json --dry-run",
     "test": "node test.js",
+    "test:web": "node validate_web.js && node test_dom_handlers.js",
     "test:1": "node test.js 1",
     "test:2": "node test.js 2",
     "test:3": "node test.js 3",

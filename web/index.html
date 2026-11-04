@@ -963,7 +963,7 @@
 
             <!-- Manual Reply Input (if human takeover) -->
             <div class="p-3 border-t border-zinc-800 bg-zinc-900/60 flex items-center gap-2">
-              <input type="text" id="manual-reply-input" placeholder="Type a manual response (or leave AI on autopilot)..." class="flex-1 bg-zinc-950 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-white">
+              <input type="text" id="manual-reply-input" onkeydown="if(event.key==='Enter') sendManualReply()" placeholder="Type a manual response (or leave AI on autopilot)..." class="flex-1 bg-zinc-950 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-white">
               <button onclick="sendManualReply()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs flex items-center gap-1.5 transition">
                 <span>Send</span>
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -1671,8 +1671,8 @@
       const btnAdmin = document.getElementById('nav-mode-admin');
 
       // Hide all views
-      viewWebsite.classList.add('hidden');
-      viewDashboard.classList.add('hidden');
+      if (viewWebsite) viewWebsite.classList.add('hidden');
+      if (viewDashboard) viewDashboard.classList.add('hidden');
       if (viewAdmin) viewAdmin.classList.add('hidden');
 
       // Reset button styles
@@ -1683,23 +1683,350 @@
       });
 
       if (mode === 'dashboard') {
-        viewDashboard.classList.remove('hidden');
-        btnDash.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
-        btnDash.classList.remove('text-zinc-400');
+        if (viewDashboard) viewDashboard.classList.remove('hidden');
+        if (btnDash) {
+          btnDash.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
+          btnDash.classList.remove('text-zinc-400');
+        }
         showToast('Switched to Glow Studio Owner Operations Portal');
       } else if (mode === 'admin') {
         if (viewAdmin) viewAdmin.classList.remove('hidden');
-        btnAdmin.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
-        btnAdmin.classList.remove('text-zinc-400');
+        if (btnAdmin) {
+          btnAdmin.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
+          btnAdmin.classList.remove('text-zinc-400');
+        }
         showToast('Agency Master Control: Multi-Tenant Client Registry');
         fetchClients();
         fetchStats();
       } else {
-        viewWebsite.classList.remove('hidden');
-        btnWeb.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
-        btnWeb.classList.remove('text-zinc-400');
+        if (viewWebsite) viewWebsite.classList.remove('hidden');
+        if (btnWeb) {
+          btnWeb.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
+          btnWeb.classList.remove('text-zinc-400');
+        }
       }
       lucide.createIcons();
+    }
+
+    // Dashboard Tabs Switcher
+    function setDashTab(tabId) {
+      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
+      tabs.forEach(t => {
+        const view = document.getElementById('dash-' + t);
+        const btn = document.getElementById('tab-' + t);
+        if (view) view.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('bg-zinc-800', 'text-white');
+          btn.classList.add('text-zinc-400');
+        }
+      });
+
+      const activeView = document.getElementById('dash-' + tabId);
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-zinc-800', 'text-white');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+      lucide.createIcons();
+    }
+
+    // Interactive WhatsApp Simulator Logic
+    function sendSimulatedMessage(text) {
+      appendChatMessage(text, 'user');
+      showTypingIndicator();
+
+      setTimeout(() => {
+        removeTypingIndicator();
+        let reply = '';
+        const lower = text.toLowerCase();
+        if (lower.includes('price') || lower.includes('haircut') || lower.includes('cost')) {
+          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
+        } else if (lower.includes('tomorrow') || lower.includes('4 pm') || lower.includes('book')) {
+          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
+        } else if (lower.includes('reschedule') || lower.includes('consultation')) {
+          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
+        } else {
+          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
+        }
+        appendChatMessage(reply, 'bot');
+      }, 1200);
+    }
+
+    function sendSimulatedVoiceNote() {
+      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
+      showTypingIndicator();
+      setTimeout(() => {
+        removeTypingIndicator();
+        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
+      }, 1500);
+    }
+
+    function sendCustomMessage() {
+      const input = document.getElementById('simulator-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      sendSimulatedMessage(text);
+    }
+
+    function appendChatMessage(text, sender) {
+      const box = document.getElementById('simulator-chat-box');
+      if (!box) return;
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const msgDiv = document.createElement('div');
+      if (sender === 'user') {
+        msgDiv.className = 'flex justify-end';
+        msgDiv.innerHTML = '<div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
+          text + '<div class="text-[9px] text-emerald-200 text-right mt-1">' + time + ' ✓✓</div></div>';
+      } else {
+        msgDiv.className = 'flex justify-start';
+        msgDiv.innerHTML = '<div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
+          text + '<div class="text-[9px] text-zinc-400 text-right mt-1">' + time + '</div></div>';
+      }
+      box.appendChild(msgDiv);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const box = document.getElementById('simulator-chat-box');
+      if (!box) return;
+      const indicator = document.createElement('div');
+      indicator.id = 'typing-indicator';
+      indicator.className = 'flex justify-start';
+      indicator.innerHTML = '<div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">' +
+        '<span>AI Receptionist typing</span><span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span></div>';
+      box.appendChild(indicator);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const el = document.getElementById('typing-indicator');
+      if (el) el.remove();
+    }
+
+    // ROI Calculator
+    function updateCalculator() {
+      const inquiriesEl = document.getElementById('calc-inquiries');
+      const ticketEl = document.getElementById('calc-ticket');
+      const noshowEl = document.getElementById('calc-noshow');
+      if (!inquiriesEl || !ticketEl || !noshowEl) return;
+
+      const inquiries = parseInt(inquiriesEl.value);
+      const ticket = parseInt(ticketEl.value);
+      const noshow = parseInt(noshowEl.value);
+
+      document.getElementById('calc-inquiries-label').innerText = inquiries + ' chats';
+      document.getElementById('calc-ticket-label').innerText = '$' + ticket;
+      document.getElementById('calc-noshow-label').innerText = noshow + '%';
+
+      // Monthly calculations
+      const monthlyInquiries = inquiries * 4.3;
+      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18);
+      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65);
+      const totalBookings = afterHoursRecovered + noShowSaved;
+      const totalRevenue = totalBookings * ticket;
+
+      document.getElementById('calc-recovered-revenue').innerText = '+$' + totalRevenue.toLocaleString() + '/mo';
+      document.getElementById('calc-afterhours-count').innerText = '+' + afterHoursRecovered + ' appointments';
+      document.getElementById('calc-noshow-saved').innerText = '+' + noShowSaved + ' recovered';
+    }
+
+    // Toast Notification Helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      if (!toast || !text) return;
+      text.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // Owner Dashboard: Inbox Chat Switching
+    const CHAT_DATA = {
+      venkat: {
+        name: 'Alex Smith',
+        phone: '+1 555-0199',
+        status: 'Status: Hot Lead • Service Interest: Standard Haircut',
+        messages: [
+          { text: 'Hi, what are your haircut prices and salon opening hours?', time: '10:48 AM', sender: 'user' },
+          { text: "Hi Alex! Our Standard Haircut is $25, and Premium Styling is $50 (consultation is free). We're open Monday to Saturday, 9:00 AM to 6:00 PM (closed on Sundays). Would you like to book a slot for today? 😊", time: '10:48 AM • Sent by AI Receptionist', sender: 'bot' }
+        ]
+      },
+      sarah: {
+        name: 'Sarah Jenkins',
+        phone: '+1 555-019-2831',
+        status: 'Status: Warm Lead • Service Interest: Premium Styling',
+        messages: [
+          { text: 'Do you have openings for hair coloring tomorrow afternoon?', time: '2:15 PM', sender: 'user' },
+          { text: 'Checking our schedule... 🗓️ Tomorrow at 3:00 PM with Senior Colorist Mia is available! Would you like me to reserve this for you?', time: '2:15 PM • Sent by AI Receptionist', sender: 'bot' }
+        ]
+      },
+      michael: {
+        name: 'Michael Chang',
+        phone: '+1 555-018-9942',
+        status: 'Status: Cold Lead • Service Interest: Scalp Spa Treatment',
+        messages: [
+          { text: 'How much is the scalp treatment?', time: 'Yesterday', sender: 'user' },
+          { text: 'Our Detox Scalp Spa is $45 and takes about 45 minutes. It includes consultation, massage and blow-dry. Can I book you in this week?', time: 'Yesterday • Sent by AI Receptionist', sender: 'bot' }
+        ]
+      }
+    };
+
+    function selectInboxChat(chatId) {
+      ['venkat', 'sarah', 'michael'].forEach(id => {
+        const item = document.getElementById('inbox-item-' + id);
+        if (item) {
+          if (id === chatId) {
+            item.classList.add('bg-zinc-800/50');
+          } else {
+            item.classList.remove('bg-zinc-800/50');
+          }
+        }
+      });
+
+      const data = CHAT_DATA[chatId];
+      if (!data) return;
+
+      const nameEl = document.getElementById('active-chat-name');
+      const phoneEl = document.getElementById('active-chat-phone');
+      if (nameEl) nameEl.innerText = data.name;
+      if (phoneEl) phoneEl.innerText = data.phone;
+
+      const msgBox = document.getElementById('inbox-messages');
+      if (msgBox) {
+        msgBox.innerHTML = data.messages.map(m => {
+          if (m.sender === 'user') {
+            return '<div class="flex justify-start"><div class="bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[75%] shadow">' +
+              m.text + '<div class="text-[9px] text-zinc-400 text-right mt-1">' + m.time + '</div></div></div>';
+          } else {
+            return '<div class="flex justify-end"><div class="bg-emerald-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">' +
+              m.text + '<div class="text-[9px] text-emerald-200 text-right mt-1">' + m.time + '</div></div></div>';
+          }
+        }).join('');
+      }
+      showToast('Viewing chat with ' + data.name);
+    }
+
+    function sendManualReply() {
+      const input = document.getElementById('manual-reply-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+
+      const msgBox = document.getElementById('inbox-messages');
+      if (msgBox) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const div = document.createElement('div');
+        div.className = 'flex justify-end';
+        div.innerHTML = '<div class="bg-cyan-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">' +
+          text + '<div class="text-[9px] text-cyan-200 text-right mt-1">' + time + ' • Sent manually by Owner</div></div>';
+        msgBox.appendChild(div);
+        msgBox.scrollTop = msgBox.scrollHeight;
+      }
+      showToast('Manual reply delivered via WhatsApp Cloud API');
+    }
+
+    // Owner Dashboard: Filter Leads CRM Table
+    function filterLeads(status) {
+      const tbody = document.getElementById('leads-table-body');
+      if (!tbody) return;
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach(r => {
+        if (status === 'all') {
+          r.style.display = '';
+        } else {
+          const text = r.innerText.toLowerCase();
+          if (text.includes(status)) {
+            r.style.display = '';
+          } else {
+            r.style.display = 'none';
+          }
+        }
+      });
+      showToast('Filtered leads by: ' + status.toUpperCase());
+    }
+
+    // Owner Dashboard Actions
+    function triggerOwnerReport() {
+      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
+      setTimeout(() => {
+        showToast('✓ Daily Report delivered to owner WhatsApp!');
+      }, 1200);
+    }
+
+    function triggerFollowUp(phone) {
+      showToast('Triggered Workflow 2 follow-up nudge to ' + phone);
+    }
+
+    function triggerReminderRun() {
+      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
+    }
+
+    function triggerInvoiceRun() {
+      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
+    }
+
+    function markInvoicePaid(inv) {
+      showToast('Invoice ' + inv + ' marked as PAID. Chasing sequence stopped.');
+    }
+
+    function sendInvoiceWhatsApp(inv) {
+      showToast('Dispatched payment link for ' + inv + ' to customer WhatsApp');
+    }
+
+    function saveBrainConfig() {
+      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
+    }
+
+    function testEngine(num) {
+      showToast('Running test execution on Automation Engine #' + num + '...');
+      setTimeout(() => {
+        showToast('✓ Engine #' + num + ' executed successfully with 100% pass!');
+      }, 1000);
+    }
+
+    function toggleAutopilot(cb) {
+      if (cb.checked) {
+        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
+      } else {
+        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
+      }
+    }
+
+    // Free Trial Modal Helpers
+    function openTrialModal(plan) {
+      const modal = document.getElementById('trial-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeTrialModal() {
+      const modal = document.getElementById('trial-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function handleTrialSubmit(e) {
+      e.preventDefault();
+      closeTrialModal();
+      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
+    }
+
+    function scrollToDemo() {
+      const demoSection = document.getElementById('demo-section');
+      if (demoSection) {
+        demoSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     // Agency Admin Helpers
@@ -1717,434 +2044,8 @@
         if (statTotal) statTotal.innerText = data.totalClients || '0';
         if (statActive) statActive.innerText = data.active || '0';
         if (statTrials) statTrials.innerText = data.trial || '0';
-        if (statMrr) statMrr.innerText = '
-
-    // Dashboard Tabs
-    function setDashTab(tabId) {
-      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
-      tabs.forEach(t => {
-        const view = document.getElementById(`dash-${t}`);
-        const btn = document.getElementById(`tab-${t}`);
-        if (view) view.classList.add('hidden');
-        if (btn) {
-          btn.classList.remove('bg-zinc-800', 'text-white');
-          btn.classList.add('text-zinc-400');
-        }
-      });
-
-      const activeView = document.getElementById(`dash-${tabId}`);
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeView) activeView.classList.remove('hidden');
-      if (activeBtn) {
-        activeBtn.classList.add('bg-zinc-800', 'text-white');
-        activeBtn.classList.remove('text-zinc-400');
-      }
-      lucide.createIcons();
-    }
-
-    // Interactive WhatsApp Simulator Logic
-    function sendSimulatedMessage(text) {
-      appendChatMessage(text, 'user');
-      showTypingIndicator();
-
-      setTimeout(() => {
-        removeTypingIndicator();
-        let reply = '';
-        if (text.includes('prices') || text.includes('haircut')) {
-          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
-        } else if (text.includes('tomorrow') || text.includes('4 PM') || text.includes('Book')) {
-          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
-        } else if (text.includes('reschedule') || text.includes('consultation')) {
-          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
-        } else {
-          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
-        }
-        appendChatMessage(reply, 'bot');
-      }, 1200);
-    }
-
-    function sendSimulatedVoiceNote() {
-      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
-      showTypingIndicator();
-      setTimeout(() => {
-        removeTypingIndicator();
-        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
-      }, 1500);
-    }
-
-    function sendCustomMessage() {
-      const input = document.getElementById('simulator-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      sendSimulatedMessage(text);
-    }
-
-    function appendChatMessage(text, sender) {
-      const box = document.getElementById('simulator-chat-box');
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      const msgDiv = document.createElement('div');
-      if (sender === 'user') {
-        msgDiv.className = 'flex justify-end';
-        msgDiv.innerHTML = `
-          <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-emerald-200 text-right mt-1">${time} ✓✓</div>
-          </div>
-        `;
-      } else {
-        msgDiv.className = 'flex justify-start';
-        msgDiv.innerHTML = `
-          <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-zinc-400 text-right mt-1">${time}</div>
-          </div>
-        `;
-      }
-      box.appendChild(msgDiv);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-      const box = document.getElementById('simulator-chat-box');
-      const indicator = document.createElement('div');
-      indicator.id = 'typing-indicator';
-      indicator.className = 'flex justify-start';
-      indicator.innerHTML = `
-        <div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">
-          <span>AI Receptionist typing</span>
-          <span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>
-        </div>
-      `;
-      box.appendChild(indicator);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function removeTypingIndicator() {
-      const el = document.getElementById('typing-indicator');
-      if (el) el.remove();
-    }
-
-    // ROI Calculator
-    function updateCalculator() {
-      const inquiries = parseInt(document.getElementById('calc-inquiries').value);
-      const ticket = parseInt(document.getElementById('calc-ticket').value);
-      const noshow = parseInt(document.getElementById('calc-noshow').value);
-
-      document.getElementById('calc-inquiries-label').innerText = `${inquiries} chats`;
-      document.getElementById('calc-ticket-label').innerText = `$${ticket}`;
-      document.getElementById('calc-noshow-label').innerText = `${noshow}%`;
-
-      // Monthly calculations
-      const monthlyInquiries = inquiries * 4.3;
-      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18); // ~18% recovered after-hours
-      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65); // recovers 65% of no-shows
-      const totalBookings = afterHoursRecovered + noShowSaved;
-      const totalRevenue = totalBookings * ticket;
-
-      document.getElementById('calc-recovered-revenue').innerText = `+$${totalRevenue.toLocaleString()}/mo`;
-      document.getElementById('calc-afterhours-count').innerText = `+${afterHoursRecovered} appointments`;
-      document.getElementById('calc-noshow-saved').innerText = `+${noShowSaved} recovered`;
-    }
-
-    // Toast Notification Helper
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-message');
-      text.innerText = msg;
-      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
-      }, 3500);
-    }
-
-    // Owner Dashboard Actions
-    function triggerOwnerReport() {
-      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
-      setTimeout(() => {
-        showToast('✓ Daily Report delivered to +91 9486929695 on WhatsApp!');
-      }, 1200);
-    }
-
-    function triggerFollowUp(phone) {
-      showToast(`Triggered Workflow 2 follow-up nudge to ${phone}`);
-    }
-
-    function triggerReminderRun() {
-      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
-    }
-
-    function triggerInvoiceRun() {
-      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
-    }
-
-    function markInvoicePaid(inv) {
-      showToast(`Invoice ${inv} marked as PAID. Chasing sequence stopped.`);
-    }
-
-    function sendInvoiceWhatsApp(inv) {
-      showToast(`Dispatched payment link for ${inv} to customer's WhatsApp`);
-    }
-
-    function saveBrainConfig() {
-      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
-    }
-
-    function testEngine(num) {
-      showToast(`Running test execution on Automation Engine #${num}...`);
-      setTimeout(() => {
-        showToast(`✓ Engine #${num} executed successfully with 100% pass!`);
-      }, 1000);
-    }
-
-    function toggleAutopilot(cb) {
-      if (cb.checked) {
-        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
-      } else {
-        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
-      }
-    }
-
-    // Modal Helpers
-    function openTrialModal(plan = '') {
-      document.getElementById('trial-modal').classList.remove('hidden');
-      document.getElementById('trial-modal').classList.add('flex');
-    }
-
-    function closeTrialModal() {
-      document.getElementById('trial-modal').classList.add('hidden');
-      document.getElementById('trial-modal').classList.remove('flex');
-    }
-
-    function handleTrialSubmit(e) {
-      e.preventDefault();
-      closeTrialModal();
-      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
-    }
-
-    function scrollToDemo() {
-      document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
-</body>
-</html>
-
- + (data.estimatedMonthlyRevenue || 0) + '/mo';
-        if (statArr) statArr.innerText = '
-
-    // Dashboard Tabs
-    function setDashTab(tabId) {
-      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
-      tabs.forEach(t => {
-        const view = document.getElementById(`dash-${t}`);
-        const btn = document.getElementById(`tab-${t}`);
-        if (view) view.classList.add('hidden');
-        if (btn) {
-          btn.classList.remove('bg-zinc-800', 'text-white');
-          btn.classList.add('text-zinc-400');
-        }
-      });
-
-      const activeView = document.getElementById(`dash-${tabId}`);
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeView) activeView.classList.remove('hidden');
-      if (activeBtn) {
-        activeBtn.classList.add('bg-zinc-800', 'text-white');
-        activeBtn.classList.remove('text-zinc-400');
-      }
-      lucide.createIcons();
-    }
-
-    // Interactive WhatsApp Simulator Logic
-    function sendSimulatedMessage(text) {
-      appendChatMessage(text, 'user');
-      showTypingIndicator();
-
-      setTimeout(() => {
-        removeTypingIndicator();
-        let reply = '';
-        if (text.includes('prices') || text.includes('haircut')) {
-          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
-        } else if (text.includes('tomorrow') || text.includes('4 PM') || text.includes('Book')) {
-          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
-        } else if (text.includes('reschedule') || text.includes('consultation')) {
-          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
-        } else {
-          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
-        }
-        appendChatMessage(reply, 'bot');
-      }, 1200);
-    }
-
-    function sendSimulatedVoiceNote() {
-      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
-      showTypingIndicator();
-      setTimeout(() => {
-        removeTypingIndicator();
-        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
-      }, 1500);
-    }
-
-    function sendCustomMessage() {
-      const input = document.getElementById('simulator-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      sendSimulatedMessage(text);
-    }
-
-    function appendChatMessage(text, sender) {
-      const box = document.getElementById('simulator-chat-box');
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      const msgDiv = document.createElement('div');
-      if (sender === 'user') {
-        msgDiv.className = 'flex justify-end';
-        msgDiv.innerHTML = `
-          <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-emerald-200 text-right mt-1">${time} ✓✓</div>
-          </div>
-        `;
-      } else {
-        msgDiv.className = 'flex justify-start';
-        msgDiv.innerHTML = `
-          <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-zinc-400 text-right mt-1">${time}</div>
-          </div>
-        `;
-      }
-      box.appendChild(msgDiv);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-      const box = document.getElementById('simulator-chat-box');
-      const indicator = document.createElement('div');
-      indicator.id = 'typing-indicator';
-      indicator.className = 'flex justify-start';
-      indicator.innerHTML = `
-        <div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">
-          <span>AI Receptionist typing</span>
-          <span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>
-        </div>
-      `;
-      box.appendChild(indicator);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function removeTypingIndicator() {
-      const el = document.getElementById('typing-indicator');
-      if (el) el.remove();
-    }
-
-    // ROI Calculator
-    function updateCalculator() {
-      const inquiries = parseInt(document.getElementById('calc-inquiries').value);
-      const ticket = parseInt(document.getElementById('calc-ticket').value);
-      const noshow = parseInt(document.getElementById('calc-noshow').value);
-
-      document.getElementById('calc-inquiries-label').innerText = `${inquiries} chats`;
-      document.getElementById('calc-ticket-label').innerText = `$${ticket}`;
-      document.getElementById('calc-noshow-label').innerText = `${noshow}%`;
-
-      // Monthly calculations
-      const monthlyInquiries = inquiries * 4.3;
-      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18); // ~18% recovered after-hours
-      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65); // recovers 65% of no-shows
-      const totalBookings = afterHoursRecovered + noShowSaved;
-      const totalRevenue = totalBookings * ticket;
-
-      document.getElementById('calc-recovered-revenue').innerText = `+$${totalRevenue.toLocaleString()}/mo`;
-      document.getElementById('calc-afterhours-count').innerText = `+${afterHoursRecovered} appointments`;
-      document.getElementById('calc-noshow-saved').innerText = `+${noShowSaved} recovered`;
-    }
-
-    // Toast Notification Helper
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-message');
-      text.innerText = msg;
-      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
-      }, 3500);
-    }
-
-    // Owner Dashboard Actions
-    function triggerOwnerReport() {
-      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
-      setTimeout(() => {
-        showToast('✓ Daily Report delivered to +91 9486929695 on WhatsApp!');
-      }, 1200);
-    }
-
-    function triggerFollowUp(phone) {
-      showToast(`Triggered Workflow 2 follow-up nudge to ${phone}`);
-    }
-
-    function triggerReminderRun() {
-      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
-    }
-
-    function triggerInvoiceRun() {
-      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
-    }
-
-    function markInvoicePaid(inv) {
-      showToast(`Invoice ${inv} marked as PAID. Chasing sequence stopped.`);
-    }
-
-    function sendInvoiceWhatsApp(inv) {
-      showToast(`Dispatched payment link for ${inv} to customer's WhatsApp`);
-    }
-
-    function saveBrainConfig() {
-      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
-    }
-
-    function testEngine(num) {
-      showToast(`Running test execution on Automation Engine #${num}...`);
-      setTimeout(() => {
-        showToast(`✓ Engine #${num} executed successfully with 100% pass!`);
-      }, 1000);
-    }
-
-    function toggleAutopilot(cb) {
-      if (cb.checked) {
-        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
-      } else {
-        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
-      }
-    }
-
-    // Modal Helpers
-    function openTrialModal(plan = '') {
-      document.getElementById('trial-modal').classList.remove('hidden');
-      document.getElementById('trial-modal').classList.add('flex');
-    }
-
-    function closeTrialModal() {
-      document.getElementById('trial-modal').classList.add('hidden');
-      document.getElementById('trial-modal').classList.remove('flex');
-    }
-
-    function handleTrialSubmit(e) {
-      e.preventDefault();
-      closeTrialModal();
-      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
-    }
-
-    function scrollToDemo() {
-      document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
-</body>
-</html>
-
- + (data.estimatedAnnualRevenue || 0) + '/yr ARR';
+        if (statMrr) statMrr.innerText = '$' + (data.estimatedMonthlyRevenue || 0) + '/mo';
+        if (statArr) statArr.innerText = '$' + (data.estimatedAnnualRevenue || 0) + '/yr ARR';
       } catch (err) {
         console.warn('Could not fetch stats:', err);
       }
@@ -2170,14 +2071,9 @@
       const tbody = document.getElementById('clients-table-body');
       if (!tbody) return;
 
-      if (clients.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="p-8 text-center text-zinc-500">
-              No clients found. Click "+ Onboard New Client" to provision your first business!
-            </td>
-          </tr>
-        `;
+      if (!clients || clients.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-zinc-500">' +
+          'No clients found. Click "+ Onboard New Client" to provision your first business!</td></tr>';
         return;
       }
 
@@ -2194,38 +2090,32 @@
         }
 
         const sheetUrl = c.sheetId && c.sheetId !== 'YOUR_GOOGLE_SHEET_ID' 
-          ? `https://docs.google.com/spreadsheets/d/${c.sheetId}` 
+          ? 'https://docs.google.com/spreadsheets/d/' + c.sheetId 
           : '#';
 
-        return `
-          <tr class="hover:bg-zinc-800/30 transition">
-            <td class="p-4">
-              <div class="font-bold text-white text-xs">${c.businessName}</div>
-              <div class="text-[10px] text-zinc-500 font-mono">ID: ${c.clientId}</div>
-            </td>
-            <td class="p-4">
-              <div class="text-zinc-200">${c.businessType || '-'}</div>
-              <div class="text-[11px] text-zinc-500">${c.city || '-'}</div>
-            </td>
-            <td class="p-4">
-              <span class="text-xs font-semibold text-zinc-300">${c.tier || 'Full AI Employee'}</span>
-            </td>
-            <td class="p-4">${statusBadge}</td>
-            <td class="p-4 font-mono text-zinc-400 text-[11px]">${c.whatsappPhoneId || '-'}</td>
-            <td class="p-4">
-              <a href="${sheetUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-medium text-[11px] border border-zinc-700 transition">
-                <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
-                <span>Open CRM Sheet</span>
-              </a>
-            </td>
-            <td class="p-4 text-right space-x-1">
-              ${c.status === 'active' || c.status === 'trial' 
-                ? `<button onclick="toggleClientStatus('${c.clientId}', 'paused')" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-[10px] border border-zinc-700">Pause</button>`
-                : `<button onclick="toggleClientStatus('${c.clientId}', 'active')" class="px-2 py-1 rounded bg-emerald-950/60 hover:bg-emerald-900 text-emerald-400 font-semibold text-[10px] border border-emerald-800">Resume</button>`
-              }
-            </td>
-          </tr>
-        `;
+        return '<tr class="hover:bg-zinc-800/30 transition">' +
+          '<td class="p-4">' +
+            '<div class="font-bold text-white text-xs">' + c.businessName + '</div>' +
+            '<div class="text-[10px] text-zinc-500 font-mono">ID: ' + c.clientId + '</div>' +
+          '</td>' +
+          '<td class="p-4">' +
+            '<div class="text-zinc-200">' + (c.businessType || '-') + '</div>' +
+            '<div class="text-[11px] text-zinc-500">' + (c.city || '-') + '</div>' +
+          '</td>' +
+          '<td class="p-4"><span class="text-xs font-semibold text-zinc-300">' + (c.tier || 'Full AI Employee') + '</span></td>' +
+          '<td class="p-4">' + statusBadge + '</td>' +
+          '<td class="p-4 font-mono text-zinc-400 text-[11px]">' + (c.whatsappPhoneId || '-') + '</td>' +
+          '<td class="p-4">' +
+            '<a href="' + sheetUrl + '" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-medium text-[11px] border border-zinc-700 transition">' +
+              '<i data-lucide="sheet" class="w-3.5 h-3.5"></i><span>Open CRM Sheet</span></a>' +
+          '</td>' +
+          '<td class="p-4 text-right space-x-1">' +
+            (c.status === 'active' || c.status === 'trial' 
+              ? '<button onclick="toggleClientStatus(\'' + c.clientId + '\', \'paused\')" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-[10px] border border-zinc-700">Pause</button>'
+              : '<button onclick="toggleClientStatus(\'' + c.clientId + '\', \'active\')" class="px-2 py-1 rounded bg-emerald-950/60 hover:bg-emerald-900 text-emerald-400 font-semibold text-[10px] border border-emerald-800">Resume</button>'
+            ) +
+          '</td>' +
+        '</tr>';
       }).join('');
 
       lucide.createIcons();
@@ -2241,13 +2131,13 @@
 
     async function toggleClientStatus(clientId, newStatus) {
       try {
-        const res = await fetch(`/api/clients/${clientId}`, {
+        const res = await fetch('/api/clients/' + clientId, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: newStatus })
         });
         if (res.ok) {
-          showToast(`Client ${clientId} is now ${newStatus.toUpperCase()}`);
+          showToast('Client ' + clientId + ' is now ' + newStatus.toUpperCase());
           fetchClients();
           fetchStats();
         } else {
@@ -2259,13 +2149,19 @@
     }
 
     function openAdminOnboardModal() {
-      document.getElementById('admin-onboard-modal').classList.remove('hidden');
-      document.getElementById('admin-onboard-modal').classList.add('flex');
+      const modal = document.getElementById('admin-onboard-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
     }
 
     function closeAdminOnboardModal() {
-      document.getElementById('admin-onboard-modal').classList.add('hidden');
-      document.getElementById('admin-onboard-modal').classList.remove('flex');
+      const modal = document.getElementById('admin-onboard-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
     }
 
     async function handleAdminOnboardSubmit(e) {
@@ -2296,12 +2192,12 @@
 
         if (res.ok) {
           closeAdminOnboardModal();
-          showToast(`🎉 "${businessName}" provisioned & registered successfully!`);
+          showToast('🎉 "' + businessName + '" provisioned & registered successfully!');
           fetchClients();
           fetchStats();
         } else {
-          const err = await res.json();
-          alert('Error provisioning client: ' + (err.error || 'Unknown error'));
+          const errData = await res.json();
+          alert('Error provisioning client: ' + (errData.error || 'Unknown error'));
         }
       } catch (err) {
         alert('Failed to connect to server: ' + err.message);
@@ -2313,214 +2209,7 @@
       fetchClients();
       fetchStats();
     }, 500);
-
-    // Dashboard Tabs
-    function setDashTab(tabId) {
-      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
-      tabs.forEach(t => {
-        const view = document.getElementById(`dash-${t}`);
-        const btn = document.getElementById(`tab-${t}`);
-        if (view) view.classList.add('hidden');
-        if (btn) {
-          btn.classList.remove('bg-zinc-800', 'text-white');
-          btn.classList.add('text-zinc-400');
-        }
-      });
-
-      const activeView = document.getElementById(`dash-${tabId}`);
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeView) activeView.classList.remove('hidden');
-      if (activeBtn) {
-        activeBtn.classList.add('bg-zinc-800', 'text-white');
-        activeBtn.classList.remove('text-zinc-400');
-      }
-      lucide.createIcons();
-    }
-
-    // Interactive WhatsApp Simulator Logic
-    function sendSimulatedMessage(text) {
-      appendChatMessage(text, 'user');
-      showTypingIndicator();
-
-      setTimeout(() => {
-        removeTypingIndicator();
-        let reply = '';
-        if (text.includes('prices') || text.includes('haircut')) {
-          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
-        } else if (text.includes('tomorrow') || text.includes('4 PM') || text.includes('Book')) {
-          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
-        } else if (text.includes('reschedule') || text.includes('consultation')) {
-          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
-        } else {
-          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
-        }
-        appendChatMessage(reply, 'bot');
-      }, 1200);
-    }
-
-    function sendSimulatedVoiceNote() {
-      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
-      showTypingIndicator();
-      setTimeout(() => {
-        removeTypingIndicator();
-        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
-      }, 1500);
-    }
-
-    function sendCustomMessage() {
-      const input = document.getElementById('simulator-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      sendSimulatedMessage(text);
-    }
-
-    function appendChatMessage(text, sender) {
-      const box = document.getElementById('simulator-chat-box');
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      const msgDiv = document.createElement('div');
-      if (sender === 'user') {
-        msgDiv.className = 'flex justify-end';
-        msgDiv.innerHTML = `
-          <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-emerald-200 text-right mt-1">${time} ✓✓</div>
-          </div>
-        `;
-      } else {
-        msgDiv.className = 'flex justify-start';
-        msgDiv.innerHTML = `
-          <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed">
-            ${text}
-            <div class="text-[9px] text-zinc-400 text-right mt-1">${time}</div>
-          </div>
-        `;
-      }
-      box.appendChild(msgDiv);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function showTypingIndicator() {
-      const box = document.getElementById('simulator-chat-box');
-      const indicator = document.createElement('div');
-      indicator.id = 'typing-indicator';
-      indicator.className = 'flex justify-start';
-      indicator.innerHTML = `
-        <div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">
-          <span>AI Receptionist typing</span>
-          <span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>
-        </div>
-      `;
-      box.appendChild(indicator);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function removeTypingIndicator() {
-      const el = document.getElementById('typing-indicator');
-      if (el) el.remove();
-    }
-
-    // ROI Calculator
-    function updateCalculator() {
-      const inquiries = parseInt(document.getElementById('calc-inquiries').value);
-      const ticket = parseInt(document.getElementById('calc-ticket').value);
-      const noshow = parseInt(document.getElementById('calc-noshow').value);
-
-      document.getElementById('calc-inquiries-label').innerText = `${inquiries} chats`;
-      document.getElementById('calc-ticket-label').innerText = `$${ticket}`;
-      document.getElementById('calc-noshow-label').innerText = `${noshow}%`;
-
-      // Monthly calculations
-      const monthlyInquiries = inquiries * 4.3;
-      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18); // ~18% recovered after-hours
-      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65); // recovers 65% of no-shows
-      const totalBookings = afterHoursRecovered + noShowSaved;
-      const totalRevenue = totalBookings * ticket;
-
-      document.getElementById('calc-recovered-revenue').innerText = `+$${totalRevenue.toLocaleString()}/mo`;
-      document.getElementById('calc-afterhours-count').innerText = `+${afterHoursRecovered} appointments`;
-      document.getElementById('calc-noshow-saved').innerText = `+${noShowSaved} recovered`;
-    }
-
-    // Toast Notification Helper
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-message');
-      text.innerText = msg;
-      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
-      }, 3500);
-    }
-
-    // Owner Dashboard Actions
-    function triggerOwnerReport() {
-      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
-      setTimeout(() => {
-        showToast('✓ Daily Report delivered to +91 9486929695 on WhatsApp!');
-      }, 1200);
-    }
-
-    function triggerFollowUp(phone) {
-      showToast(`Triggered Workflow 2 follow-up nudge to ${phone}`);
-    }
-
-    function triggerReminderRun() {
-      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
-    }
-
-    function triggerInvoiceRun() {
-      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
-    }
-
-    function markInvoicePaid(inv) {
-      showToast(`Invoice ${inv} marked as PAID. Chasing sequence stopped.`);
-    }
-
-    function sendInvoiceWhatsApp(inv) {
-      showToast(`Dispatched payment link for ${inv} to customer's WhatsApp`);
-    }
-
-    function saveBrainConfig() {
-      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
-    }
-
-    function testEngine(num) {
-      showToast(`Running test execution on Automation Engine #${num}...`);
-      setTimeout(() => {
-        showToast(`✓ Engine #${num} executed successfully with 100% pass!`);
-      }, 1000);
-    }
-
-    function toggleAutopilot(cb) {
-      if (cb.checked) {
-        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
-      } else {
-        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
-      }
-    }
-
-    // Modal Helpers
-    function openTrialModal(plan = '') {
-      document.getElementById('trial-modal').classList.remove('hidden');
-      document.getElementById('trial-modal').classList.add('flex');
-    }
-
-    function closeTrialModal() {
-      document.getElementById('trial-modal').classList.add('hidden');
-      document.getElementById('trial-modal').classList.remove('flex');
-    }
-
-    function handleTrialSubmit(e) {
-      e.preventDefault();
-      closeTrialModal();
-      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
-    }
-
-    function scrollToDemo() {
-      document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
-    }
+  
   </script>
 </body>
 </html>
