@@ -65,9 +65,11 @@ BUSINESS INTAKE FORM - YAPLI AI
 
 ## 4. Master Google Sheet CRM Blueprint
 
-Create a master Google Sheet template named `Yapli CRM - [Business Name]` with these exact 5 tabs:
+Create a master Google Sheet template named `Yapli CRM - [Business Name]` with these tabs:
 
-### Tab 1: `Business Info`
+### Tab 1: `Business Info` (FAQ & Services Knowledge Base)
+The AI reads this in real-time on every customer inquiry. Any change made by the owner takes effect immediately!
+
 | topic | answer |
 |---|---|
 | `services` | Consultation, Standard Haircut, Premium Styling, Beard Grooming |
@@ -76,8 +78,21 @@ Create a master Google Sheet template named `Yapli CRM - [Business Name]` with t
 | `address` | 123 Grand Trunk Road, Suite 4B, Chennai |
 | `parking` | Free valet parking available in front of the building |
 | `cancellation` | Free cancellation up to 2 hours before the scheduled time |
+| `tone` | Warm, welcoming, and polite (or "casual and upbeat with emojis") |
+| `language` | Auto-detect (or "Tamil", "Hindi", "English only") |
+| `greeting` | Vanakkam! Welcome to Glow Studio. How can we make your day great? |
+| `escalation` | If customer mentions "complaint", "manager", or "refund", hand off to owner |
 
-### Tab 2: `Leads`
+### Tab 2: `AI Settings` (Optional dedicated tab for advanced fine-tuning)
+| setting | value | description |
+|---|---|---|
+| `ai_tone` | `friendly_casual` | professional / friendly_casual / warm_enthusiastic |
+| `preferred_language` | `auto` | auto / English / Tamil / Hindi |
+| `max_followups` | `2` | Maximum follow-up nudges before pausing |
+| `appointment_buffer_min` | `30` | Minimum minutes between appointments |
+| `after_hours_auto_reply` | `active` | Auto-inform customer that team is off-hours |
+
+### Tab 3: `Leads`
 | phone | name | interest | status | last_message_at | followups_sent | last_followup_at |
 |---|---|---|---|---|---|---|
 | `15551234567` | `Alex Smith` | `Haircut & Styling` | `hot` | `2026-11-01 10:00` | `0` | `` |

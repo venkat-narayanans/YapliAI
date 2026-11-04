@@ -1,0 +1,39 @@
+[
+  {
+    "clientId": "glow_studio",
+    "businessName": "Glow Studio",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "YOUR_GOOGLE_SHEET_ID",
+    "whatsappPhoneId": "YOUR_WHATSAPP_PHONE_ID",
+    "ownerWhatsAppNumber": "15551234567",
+    "tier": "Full AI Employee",
+    "status": "active",
+    "deployedAt": "2026-11-04T04:04:50.285Z",
+    "workflowIds": [
+      "wf1_demo",
+      "wf2_demo",
+      "wf3_demo",
+      "wf4_demo",
+      "wf5_demo",
+      "wf6_demo"
+    ]
+  },
+  {
+    "clientId": "apex_dental",
+    "businessName": "Apex Dental Clinic",
+    "businessType": "Dental Clinic",
+    "city": "Mumbai",
+    "sheetId": "ANOTHER_SHEET_ID",
+    "whatsappPhoneId": "ANOTHER_PHONE_ID",
+    "ownerWhatsAppNumber": "15559876543",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-04T04:04:50.285Z",
+    "workflowIds": [
+      "wf1_apex",
+      "wf2_apex",
+      "wf3_apex"
+    ]
+  }
+]

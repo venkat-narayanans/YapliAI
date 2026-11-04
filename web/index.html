@@ -122,7 +122,7 @@
         </div>
       </div>
 
-      <!-- Segmented Control: Website vs Owner Dashboard -->
+      <!-- Segmented Control: Website vs Owner Dashboard vs Agency Admin -->
       <nav class="hidden md:flex items-center p-1 bg-zinc-900/90 rounded-xl border border-zinc-800">
         <button id="nav-mode-website" onclick="setMode('website')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-emerald-500 text-zinc-950 shadow-sm">
           <i data-lucide="globe" class="w-4 h-4"></i>
@@ -132,6 +132,11 @@
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
           Owner Dashboard
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        </button>
+        <button id="nav-mode-admin" onclick="setMode('admin')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-all duration-200">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          Agency Clients
+          <span id="badge-client-count" class="px-1.5 py-0.5 rounded-full text-[10px] bg-zinc-800 text-emerald-400 border border-emerald-500/30">2</span>
         </button>
       </nav>
 
@@ -1375,6 +1380,208 @@
 
   </main>
 
+
+  <!-- ======================================================== -->
+  <!-- VIEW 3: AGENCY MULTI-TENANT CLIENT MANAGEMENT HUB        -->
+  <!-- ======================================================== -->
+  <main id="view-admin" class="hidden min-h-[calc(100vh-64px)] bg-[#09090b] py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <!-- Admin Top Banner -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-950 border border-zinc-800">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Agency Master Control</span>
+            <span class="text-zinc-500">•</span>
+            <span class="text-xs text-zinc-400">Multi-Tenant Onboarding</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Client Automation Registry</h2>
+          <p class="text-sm text-zinc-400 mt-1">Onboard local businesses in 10s, monitor 6-workflow deployments, and configure Google Sheet CRMs.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="fetchClients()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            Refresh
+          </button>
+          <button onclick="openAdminOnboardModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-md shadow-emerald-500/20 transition transform active:scale-95">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            + Onboard New Client
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-zinc-400">Total Clients</span>
+            <i data-lucide="users" class="w-4 h-4 text-zinc-500"></i>
+          </div>
+          <div id="admin-stat-total" class="text-2xl font-bold text-white mt-2">--</div>
+          <div class="text-[11px] text-zinc-500 mt-1">Multi-tenant registered</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-zinc-400">Active Retainers</span>
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div id="admin-stat-active" class="text-2xl font-bold text-emerald-400 mt-2">--</div>
+          <div class="text-[11px] text-emerald-500/80 mt-1">Paying full price</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-zinc-400">7-Day Free Trials</span>
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+          </div>
+          <div id="admin-stat-trials" class="text-2xl font-bold text-amber-400 mt-2">--</div>
+          <div class="text-[11px] text-amber-500/80 mt-1">Conversion pipeline</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-zinc-400">Current MRR</span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i>
+          </div>
+          <div id="admin-stat-mrr" class="text-2xl font-bold text-cyan-400 mt-2">$--/mo</div>
+          <div id="admin-stat-arr" class="text-[11px] text-zinc-500 mt-1">$--/yr ARR</div>
+        </div>
+      </div>
+
+      <!-- Quick Concept Helper Box -->
+      <div class="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </div>
+          <div class="text-xs leading-relaxed text-zinc-300">
+            <strong class="text-white">Self-Service Customization:</strong> Business owners customize their AI Receptionist simply by editing their Google Sheet! FAQs in <code class="text-emerald-400 font-mono">Business Info</code> and tone/language preferences in <code class="text-emerald-400 font-mono">AI Settings</code> take effect instantly.
+          </div>
+        </div>
+        <div class="text-[11px] text-zinc-400 bg-zinc-900/80 px-3 py-1.5 rounded-lg border border-zinc-800 font-mono shrink-0">
+          CLI: node onboard.js
+        </div>
+      </div>
+
+      <!-- Clients Registry Table -->
+      <div class="bg-zinc-900/60 border border-zinc-800 rounded-3xl overflow-hidden shadow-xl">
+        <div class="p-5 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-bold text-white text-base">Registered Business Clients</h3>
+            <p class="text-xs text-zinc-400 mt-0.5">Each client runs an isolated set of 6 workflows connected to their dedicated Google Sheet.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-zinc-500">Filter:</span>
+            <select id="client-filter-select" onchange="filterClients(this.value)" class="text-xs bg-zinc-800 border border-zinc-700 text-zinc-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500">
+              <option value="all">All Clients</option>
+              <option value="active">Active Retainers</option>
+              <option value="trial">Free Trials</option>
+              <option value="paused">Paused</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-zinc-950/60 text-zinc-400 border-b border-zinc-800">
+              <tr>
+                <th class="p-4 font-medium">Business / Client</th>
+                <th class="p-4 font-medium">Category & City</th>
+                <th class="p-4 font-medium">Plan Tier</th>
+                <th class="p-4 font-medium">Status</th>
+                <th class="p-4 font-medium">WhatsApp ID</th>
+                <th class="p-4 font-medium">Google Sheet</th>
+                <th class="p-4 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clients-table-body" class="divide-y divide-zinc-800/60 text-zinc-300">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ONBOARD NEW CLIENT (AGENCY ADMIN)                 -->
+  <!-- ======================================================== -->
+  <div id="admin-onboard-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeAdminOnboardModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Client Onboarding</span>
+        <h3 class="text-2xl font-bold text-white mt-2">Provision a New Business</h3>
+        <p class="text-xs text-zinc-400 mt-1">Registers client and configures isolated 6-workflow automation suite.</p>
+      </div>
+
+      <form onsubmit="handleAdminOnboardSubmit(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-zinc-300 font-semibold mb-1">Business Name *</label>
+          <input id="onboard-businessName" type="text" required placeholder="e.g. Bella Salon & Spa" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-zinc-300 font-semibold mb-1">Category *</label>
+            <select id="onboard-businessType" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option>Hair & Beauty Salon</option>
+              <option>Medical Clinic / Hospital</option>
+              <option>Dental Clinic</option>
+              <option>Gym & Fitness Studio</option>
+              <option>Real Estate Agency</option>
+              <option>Coaching / Tutoring Centre</option>
+              <option>Auto Repair / Service</option>
+              <option>Restaurant / Café</option>
+              <option>Consulting Services</option>
+              <option>Other Business</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-zinc-300 font-semibold mb-1">City *</label>
+            <input id="onboard-city" type="text" required placeholder="e.g. Chennai" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-zinc-300 font-semibold mb-1">WhatsApp Phone ID *</label>
+            <input id="onboard-whatsappPhoneId" type="text" required placeholder="e.g. 15550001234" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-zinc-300 font-semibold mb-1">Owner WhatsApp Phone *</label>
+            <input id="onboard-ownerPhone" type="text" required placeholder="e.g. 15551234567" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-zinc-300 font-semibold mb-1">Google Sheet ID *</label>
+          <input id="onboard-sheetId" type="text" required placeholder="From docs.google.com/spreadsheets/d/<ID>/edit" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          <p class="text-[10px] text-zinc-500 mt-1">Make sure the sheet has tabs: Business Info, AI Settings, Leads, Reminders, Invoices, Customers.</p>
+        </div>
+
+        <div>
+          <label class="block text-zinc-300 font-semibold mb-1">Package Tier</label>
+          <select id="onboard-tier" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+            <option value="Full AI Employee">Full AI Employee ($149/mo - All 6 Workflows)</option>
+            <option value="Growth Engine">Growth Engine ($99/mo - Workflows 1-3)</option>
+            <option value="AI Receptionist">AI Receptionist ($49/mo - Workflow 1)</option>
+            <option value="7-Day Free Trial">7-Day Free Trial ($0)</option>
+          </select>
+        </div>
+
+        <div class="pt-3">
+          <button type="submit" class="w-full py-3.5 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 transition transform active:scale-95 shadow-lg shadow-emerald-500/20 text-xs">
+            Deploy & Register Client Now
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ======================================================== -->
   <!-- MODAL: 7-DAY FREE TRIAL ONBOARDING                       -->
   <!-- ======================================================== -->
@@ -1450,33 +1657,662 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Mode Switcher: Website vs Dashboard
+    // Global clients cache
+    let cachedClients = [];
+
+    // Mode Switcher: Website vs Dashboard vs Agency Admin
     function setMode(mode) {
       const viewWebsite = document.getElementById('view-website');
       const viewDashboard = document.getElementById('view-dashboard');
+      const viewAdmin = document.getElementById('view-admin');
+
       const btnWeb = document.getElementById('nav-mode-website');
       const btnDash = document.getElementById('nav-mode-dashboard');
+      const btnAdmin = document.getElementById('nav-mode-admin');
+
+      // Hide all views
+      viewWebsite.classList.add('hidden');
+      viewDashboard.classList.add('hidden');
+      if (viewAdmin) viewAdmin.classList.add('hidden');
+
+      // Reset button styles
+      [btnWeb, btnDash, btnAdmin].forEach(b => {
+        if (!b) return;
+        b.classList.remove('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
+        b.classList.add('text-zinc-400');
+      });
 
       if (mode === 'dashboard') {
-        viewWebsite.classList.add('hidden');
         viewDashboard.classList.remove('hidden');
-
         btnDash.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
         btnDash.classList.remove('text-zinc-400');
-        btnWeb.classList.remove('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
-        btnWeb.classList.add('text-zinc-400');
         showToast('Switched to Glow Studio Owner Operations Portal');
+      } else if (mode === 'admin') {
+        if (viewAdmin) viewAdmin.classList.remove('hidden');
+        btnAdmin.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
+        btnAdmin.classList.remove('text-zinc-400');
+        showToast('Agency Master Control: Multi-Tenant Client Registry');
+        fetchClients();
+        fetchStats();
       } else {
-        viewDashboard.classList.add('hidden');
         viewWebsite.classList.remove('hidden');
-
         btnWeb.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
         btnWeb.classList.remove('text-zinc-400');
-        btnDash.classList.remove('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
-        btnDash.classList.add('text-zinc-400');
       }
       lucide.createIcons();
     }
+
+    // Agency Admin Helpers
+    async function fetchStats() {
+      try {
+        const res = await fetch('/api/stats');
+        if (!res.ok) return;
+        const data = await res.json();
+        const statTotal = document.getElementById('admin-stat-total');
+        const statActive = document.getElementById('admin-stat-active');
+        const statTrials = document.getElementById('admin-stat-trials');
+        const statMrr = document.getElementById('admin-stat-mrr');
+        const statArr = document.getElementById('admin-stat-arr');
+
+        if (statTotal) statTotal.innerText = data.totalClients || '0';
+        if (statActive) statActive.innerText = data.active || '0';
+        if (statTrials) statTrials.innerText = data.trial || '0';
+        if (statMrr) statMrr.innerText = '
+
+    // Dashboard Tabs
+    function setDashTab(tabId) {
+      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`dash-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (view) view.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('bg-zinc-800', 'text-white');
+          btn.classList.add('text-zinc-400');
+        }
+      });
+
+      const activeView = document.getElementById(`dash-${tabId}`);
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-zinc-800', 'text-white');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+      lucide.createIcons();
+    }
+
+    // Interactive WhatsApp Simulator Logic
+    function sendSimulatedMessage(text) {
+      appendChatMessage(text, 'user');
+      showTypingIndicator();
+
+      setTimeout(() => {
+        removeTypingIndicator();
+        let reply = '';
+        if (text.includes('prices') || text.includes('haircut')) {
+          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
+        } else if (text.includes('tomorrow') || text.includes('4 PM') || text.includes('Book')) {
+          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
+        } else if (text.includes('reschedule') || text.includes('consultation')) {
+          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
+        } else {
+          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
+        }
+        appendChatMessage(reply, 'bot');
+      }, 1200);
+    }
+
+    function sendSimulatedVoiceNote() {
+      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
+      showTypingIndicator();
+      setTimeout(() => {
+        removeTypingIndicator();
+        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
+      }, 1500);
+    }
+
+    function sendCustomMessage() {
+      const input = document.getElementById('simulator-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      sendSimulatedMessage(text);
+    }
+
+    function appendChatMessage(text, sender) {
+      const box = document.getElementById('simulator-chat-box');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const msgDiv = document.createElement('div');
+      if (sender === 'user') {
+        msgDiv.className = 'flex justify-end';
+        msgDiv.innerHTML = `
+          <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed">
+            ${text}
+            <div class="text-[9px] text-emerald-200 text-right mt-1">${time} ✓✓</div>
+          </div>
+        `;
+      } else {
+        msgDiv.className = 'flex justify-start';
+        msgDiv.innerHTML = `
+          <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed">
+            ${text}
+            <div class="text-[9px] text-zinc-400 text-right mt-1">${time}</div>
+          </div>
+        `;
+      }
+      box.appendChild(msgDiv);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const box = document.getElementById('simulator-chat-box');
+      const indicator = document.createElement('div');
+      indicator.id = 'typing-indicator';
+      indicator.className = 'flex justify-start';
+      indicator.innerHTML = `
+        <div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">
+          <span>AI Receptionist typing</span>
+          <span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>
+        </div>
+      `;
+      box.appendChild(indicator);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const el = document.getElementById('typing-indicator');
+      if (el) el.remove();
+    }
+
+    // ROI Calculator
+    function updateCalculator() {
+      const inquiries = parseInt(document.getElementById('calc-inquiries').value);
+      const ticket = parseInt(document.getElementById('calc-ticket').value);
+      const noshow = parseInt(document.getElementById('calc-noshow').value);
+
+      document.getElementById('calc-inquiries-label').innerText = `${inquiries} chats`;
+      document.getElementById('calc-ticket-label').innerText = `$${ticket}`;
+      document.getElementById('calc-noshow-label').innerText = `${noshow}%`;
+
+      // Monthly calculations
+      const monthlyInquiries = inquiries * 4.3;
+      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18); // ~18% recovered after-hours
+      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65); // recovers 65% of no-shows
+      const totalBookings = afterHoursRecovered + noShowSaved;
+      const totalRevenue = totalBookings * ticket;
+
+      document.getElementById('calc-recovered-revenue').innerText = `+$${totalRevenue.toLocaleString()}/mo`;
+      document.getElementById('calc-afterhours-count').innerText = `+${afterHoursRecovered} appointments`;
+      document.getElementById('calc-noshow-saved').innerText = `+${noShowSaved} recovered`;
+    }
+
+    // Toast Notification Helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      text.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // Owner Dashboard Actions
+    function triggerOwnerReport() {
+      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
+      setTimeout(() => {
+        showToast('✓ Daily Report delivered to +91 9486929695 on WhatsApp!');
+      }, 1200);
+    }
+
+    function triggerFollowUp(phone) {
+      showToast(`Triggered Workflow 2 follow-up nudge to ${phone}`);
+    }
+
+    function triggerReminderRun() {
+      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
+    }
+
+    function triggerInvoiceRun() {
+      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
+    }
+
+    function markInvoicePaid(inv) {
+      showToast(`Invoice ${inv} marked as PAID. Chasing sequence stopped.`);
+    }
+
+    function sendInvoiceWhatsApp(inv) {
+      showToast(`Dispatched payment link for ${inv} to customer's WhatsApp`);
+    }
+
+    function saveBrainConfig() {
+      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
+    }
+
+    function testEngine(num) {
+      showToast(`Running test execution on Automation Engine #${num}...`);
+      setTimeout(() => {
+        showToast(`✓ Engine #${num} executed successfully with 100% pass!`);
+      }, 1000);
+    }
+
+    function toggleAutopilot(cb) {
+      if (cb.checked) {
+        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
+      } else {
+        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
+      }
+    }
+
+    // Modal Helpers
+    function openTrialModal(plan = '') {
+      document.getElementById('trial-modal').classList.remove('hidden');
+      document.getElementById('trial-modal').classList.add('flex');
+    }
+
+    function closeTrialModal() {
+      document.getElementById('trial-modal').classList.add('hidden');
+      document.getElementById('trial-modal').classList.remove('flex');
+    }
+
+    function handleTrialSubmit(e) {
+      e.preventDefault();
+      closeTrialModal();
+      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
+    }
+
+    function scrollToDemo() {
+      document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
+
+ + (data.estimatedMonthlyRevenue || 0) + '/mo';
+        if (statArr) statArr.innerText = '
+
+    // Dashboard Tabs
+    function setDashTab(tabId) {
+      const tabs = ['overview', 'inbox', 'leads', 'reminders', 'invoices', 'knowledge', 'automations'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`dash-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (view) view.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('bg-zinc-800', 'text-white');
+          btn.classList.add('text-zinc-400');
+        }
+      });
+
+      const activeView = document.getElementById(`dash-${tabId}`);
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-zinc-800', 'text-white');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+      lucide.createIcons();
+    }
+
+    // Interactive WhatsApp Simulator Logic
+    function sendSimulatedMessage(text) {
+      appendChatMessage(text, 'user');
+      showTypingIndicator();
+
+      setTimeout(() => {
+        removeTypingIndicator();
+        let reply = '';
+        if (text.includes('prices') || text.includes('haircut')) {
+          reply = "Our Standard Haircut is $25 and Premium Styling is $50 (consultation is free). We are open Mon–Sat, 9:00 AM to 6:00 PM. Would you like to reserve a time slot today? 😊";
+        } else if (text.includes('tomorrow') || text.includes('4 PM') || text.includes('Book')) {
+          reply = "Checking our calendar... 🗓️ Tomorrow at 4:00 PM is available with Master Stylist Sarah! Would you like me to book and confirm this slot for you under your name?";
+        } else if (text.includes('reschedule') || text.includes('consultation')) {
+          reply = "No problem at all! I can help you reschedule your consultation. What date and time would you prefer instead? (Our slots are Mon–Sat 9 AM – 6 PM)";
+        } else {
+          reply = "Thank you for reaching out! I would be delighted to assist you with haircut prices, styling services, or booking an appointment. What service are you interested in?";
+        }
+        appendChatMessage(reply, 'bot');
+      }, 1200);
+    }
+
+    function sendSimulatedVoiceNote() {
+      appendChatMessage('🎙️ Voice Note (0:08) — "Hi! Are you open this Sunday for a quick haircut?"', 'user');
+      showTypingIndicator();
+      setTimeout(() => {
+        removeTypingIndicator();
+        appendChatMessage("Thanks for your voice message! 🎧 Our salon is closed on Sundays, but we have open slots available this Saturday from 9:00 AM to 6:00 PM. Would Saturday work for your haircut?", 'bot');
+      }, 1500);
+    }
+
+    function sendCustomMessage() {
+      const input = document.getElementById('simulator-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      sendSimulatedMessage(text);
+    }
+
+    function appendChatMessage(text, sender) {
+      const box = document.getElementById('simulator-chat-box');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const msgDiv = document.createElement('div');
+      if (sender === 'user') {
+        msgDiv.className = 'flex justify-end';
+        msgDiv.innerHTML = `
+          <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed">
+            ${text}
+            <div class="text-[9px] text-emerald-200 text-right mt-1">${time} ✓✓</div>
+          </div>
+        `;
+      } else {
+        msgDiv.className = 'flex justify-start';
+        msgDiv.innerHTML = `
+          <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed">
+            ${text}
+            <div class="text-[9px] text-zinc-400 text-right mt-1">${time}</div>
+          </div>
+        `;
+      }
+      box.appendChild(msgDiv);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const box = document.getElementById('simulator-chat-box');
+      const indicator = document.createElement('div');
+      indicator.id = 'typing-indicator';
+      indicator.className = 'flex justify-start';
+      indicator.innerHTML = `
+        <div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">
+          <span>AI Receptionist typing</span>
+          <span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>
+        </div>
+      `;
+      box.appendChild(indicator);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const el = document.getElementById('typing-indicator');
+      if (el) el.remove();
+    }
+
+    // ROI Calculator
+    function updateCalculator() {
+      const inquiries = parseInt(document.getElementById('calc-inquiries').value);
+      const ticket = parseInt(document.getElementById('calc-ticket').value);
+      const noshow = parseInt(document.getElementById('calc-noshow').value);
+
+      document.getElementById('calc-inquiries-label').innerText = `${inquiries} chats`;
+      document.getElementById('calc-ticket-label').innerText = `$${ticket}`;
+      document.getElementById('calc-noshow-label').innerText = `${noshow}%`;
+
+      // Monthly calculations
+      const monthlyInquiries = inquiries * 4.3;
+      const afterHoursRecovered = Math.round(monthlyInquiries * 0.18); // ~18% recovered after-hours
+      const noShowSaved = Math.round((monthlyInquiries * (noshow / 100)) * 0.65); // recovers 65% of no-shows
+      const totalBookings = afterHoursRecovered + noShowSaved;
+      const totalRevenue = totalBookings * ticket;
+
+      document.getElementById('calc-recovered-revenue').innerText = `+$${totalRevenue.toLocaleString()}/mo`;
+      document.getElementById('calc-afterhours-count').innerText = `+${afterHoursRecovered} appointments`;
+      document.getElementById('calc-noshow-saved').innerText = `+${noShowSaved} recovered`;
+    }
+
+    // Toast Notification Helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      text.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // Owner Dashboard Actions
+    function triggerOwnerReport() {
+      showToast('Dispatching Workflow 6 (Bonus: Daily 10 PM Owner Report) to your WhatsApp...');
+      setTimeout(() => {
+        showToast('✓ Daily Report delivered to +91 9486929695 on WhatsApp!');
+      }, 1200);
+    }
+
+    function triggerFollowUp(phone) {
+      showToast(`Triggered Workflow 2 follow-up nudge to ${phone}`);
+    }
+
+    function triggerReminderRun() {
+      showToast('Triggered Workflow 3: Appointment reminders dispatched with [Confirm]/[Reschedule] buttons');
+    }
+
+    function triggerInvoiceRun() {
+      showToast('Triggered Workflow 4: Payment chaser sequence executed for pending invoices');
+    }
+
+    function markInvoicePaid(inv) {
+      showToast(`Invoice ${inv} marked as PAID. Chasing sequence stopped.`);
+    }
+
+    function sendInvoiceWhatsApp(inv) {
+      showToast(`Dispatched payment link for ${inv} to customer's WhatsApp`);
+    }
+
+    function saveBrainConfig() {
+      showToast('✓ Business Info saved! Synchronized with Google Sheets CRM & n8n AI Receptionist.');
+    }
+
+    function testEngine(num) {
+      showToast(`Running test execution on Automation Engine #${num}...`);
+      setTimeout(() => {
+        showToast(`✓ Engine #${num} executed successfully with 100% pass!`);
+      }, 1000);
+    }
+
+    function toggleAutopilot(cb) {
+      if (cb.checked) {
+        showToast('AI Autopilot ENABLED: Receptionist will automatically respond to inquiries.');
+      } else {
+        showToast('HUMAN TAKEOVER ENABLED: AI paused for this conversation. You can reply manually.');
+      }
+    }
+
+    // Modal Helpers
+    function openTrialModal(plan = '') {
+      document.getElementById('trial-modal').classList.remove('hidden');
+      document.getElementById('trial-modal').classList.add('flex');
+    }
+
+    function closeTrialModal() {
+      document.getElementById('trial-modal').classList.add('hidden');
+      document.getElementById('trial-modal').classList.remove('flex');
+    }
+
+    function handleTrialSubmit(e) {
+      e.preventDefault();
+      closeTrialModal();
+      showToast('🚀 Account created! Our automated provisioner is setting up your 6 n8n workflows.');
+    }
+
+    function scrollToDemo() {
+      document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
+
+ + (data.estimatedAnnualRevenue || 0) + '/yr ARR';
+      } catch (err) {
+        console.warn('Could not fetch stats:', err);
+      }
+    }
+
+    async function fetchClients() {
+      try {
+        const res = await fetch('/api/clients');
+        if (!res.ok) return;
+        const data = await res.json();
+        cachedClients = data.clients || [];
+
+        const badge = document.getElementById('badge-client-count');
+        if (badge) badge.innerText = cachedClients.length;
+
+        renderClientsTable(cachedClients);
+      } catch (err) {
+        console.warn('Could not fetch clients:', err);
+      }
+    }
+
+    function renderClientsTable(clients) {
+      const tbody = document.getElementById('clients-table-body');
+      if (!tbody) return;
+
+      if (clients.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-zinc-500">
+              No clients found. Click "+ Onboard New Client" to provision your first business!
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = clients.map(c => {
+        let statusBadge = '';
+        if (c.status === 'active') {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Active Retainer</span>';
+        } else if (c.status === 'trial') {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">7-Day Trial</span>';
+        } else if (c.status === 'paused') {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-zinc-800 text-zinc-400 border border-zinc-700">Paused</span>';
+        } else {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-red-500/10 text-red-400 border border-red-500/30">Churned</span>';
+        }
+
+        const sheetUrl = c.sheetId && c.sheetId !== 'YOUR_GOOGLE_SHEET_ID' 
+          ? `https://docs.google.com/spreadsheets/d/${c.sheetId}` 
+          : '#';
+
+        return `
+          <tr class="hover:bg-zinc-800/30 transition">
+            <td class="p-4">
+              <div class="font-bold text-white text-xs">${c.businessName}</div>
+              <div class="text-[10px] text-zinc-500 font-mono">ID: ${c.clientId}</div>
+            </td>
+            <td class="p-4">
+              <div class="text-zinc-200">${c.businessType || '-'}</div>
+              <div class="text-[11px] text-zinc-500">${c.city || '-'}</div>
+            </td>
+            <td class="p-4">
+              <span class="text-xs font-semibold text-zinc-300">${c.tier || 'Full AI Employee'}</span>
+            </td>
+            <td class="p-4">${statusBadge}</td>
+            <td class="p-4 font-mono text-zinc-400 text-[11px]">${c.whatsappPhoneId || '-'}</td>
+            <td class="p-4">
+              <a href="${sheetUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-medium text-[11px] border border-zinc-700 transition">
+                <i data-lucide="sheet" class="w-3.5 h-3.5"></i>
+                <span>Open CRM Sheet</span>
+              </a>
+            </td>
+            <td class="p-4 text-right space-x-1">
+              ${c.status === 'active' || c.status === 'trial' 
+                ? `<button onclick="toggleClientStatus('${c.clientId}', 'paused')" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-[10px] border border-zinc-700">Pause</button>`
+                : `<button onclick="toggleClientStatus('${c.clientId}', 'active')" class="px-2 py-1 rounded bg-emerald-950/60 hover:bg-emerald-900 text-emerald-400 font-semibold text-[10px] border border-emerald-800">Resume</button>`
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterClients(status) {
+      if (status === 'all') {
+        renderClientsTable(cachedClients);
+      } else {
+        renderClientsTable(cachedClients.filter(c => c.status === status));
+      }
+    }
+
+    async function toggleClientStatus(clientId, newStatus) {
+      try {
+        const res = await fetch(`/api/clients/${clientId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) {
+          showToast(`Client ${clientId} is now ${newStatus.toUpperCase()}`);
+          fetchClients();
+          fetchStats();
+        } else {
+          showToast('Failed to update client status');
+        }
+      } catch (err) {
+        showToast('Error connecting to server');
+      }
+    }
+
+    function openAdminOnboardModal() {
+      document.getElementById('admin-onboard-modal').classList.remove('hidden');
+      document.getElementById('admin-onboard-modal').classList.add('flex');
+    }
+
+    function closeAdminOnboardModal() {
+      document.getElementById('admin-onboard-modal').classList.add('hidden');
+      document.getElementById('admin-onboard-modal').classList.remove('flex');
+    }
+
+    async function handleAdminOnboardSubmit(e) {
+      e.preventDefault();
+      const businessName = document.getElementById('onboard-businessName').value.trim();
+      const businessType = document.getElementById('onboard-businessType').value;
+      const city = document.getElementById('onboard-city').value.trim();
+      const whatsappPhoneId = document.getElementById('onboard-whatsappPhoneId').value.trim();
+      const ownerWhatsAppNumber = document.getElementById('onboard-ownerPhone').value.trim();
+      const sheetId = document.getElementById('onboard-sheetId').value.trim();
+      const tier = document.getElementById('onboard-tier').value;
+
+      try {
+        const res = await fetch('/api/clients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            businessName,
+            businessType,
+            city,
+            whatsappPhoneId,
+            ownerWhatsAppNumber,
+            sheetId,
+            tier,
+            status: tier.includes('Free Trial') ? 'trial' : 'active'
+          })
+        });
+
+        if (res.ok) {
+          closeAdminOnboardModal();
+          showToast(`🎉 "${businessName}" provisioned & registered successfully!`);
+          fetchClients();
+          fetchStats();
+        } else {
+          const err = await res.json();
+          alert('Error provisioning client: ' + (err.error || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('Failed to connect to server: ' + err.message);
+      }
+    }
+
+    // Auto-fetch clients count on page load
+    setTimeout(() => {
+      fetchClients();
+      fetchStats();
+    }, 500);
 
     // Dashboard Tabs
     function setDashTab(tabId) {
