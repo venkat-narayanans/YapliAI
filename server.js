@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const auth = require('./auth');
 
 const PORT = process.env.PORT || 3000;
 const WEB_DIR = path.join(__dirname, 'web');
@@ -61,6 +62,17 @@ function jsonResponse(res, statusCode, data) {
 }
 
 // ---------------------------------------------------------------------------
+// Auth helper
+// ---------------------------------------------------------------------------
+
+function getAuthUser(req) {
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+  const token = authHeader.substring(7).trim();
+  return auth.verifyToken(token);
+}
+
+// ---------------------------------------------------------------------------
 // API Router
 // ---------------------------------------------------------------------------
 
@@ -74,9 +86,44 @@ async function handleApi(req, res, pathname) {
     });
   }
 
+  // POST /api/auth/login
+  if (pathname === '/api/auth/login' && req.method === 'POST') {
+    try {
+      const body = await parseBody(req);
+      const result = auth.authenticate(body.email, body.password);
+      return jsonResponse(res, 200, result);
+    } catch (err) {
+      return jsonResponse(res, 401, { error: err.message });
+    }
+  }
+
+  // POST /api/auth/signup
+  if (pathname === '/api/auth/signup' && req.method === 'POST') {
+    try {
+      const body = await parseBody(req);
+      const result = auth.registerOwner(body);
+      return jsonResponse(res, 201, result);
+    } catch (err) {
+      return jsonResponse(res, 400, { error: err.message });
+    }
+  }
+
+  // GET /api/auth/me
+  if (pathname === '/api/auth/me' && req.method === 'GET') {
+    const user = getAuthUser(req);
+    if (!user) {
+      return jsonResponse(res, 401, { error: 'Unauthorized or session expired' });
+    }
+    return jsonResponse(res, 200, { user });
+  }
+
   // GET /api/clients
   if (pathname === '/api/clients' && req.method === 'GET') {
-    const registry = loadRegistry();
+    const user = getAuthUser(req);
+    let registry = loadRegistry();
+    if (user && user.role === 'owner' && user.clientId) {
+      registry = registry.filter(c => c.clientId === user.clientId);
+    }
     return jsonResponse(res, 200, {
       total: registry.length,
       active: registry.filter(c => c.status === 'active').length,
@@ -88,6 +135,10 @@ async function handleApi(req, res, pathname) {
   // GET /api/clients/:id
   const clientMatch = pathname.match(/^\/api\/clients\/([a-z0-9_]+)$/);
   if (clientMatch && req.method === 'GET') {
+    const user = getAuthUser(req);
+    if (user && user.role === 'owner' && user.clientId !== clientMatch[1]) {
+      return jsonResponse(res, 403, { error: 'Access forbidden: You can only view your own business' });
+    }
     const registry = loadRegistry();
     const client = registry.find(c => c.clientId === clientMatch[1]);
     if (!client) return jsonResponse(res, 404, { error: 'Client not found' });
@@ -281,6 +332,7 @@ server.listen(PORT, () => {
   console.log(`  🚀 Yapli AI Platform Server Running!`);
   console.log(`  🌐 Website & Dashboard:  http://localhost:${PORT}`);
   console.log(`  📡 Health Endpoint:      http://localhost:${PORT}/api/health`);
+  console.log(`  🔐 Auth Endpoints:       http://localhost:${PORT}/api/auth/login`);
   console.log(`  👥 Clients API:          http://localhost:${PORT}/api/clients`);
   console.log(`  📊 Stats API:            http://localhost:${PORT}/api/stats`);
   console.log(`======================================================\n`);

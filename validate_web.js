@@ -19,3 +19,4 @@ while ((match = scriptRegex.exec(html)) !== null) {
     });
   }
 }
+
