@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yapli AI — 24/7 AI WhatsApp Employee & Owner Operations Hub</title>
+  <title>Yapli AI — 24/7 AI WhatsApp Employee & Multi-Engine Operations Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -17,140 +17,226 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Figtree"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
             mono: ['"JetBrains Mono"', 'monospace']
           },
           colors: {
-            brand: {
-              50: '#ecfdf5',
-              100: '#d1fae5',
-              400: '#34d399',
-              500: '#10b981',
-              600: '#059669',
-              700: '#047857',
-              900: '#064e3b'
-            },
-            dark: {
-              bg: '#09090b',
-              surface: '#121215',
-              card: '#18181b',
-              border: '#27272a',
-              muted: '#71717a'
+            finzo: {
+              primary: '#0031f4',
+              hover: '#155dfc',
+              dark: '#0f172a',
+              body: '#3b3b3b',
+              muted: '#6a7282',
+              light: '#f8fafc',
+              alt: '#fafafa',
+              border: '#eceef1',
+              lime: '#9ecf59',
+              cyan: '#94e4f1',
+              emerald: '#4caf50',
+              purple: '#8a2be2'
             }
+          },
+          borderRadius: {
+            '3xl': '1.5rem',
+            '4xl': '2rem',
+            '5xl': '2.5rem'
           }
         }
       }
     }
   </script>
   <style>
+    :root {
+      --primary: #0031f4;
+      --primary-hover: #155dfc;
+      --primary-soft: rgba(0, 49, 244, 0.08);
+      --font-primary: 'Figtree', sans-serif;
+      --font-secondary: 'Instrument Serif', Georgia, serif;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-primary);
+      color: #1e293b;
+      background-color: #ffffff;
+      letter-spacing: -0.015em;
+      overflow-x: hidden;
     }
-    .glass {
-      background: rgba(24, 24, 27, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+
+    .font-serif {
+      font-family: var(--font-secondary);
     }
-    .light .glass {
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(0, 0, 0, 0.08);
+
+    /* Finzo signature italic editorial accent in headings */
+    .has-italic-text em {
+      font-family: var(--font-secondary);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--primary);
     }
-    .gradient-text {
-      background: linear-gradient(135deg, #34d399 0%, #38bdf8 50%, #818cf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    /* Keyframe animations */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
-    .chat-bubble-tail-in::after {
-      content: '';
+
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes waves {
+      0% { opacity: 0.8; transform: scale(0.9); }
+      50% { opacity: 0.3; transform: scale(1.4); }
+      100% { opacity: 0; transform: scale(1.9); }
+    }
+
+    .pulse-ring {
       position: absolute;
-      left: -6px;
-      top: 10px;
-      width: 0;
-      height: 0;
-      border-right: 8px solid rgba(39, 39, 42, 0.8);
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
+      border-radius: 9999px;
+      animation: waves 2.4s infinite ease-out;
     }
-    .chat-bubble-tail-out::after {
-      content: '';
-      position: absolute;
-      right: -6px;
-      top: 10px;
-      width: 0;
-      height: 0;
-      border-left: 8px solid #059669;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
+
+    /* Finzo card & button styling */
+    .finzo-card {
+      background-color: #ffffff;
+      border: 1px solid #eceef1;
+      border-radius: 2rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* Custom scrollbar */
+
+    .finzo-card:hover {
+      border-color: #d1d5db;
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.06);
+    }
+
+    .finzo-btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 49, 244, 0.25);
+    }
+
+    .finzo-btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0, 49, 244, 0.35);
+    }
+
+    .finzo-btn-outline {
+      background-color: #ffffff;
+      color: #1e293b;
+      border: 1px solid #e2e8f0;
+      border-radius: 9999px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .finzo-btn-outline:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    /* Range slider custom cobalt theme */
+    input[type=range] {
+      accent-color: #0031f4;
+    }
+
+    /* Custom smooth scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: transparent;
+      background: #f8fafc;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(113, 113, 122, 0.3);
+      background: #cbd5e1;
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(113, 113, 122, 0.5);
+      background: #94a3b8;
     }
   </style>
 </head>
-<body class="bg-[#09090b] text-zinc-100 antialiased min-h-screen transition-colors duration-200">
+<body class="bg-white text-slate-800 antialiased min-h-screen selection:bg-blue-600/10 selection:text-blue-700">
 
   <!-- ======================================================== -->
-  <!-- TOP GLOBAL APP BAR (Switch between Marketing & Dashboard) -->
+  <!-- TOP FLOATING NAVBAR (FINZO ASTRO STYLE)                 -->
   <!-- ======================================================== -->
-  <header class="sticky top-0 z-50 w-full glass border-b border-zinc-800/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header class="fixed inset-x-0 top-3 z-50 flex justify-center px-4 transition-all">
+    <nav class="w-full max-w-6xl rounded-2xl bg-white/90 backdrop-blur-xl border border-slate-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 p-[1px] shadow-lg shadow-emerald-500/20">
-          <div class="w-full h-full bg-zinc-950 rounded-[11px] flex items-center justify-center">
-            <i data-lucide="bot" class="w-5 h-5 text-emerald-400"></i>
-          </div>
+      <a href="#" onclick="setMode('website')" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:bg-blue-700 transition">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none" class="shrink-0">
+            <path d="M14 4L24 9V19L14 24L4 19V9L14 4Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 14L13 17L18 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xl font-bold tracking-tight text-white">Yapli<span class="text-emerald-400 font-extrabold">.ai</span></span>
-            <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">24/7 AI Employee</span>
-          </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="text-xl font-bold tracking-tight text-slate-900">Yapli<span class="text-[#0031f4] font-extrabold">.ai</span></span>
+          <span class="hidden sm:inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">24/7 AI</span>
         </div>
-      </div>
+      </a>
 
-      <!-- Segmented Control: Website vs Owner Dashboard vs Agency Admin -->
-      <nav class="hidden md:flex items-center p-1 bg-zinc-900/90 rounded-xl border border-zinc-800">
-        <button id="nav-mode-website" onclick="setMode('website')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-emerald-500 text-zinc-950 shadow-sm">
-          <i data-lucide="globe" class="w-4 h-4"></i>
-          Product Website
+      <!-- Segmented Navigation Control -->
+      <nav class="flex items-center p-1 bg-slate-100/80 rounded-xl border border-slate-200/60 text-xs shadow-inner">
+        <button id="nav-mode-website" onclick="setMode('website')" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-semibold transition-all duration-150 bg-blue-600 text-white shadow-sm">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+          <span>Product</span>
         </button>
-        <button id="nav-mode-dashboard" onclick="setMode('dashboard')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-all duration-200">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          Owner Dashboard
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <button id="nav-mode-dashboard" onclick="setMode('dashboard')" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-all duration-150">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          <span>Owner Portal</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         </button>
-        <button id="nav-mode-admin" onclick="setMode('admin')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-all duration-200">
-          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-          Agency Clients
-          <span id="badge-client-count" class="px-1.5 py-0.5 rounded-full text-[10px] bg-zinc-800 text-emerald-400 border border-emerald-500/30">2</span>
+        <button id="nav-mode-admin" onclick="setMode('admin')" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-all duration-150">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i>
+          <span class="hidden sm:inline">Agency Hub</span>
+          <span id="badge-client-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-blue-700 border border-blue-300/40">3</span>
         </button>
       </nav>
 
-      <!-- Right Actions -->
-      <div class="flex items-center gap-3">
-        <!-- Live WhatsApp Simulator Quick Jump -->
-        <button onclick="scrollToDemo()" class="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition">
-          <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-400"></i>
-          Interactive Demo
+      <!-- Right Actions: Unauthenticated State -->
+      <div id="nav-unauth-actions" class="flex items-center gap-2">
+        <button onclick="scrollToDemo()" class="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition">
+          <i data-lucide="play" class="w-3 h-3 text-blue-600 fill-blue-600"></i>
+          <span>Live Demo</span>
         </button>
-        <!-- Free Trial CTA Button -->
-        <button onclick="openTrialModal()" class="flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-zinc-950 shadow-md shadow-emerald-500/20 transition transform active:scale-95">
-          <span>Get Started Free</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 transition">
+          <i data-lucide="log-in" class="w-3 h-3 text-blue-600"></i>
+          <span>Sign In</span>
+        </button>
+        <button onclick="openAuthModal('signup')" class="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-full finzo-btn-primary shadow-sm">
+          <span>Start Free</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Right Actions: Authenticated User Profile Pill (Hidden by default) -->
+      <div id="nav-auth-profile" class="hidden items-center gap-2.5">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-800">
+          <div id="nav-auth-avatar" class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px]">
+            U
+          </div>
+          <span id="nav-auth-user-name" class="font-medium max-w-[120px] truncate">User</span>
+          <span id="nav-auth-user-role" class="px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200">Admin</span>
+        </div>
+        <button onclick="handleLogout()" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-200 transition" title="Sign Out">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Logout</span>
         </button>
       </div>
 
@@ -158,278 +244,378 @@
   </header>
 
   <!-- ======================================================== -->
-  <!-- VIEW 1: PRODUCT MARKETING WEBSITE & SALES LANDING PAGE  -->
+  <!-- VIEW 1: PRODUCT MARKETING WEBSITE (FINZO ASTRO THEME)   -->
   <!-- ======================================================== -->
   <main id="view-website" class="block">
-    
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32">
-      <!-- Glow background circles -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute top-1/3 left-1/3 -translate-x-1/2 w-[400px] h-[300px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
+    <!-- SECTION 0: FINZO HERO SECTION -->
+    <section class="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-b from-slate-50/70 via-white to-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Spinning Gradient Beam Badge (Signature Finzo Badge) -->
+        <div class="group relative mx-auto mb-6 max-w-fit overflow-hidden rounded-full border border-slate-200/80 p-px shadow-sm hover:border-blue-500/40 transition">
+          <div class="absolute left-1/2 -z-10 h-8 w-1/2 origin-left rotate-90 animate-spin rounded-full bg-gradient-to-b from-white via-blue-600 to-transparent [animation-duration:8000ms]"></div>
+          <div class="flex items-center gap-3 rounded-full bg-white px-3.5 py-1.5 text-xs text-slate-700">
+            <!-- 3 Avatar Overlap -->
+            <div class="flex items-center -space-x-2">
+              <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">GS</div>
+              <div class="w-7 h-7 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">AD</div>
+              <div class="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">UF</div>
+            </div>
+            <div class="flex items-center gap-1.5 font-medium text-slate-800">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
+              <span>Rated 4.9 by 500+ Local Businesses</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Headline with Finzo Italic Editorial Typography -->
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+          <h1 class="has-italic-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-slate-900 leading-[1.12]">
+            Automate your customer conversations and bookings in <em class="font-serif italic font-normal text-[#0031f4]">one place</em>
+          </h1>
+          <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed pt-2">
+            The 24/7 AI WhatsApp Employee that transcribes voice notes, answers pricing directly from your Google Sheet, books appointments, and recovers lost sales — in under 5 seconds.
+          </p>
+        </div>
+
+        <!-- Dual Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-8">
+          <button onclick="openTrialModal()" class="px-8 py-3.5 rounded-full font-semibold text-sm finzo-btn-primary flex items-center gap-2">
+            <span>GET A FREE TRIAL</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+          <button onclick="scrollToDemo()" class="px-7 py-3.5 rounded-full font-medium text-sm finzo-btn-outline flex items-center gap-2">
+            <div class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="play" class="w-3 h-3 fill-blue-600"></i>
+            </div>
+            <span>HOW IT WORKS</span>
+          </button>
+        </div>
+
+        <!-- Finzo 3-Column Hero Visual Grid -->
+        <div class="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
           
-          <!-- Left Column: Copy & Value Proposition -->
-          <div class="lg:col-span-7 text-center lg:text-left space-y-6">
-            
-            <!-- Live Badge -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-300">
-              <span class="flex h-2 w-2 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>Official WhatsApp Cloud API & Gemini 3.8 Flash</span>
-              <span class="text-zinc-600">•</span>
-              <span class="text-emerald-400 font-medium">Meta Verified</span>
-            </div>
-
-            <!-- Big Main Headline -->
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-              The 24/7 AI Employee on WhatsApp that <span class="gradient-text">never sleeps & sells every minute.</span>
-            </h1>
-
-            <!-- Subtitle -->
-            <p class="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              Stop losing 30% of your bookings after 8 PM. Yapli AI replies in 5 seconds, speaks every regional language, transcribes voice notes, books appointments, chases unpaid invoices, and revives quiet leads.
-            </p>
-
-            <!-- Metric Highlights -->
-            <div class="grid grid-cols-3 gap-4 pt-2 max-w-lg mx-auto lg:mx-0">
-              <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                <div class="text-2xl font-bold text-emerald-400">&lt; 5s</div>
-                <div class="text-xs text-zinc-400">Response Speed</div>
+          <!-- Left Column: Featured In & Core Infrastructure -->
+          <div class="md:col-span-4 lg:col-span-3 space-y-4 order-2 md:order-1">
+            <div class="finzo-card p-6 bg-gradient-to-b from-white to-slate-50/60 border border-slate-200">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
               </div>
-              <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                <div class="text-2xl font-bold text-teal-400">100%</div>
-                <div class="text-xs text-zinc-400">24/7 Uptime</div>
-              </div>
-              <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                <div class="text-2xl font-bold text-cyan-400">-78%</div>
-                <div class="text-xs text-zinc-400">No-Show Rate</div>
+              <h3 class="text-base font-bold text-slate-900">Official Cloud API</h3>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Direct Meta WhatsApp Cloud API integration with official zero-ban verified infrastructure.</p>
+              
+              <div class="pt-4 mt-4 border-t border-slate-100 flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[11px] font-medium text-slate-700">99.99% Cloud Uptime</span>
               </div>
             </div>
 
-            <!-- CTAs -->
-            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-              <button onclick="openTrialModal()" class="w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold text-base bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-xl shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-                Start 7-Day Free Trial
-              </button>
-              <button onclick="setMode('dashboard')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-semibold text-base bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition flex items-center justify-center gap-2">
-                <i data-lucide="layout-dashboard" class="w-5 h-5 text-zinc-400"></i>
-                View Owner Portal
-              </button>
+            <div class="finzo-card p-5 bg-white border border-slate-200">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Gemini 3.8 Flash</div>
+                  <div class="text-[11px] text-slate-500 font-mono">&lt; 4.8s response time</div>
+                </div>
+              </div>
             </div>
-
-            <!-- Guarantee text -->
-            <div class="flex items-center justify-center lg:justify-start gap-4 text-xs text-zinc-500">
-              <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> No Credit Card Required</span>
-              <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 10-Minute Setup</span>
-              <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Cancel Anytime</span>
-            </div>
-
           </div>
 
-          <!-- Right Column: Interactive Live WhatsApp Simulator -->
-          <div id="demo-section" class="lg:col-span-5">
-            <div class="w-full max-w-sm mx-auto bg-zinc-900 rounded-[38px] p-3 shadow-2xl border-4 border-zinc-800 relative">
+          <!-- Center Column: Interactive WhatsApp Device Mockup -->
+          <div id="demo-section" class="md:col-span-8 lg:col-span-6 flex justify-center order-1 md:order-2">
+            <div class="w-full max-w-[340px] bg-slate-900 rounded-[44px] p-2.5 shadow-2xl border-4 border-slate-800 relative ring-1 ring-slate-900/10">
               
-              <!-- Phone Speaker & Camera Notch -->
-              <div class="w-32 h-4 bg-zinc-800 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <div class="w-2.5 h-2.5 rounded-full bg-zinc-900 mr-2"></div>
-                <div class="w-8 h-1 rounded-full bg-zinc-700"></div>
+              <!-- Dynamic Island Notch -->
+              <div class="w-24 h-4 bg-slate-800 rounded-full mx-auto mb-2 flex items-center justify-center gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                <div class="w-6 h-1 rounded-full bg-slate-700"></div>
               </div>
 
-              <!-- WhatsApp App Header -->
-              <div class="bg-[#1f2c34] text-white p-3 rounded-t-2xl flex items-center justify-between border-b border-zinc-700/50">
-                <div class="flex items-center gap-2.5">
-                  <div class="relative">
-                    <div class="w-9 h-9 rounded-full bg-emerald-700 flex items-center justify-center font-bold text-sm text-white">
-                      GS
-                    </div>
-                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-[#1f2c34] rounded-full"></span>
-                  </div>
-                  <div>
-                    <div class="font-bold text-sm leading-tight flex items-center gap-1">
-                      <span>Glow Studio AI</span>
-                      <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-                    </div>
-                    <div class="text-[11px] text-emerald-300 font-medium">Online • AI Front Desk</div>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 text-zinc-300">
-                  <i data-lucide="phone" class="w-4 h-4 cursor-pointer hover:text-white"></i>
-                  <i data-lucide="more-vertical" class="w-4 h-4 cursor-pointer hover:text-white"></i>
-                </div>
-              </div>
-
-              <!-- WhatsApp Chat Messages Body -->
-              <div id="simulator-chat-box" class="h-[360px] bg-[#0b141a] p-3 overflow-y-auto space-y-3 text-xs">
+              <!-- Phone Screen Container -->
+              <div class="bg-[#0b141a] rounded-[34px] overflow-hidden border border-slate-800 flex flex-col h-[520px]">
                 
-                <!-- Date Pill -->
-                <div class="text-center">
-                  <span class="bg-[#182229] text-zinc-400 text-[10px] px-2.5 py-1 rounded-md shadow-sm">Today</span>
-                </div>
-
-                <!-- Bot Welcome Message -->
-                <div class="flex items-start">
-                  <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm relative leading-relaxed">
-                    Hello! ✨ Welcome to <strong>Glow Studio</strong>. I am your 24/7 assistant. How can I help you today?
-                    <div class="text-[9px] text-zinc-400 text-right mt-1">10:02 AM</div>
+                <!-- WhatsApp Top Chat Header -->
+                <div class="bg-[#1f2c34] text-white p-3 flex items-center justify-between border-b border-zinc-800 shrink-0">
+                  <div class="flex items-center gap-2.5">
+                    <div class="relative">
+                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-xs text-white">
+                        GS
+                      </div>
+                      <span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-400 border border-[#1f2c34] rounded-full"></span>
+                    </div>
+                    <div>
+                      <div class="font-bold text-xs leading-tight flex items-center gap-1">
+                        <span>Glow Studio</span>
+                        <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-400 fill-emerald-400/20"></i>
+                      </div>
+                      <div class="text-[10px] text-emerald-400 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>AI Receptionist online</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2.5 text-zinc-400">
+                    <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                    <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
                   </div>
                 </div>
 
-              </div>
+                <!-- Chat Messages Scroll Container -->
+                <div id="simulator-chat-box" class="flex-1 p-3 overflow-y-auto space-y-2.5 text-xs text-zinc-200">
+                  
+                  <div class="text-center my-1">
+                    <span class="bg-[#182229] text-[9px] text-zinc-400 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">Official WhatsApp Cloud API</span>
+                  </div>
 
-              <!-- Quick Prompt Buttons -->
-              <div class="p-2 bg-[#121b22] border-t border-zinc-800 space-y-1.5">
-                <div class="text-[10px] font-semibold text-zinc-400 px-1">Tap to test customer inquiries:</div>
-                <div class="flex flex-wrap gap-1">
-                  <button onclick="sendSimulatedMessage('What are your haircut prices and timings?')" class="px-2 py-1 text-[11px] bg-[#1f2c34] hover:bg-[#2a3942] text-emerald-300 rounded-md border border-emerald-500/20 transition">
+                  <!-- Initial Customer Msg -->
+                  <div class="flex justify-end">
+                    <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-2.5 max-w-[85%] shadow-sm leading-relaxed text-xs">
+                      Hi, do you have openings for a haircut tomorrow around 4 PM?
+                      <div class="text-[9px] text-emerald-200 text-right mt-0.5 font-mono">10:48 AM ✓✓</div>
+                    </div>
+                  </div>
+
+                  <!-- Initial Bot Msg -->
+                  <div class="flex justify-start">
+                    <div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-2.5 max-w-[85%] shadow-sm leading-relaxed text-xs">
+                      Hello! 😊 Yes, tomorrow at 4:00 PM is open with Stylist Sarah! Standard Haircut is $25, and styling is $50. Would you like me to book and confirm this slot for you?
+                      <div class="text-[9px] text-zinc-400 text-right mt-0.5 font-mono">10:48 AM</div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Quick Prompt Chips -->
+                <div class="px-2.5 py-1.5 bg-[#121b22] border-t border-zinc-800/80 flex gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+                  <button onclick="sendSimulatedMessage('What are your haircut prices?')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1f2c34] hover:bg-[#2a3942] text-[10px] text-zinc-300 border border-zinc-700/60 transition">
                     💇 Haircut prices?
                   </button>
-                  <button onclick="sendSimulatedMessage('Can I book an appointment tomorrow at 4 PM?')" class="px-2 py-1 text-[11px] bg-[#1f2c34] hover:bg-[#2a3942] text-teal-300 rounded-md border border-teal-500/20 transition">
-                    📅 Book tomorrow 4 PM
+                  <button onclick="sendSimulatedMessage('Book tomorrow at 4 PM please')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1f2c34] hover:bg-[#2a3942] text-[10px] text-zinc-300 border border-zinc-700/60 transition">
+                    🗓️ Book tomorrow
                   </button>
-                  <button onclick="sendSimulatedMessage('I need to reschedule my consultation.')" class="px-2 py-1 text-[11px] bg-[#1f2c34] hover:bg-[#2a3942] text-amber-300 rounded-md border border-amber-500/20 transition">
+                  <button onclick="sendSimulatedVoiceNote()" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1f2c34] hover:bg-[#2a3942] text-[10px] text-emerald-400 border border-emerald-500/30 transition flex items-center gap-1">
+                    <i data-lucide="mic" class="w-2.5 h-2.5"></i>
+                    <span>Voice Note</span>
+                  </button>
+                  <button onclick="sendSimulatedMessage('Can I reschedule my appointment?')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1f2c34] hover:bg-[#2a3942] text-[10px] text-zinc-300 border border-zinc-700/60 transition">
                     🔄 Reschedule
                   </button>
-                  <button onclick="sendSimulatedVoiceNote()" class="px-2 py-1 text-[11px] bg-[#1f2c34] hover:bg-[#2a3942] text-cyan-300 rounded-md border border-cyan-500/20 transition flex items-center gap-1">
-                    <i data-lucide="mic" class="w-3 h-3 text-cyan-400"></i> Voice Note
+                </div>
+
+                <!-- Input Footer Box -->
+                <div class="p-2 bg-[#1f2c34] border-t border-zinc-800 flex items-center gap-1.5 shrink-0">
+                  <input id="simulator-input" type="text" placeholder="Type a message to test AI..." onkeydown="if(event.key==='Enter') sendCustomMessage()" class="flex-1 bg-[#2a3942] text-white text-xs px-3 py-2 rounded-full focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder-zinc-400">
+                  <button onclick="sendCustomMessage()" class="w-8 h-8 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 flex items-center justify-center transition shrink-0">
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
+
               </div>
 
-              <!-- WhatsApp Chat Input Bar -->
-              <div class="bg-[#1f2c34] p-2 rounded-b-2xl flex items-center gap-2">
-                <input id="simulator-input" type="text" placeholder="Type a message to test AI..." onkeydown="if(event.key==='Enter') sendCustomMessage()" class="flex-1 bg-[#2a3942] text-white text-xs px-3 py-2 rounded-full focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder-zinc-400">
-                <button onclick="sendCustomMessage()" class="w-8 h-8 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 flex items-center justify-center transition">
-                  <i data-lucide="send" class="w-4 h-4"></i>
-                </button>
-              </div>
+            </div>
+          </div>
 
+          <!-- Right Column: Business Impact & Verified Metrics -->
+          <div class="md:col-span-12 lg:col-span-3 space-y-4 order-3">
+            <div class="finzo-card p-6 bg-gradient-to-b from-white to-blue-50/30 border border-slate-200">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Revenue Recovered</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+25%</span>
+              </div>
+              <div class="text-2xl font-bold font-mono text-slate-900">+$2,100<span class="text-xs text-slate-500 font-normal">/mo</span></div>
+              <p class="text-xs text-slate-500 mt-2">Average extra revenue generated for local salons and medical practices within 30 days.</p>
+            </div>
+
+            <div class="finzo-card p-5 bg-white border border-slate-200">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                  <i data-lucide="moon" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Zero Missed Chats</div>
+                  <div class="text-[11px] text-slate-500">Replies instantly 8 PM – 8 AM</div>
+                </div>
+              </div>
             </div>
           </div>
 
         </div>
+
       </div>
     </section>
 
-    <!-- ======================================================== -->
-    <!-- 6 CORE AUTOMATIONS SHOWCASE (BENTO GRID)                 -->
-    <!-- ======================================================== -->
-    <section class="py-20 bg-zinc-950/60 border-y border-zinc-800">
+    <!-- SECTION 1: LOGO MARQUEE (PARTNERS & ECOSYSTEM) -->
+    <section class="py-10 border-y border-slate-100 bg-slate-50/60 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Seamless integration with enterprise infrastructure</p>
+      </div>
+
+      <div class="relative w-full overflow-hidden">
+        <div class="animate-marquee items-center gap-12 sm:gap-16 text-slate-500 font-medium text-sm">
+          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API</span>
+          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3.8 Flash</span>
+          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time Sync</span>
+          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Live Booking</span>
+          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> Stripe Invoice Automation</span>
+          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation</span>
+          <!-- Duplicate set for seamless infinite loop -->
+          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API</span>
+          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3.8 Flash</span>
+          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time Sync</span>
+          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Live Booking</span>
+          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> Stripe Invoice Automation</span>
+          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: KEY INSIGHTS & METRICS (FINZO STAT METERS) -->
+    <section class="py-20 md:py-28 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">The Complete Engine</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">6 Automations that replace 5 separate SaaS tools.</h2>
-          <p class="text-base sm:text-lg text-zinc-400">Every piece connects seamlessly through n8n, your Google Sheets CRM, and the official Meta Cloud API.</p>
+        <div class="max-w-2xl mx-auto text-center space-y-3 mb-16">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Verified Track Record</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
+            Key insights track your <em class="font-serif italic font-normal text-[#0031f4]">business growth</em>
+          </h2>
+          <p class="text-sm text-slate-600">Eliminating operational friction through automated 24/7 client communication.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-slate-900">&lt; 4.8s</div>
+            <div class="text-sm font-semibold text-slate-800">Average Response Time</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Instant replies to pricing inquiries and booking requests day or night.</p>
+          </div>
+
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-blue-600">100%</div>
+            <div class="text-sm font-semibold text-slate-800">After-Hours Uptime</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Never lose a customer who texts after closing or during busy appointments.</p>
+          </div>
+
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-emerald-600">-76%</div>
+            <div class="text-sm font-semibold text-slate-800">Appointment No-Shows</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Interactive 1-tap WhatsApp confirmation & reschedule buttons eliminate empty chairs.</p>
+          </div>
+
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-indigo-600">15k+</div>
+            <div class="text-sm font-semibold text-slate-800">Customer Chats Handled</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Multilingual text & voice notes resolved without owner intervention.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: THE 6 ENGINES (FINZO BENTO GRID) -->
+    <section class="py-20 md:py-28 bg-slate-50/60 border-t border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <div class="max-w-2xl mx-auto text-center space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">The Autonomous Operations Stack</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
+            Take full control of your <em class="font-serif italic font-normal text-[#0031f4]">customer operations</em>
+          </h2>
+          <p class="text-sm text-slate-600">Six integrated engines running on official Meta WhatsApp Cloud API with Google Sheets sync.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          <!-- Card 1 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
-              <i data-lucide="bot" class="w-6 h-6"></i>
+          <!-- Engine 1 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="message-square-text" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Automation 01</span>
-              <h3 class="text-xl font-bold text-white mt-1">WhatsApp AI Receptionist</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Answers in 5 seconds 24/7. Understands text, voice notes (in English, Urdu, Hindi, Tanglish) and photos. Books slots directly into Google Calendar.
-            </p>
-            <div class="pt-2 text-xs font-semibold text-emerald-400 flex items-center gap-1">
-              Active in Workflow 1 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 01</span>
+                <span class="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200/60">&lt; 5s Reply</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">24/7 WhatsApp AI Receptionist</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Answers customer inquiries in seconds, speaks regional languages (Tamil, Hindi, English), transcribes voice notes, and saves qualified leads directly to your sheet.</p>
             </div>
           </div>
 
-          <!-- Card 2 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 group-hover:scale-110 transition">
-              <i data-lucide="target" class="w-6 h-6"></i>
+          <!-- Engine 2 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-teal-400">Automation 02</span>
-              <h3 class="text-xl font-bold text-white mt-1">Smart Lead Follow-Up Engine</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Revives "price?" leads who went silent. Automatically checks if inside 24h window (sends personalized AI nudge) or outside (sends approved Meta template).
-            </p>
-            <div class="pt-2 text-xs font-semibold text-teal-400 flex items-center gap-1">
-              Active in Workflow 2 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 02</span>
+                <span class="text-[10px] font-semibold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200/60">Meta 24h Safe</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">Smart Lead Follow-Up</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Automatically re-engages "price?" leads who went silent after 4 hours with personalized follow-up nudges. Recovers up to 25% of lost prospects.</p>
             </div>
           </div>
 
-          <!-- Card 3 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
+          <!-- Engine 3 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <i data-lucide="calendar-check" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Automation 03</span>
-              <h3 class="text-xl font-bold text-white mt-1">No-Show Killer Reminders</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Sends reminders the evening before appointments with 1-tap <strong>[Confirm]</strong> & <strong>[Reschedule]</strong> buttons. Rescheduling is handled automatically inside chat.
-            </p>
-            <div class="pt-2 text-xs font-semibold text-cyan-400 flex items-center gap-1">
-              Active in Workflow 3 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 03</span>
+                <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/60">1-Tap Buttons</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">No-Show Killer Reminders</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Dispatches automated reminders 24h before appointments with interactive [Confirm] and [Reschedule] buttons right on WhatsApp.</p>
             </div>
           </div>
 
-          <!-- Card 4 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
-              <i data-lucide="banknote" class="w-6 h-6"></i>
+          <!-- Engine 4 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="receipt" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Automation 04</span>
-              <h3 class="text-xl font-bold text-white mt-1">Invoice & Payment Chaser</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              3-stage polite chasing: friendly on due date $\to$ firm after 3 days $\to$ final notice at 7 days. Stops instantly the moment status is changed to paid.
-            </p>
-            <div class="pt-2 text-xs font-semibold text-amber-400 flex items-center gap-1">
-              Active in Workflow 4 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 04</span>
+                <span class="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">3-Stage Chaser</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">Payment & Invoice Chaser</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Polite reminder on due date, firm reminder at +3 days, and final notice at +7 days with direct payment link. Stops immediately once marked paid.</p>
             </div>
           </div>
 
-          <!-- Card 5 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">
-              <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+          <!-- Engine 5 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <i data-lucide="users-round" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Automation 05</span>
-              <h3 class="text-xl font-bold text-white mt-1">Broadcast Revival Campaign</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Finds customers inactive for 60+ days, writes a custom personal line referencing their past service, and sends a 10% returning offer in safe batches.
-            </p>
-            <div class="pt-2 text-xs font-semibold text-indigo-400 flex items-center gap-1">
-              Active in Workflow 5 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 05</span>
+                <span class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/60">Batch Win-Back</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">Customer Revival Broadcast</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Brings back quiet customers who haven't visited in 60+ days with personalized offers in rate-limited batches to protect number reputation.</p>
             </div>
           </div>
 
-          <!-- Card 6 -->
-          <div class="p-6 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-emerald-500/40 transition duration-300 space-y-4 group">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
+          <!-- Engine 6 -->
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center">
               <i data-lucide="moon" class="w-6 h-6"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400">Bonus Automation</span>
-              <h3 class="text-xl font-bold text-white mt-1">Daily 10 PM Owner Report</h3>
-            </div>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Every night at 10 PM, business owners receive a digest on their personal WhatsApp: chats handled, hot leads to call first, and tomorrow's confirmed bookings.
-            </p>
-            <div class="pt-2 text-xs font-semibold text-purple-400 flex items-center gap-1">
-              Active in Workflow 6 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400">Engine 06</span>
+                <span class="text-[10px] font-semibold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200/60">Daily 10 PM</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mt-2">Nightly Owner WhatsApp Digest</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Sends business owners an executive summary of today's revenue, new leads captured, and tomorrow's appointment roster directly to their WhatsApp.</p>
             </div>
           </div>
 
@@ -438,176 +624,158 @@
       </div>
     </section>
 
-    <!-- ======================================================== -->
-    <!-- INTERACTIVE ROI & REVENUE CALCULATOR                     -->
-    <!-- ======================================================== -->
-    <section class="py-20 relative">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- SECTION 4: INTERACTIVE ROI REVENUE CALCULATOR -->
+    <section class="py-20 md:py-28 bg-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        <div class="bg-gradient-to-b from-zinc-900 to-zinc-950 p-8 sm:p-12 rounded-3xl border border-zinc-800 shadow-2xl space-y-8">
-          
-          <div class="text-center space-y-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Calculate Your Gains</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">How much revenue is slipping through your cracks?</h2>
-            <p class="text-zinc-400 text-sm sm:text-base">Drag the sliders to see what Yapli AI recovers for your business every month.</p>
-          </div>
+        <div class="text-center max-w-xl mx-auto space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Revenue Calculator</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
+            How much are missed chats <em class="font-serif italic font-normal text-[#0031f4]">costing you?</em>
+          </h2>
+          <p class="text-sm text-slate-600">Calculate the revenue recovered by instant replies and automated appointment reminders.</p>
+        </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-4">
+        <div class="finzo-card p-8 sm:p-12 border border-slate-200 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white">
+          
+          <!-- Sliders Column -->
+          <div class="md:col-span-7 space-y-7">
             
-            <!-- Sliders -->
-            <div class="space-y-6">
-              
-              <!-- Slider 1 -->
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm font-semibold">
-                  <span class="text-zinc-300">WhatsApp Inquiries / Week:</span>
-                  <span id="calc-inquiries-label" class="text-emerald-400 font-bold">60 chats</span>
-                </div>
-                <input id="calc-inquiries" type="range" min="15" max="300" step="5" value="60" oninput="updateCalculator()" class="w-full accent-emerald-500 cursor-pointer">
+            <div>
+              <div class="flex justify-between items-center text-xs mb-2.5">
+                <span class="text-slate-700 font-semibold">Weekly WhatsApp Inquiries</span>
+                <span id="calc-inquiries-label" class="font-mono font-bold text-blue-600 text-sm">45 chats</span>
               </div>
-
-              <!-- Slider 2 -->
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm font-semibold">
-                  <span class="text-zinc-300">Average Service / Ticket Price:</span>
-                  <span id="calc-ticket-label" class="text-emerald-400 font-bold">$35</span>
-                </div>
-                <input id="calc-ticket" type="range" min="15" max="250" step="5" value="35" oninput="updateCalculator()" class="w-full accent-emerald-500 cursor-pointer">
-              </div>
-
-              <!-- Slider 3 -->
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm font-semibold">
-                  <span class="text-zinc-300">Current Missed/No-Show Rate:</span>
-                  <span id="calc-noshow-label" class="text-emerald-400 font-bold">20%</span>
-                </div>
-                <input id="calc-noshow" type="range" min="5" max="40" step="1" value="20" oninput="updateCalculator()" class="w-full accent-emerald-500 cursor-pointer">
-              </div>
-
+              <input id="calc-inquiries" type="range" min="10" max="250" value="45" step="5" oninput="updateCalculator()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
             </div>
 
-            <!-- Calculated ROI Card -->
-            <div class="bg-zinc-950 p-6 sm:p-8 rounded-2xl border border-emerald-500/30 text-center space-y-6 shadow-xl relative overflow-hidden">
-              <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
-
-              <div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Estimated Monthly Revenue Added</span>
-                <div id="calc-recovered-revenue" class="text-4xl sm:text-5xl font-black text-emerald-400 mt-2">+$1,470/mo</div>
-                <div class="text-xs text-zinc-500 mt-1">Based on ~42 extra saved bookings and recovered leads</div>
+            <div>
+              <div class="flex justify-between items-center text-xs mb-2.5">
+                <span class="text-slate-700 font-semibold">Average Service Ticket</span>
+                <span id="calc-ticket-label" class="font-mono font-bold text-emerald-600 text-sm">$35</span>
               </div>
+              <input id="calc-ticket" type="range" min="15" max="300" value="35" step="5" oninput="updateCalculator()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+            </div>
 
-              <div class="grid grid-cols-2 gap-3 pt-2 text-left border-t border-zinc-800 text-xs">
-                <div>
-                  <div class="text-zinc-500">After-hours bookings:</div>
-                  <div id="calc-afterhours-count" class="font-bold text-zinc-200 mt-0.5">+24 appointments</div>
-                </div>
-                <div>
-                  <div class="text-zinc-500">No-shows prevented:</div>
-                  <div id="calc-noshow-saved" class="font-bold text-zinc-200 mt-0.5">+18 recovered</div>
-                </div>
+            <div>
+              <div class="flex justify-between items-center text-xs mb-2.5">
+                <span class="text-slate-700 font-semibold">Current No-Show Rate</span>
+                <span id="calc-noshow-label" class="font-mono font-bold text-purple-600 text-sm">20%</span>
               </div>
-
-              <button onclick="openTrialModal()" class="w-full py-3 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/20 transition">
-                Claim Your Free 7-Day Trial
-              </button>
-
+              <input id="calc-noshow" type="range" min="5" max="45" value="20" step="1" oninput="updateCalculator()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
             </div>
 
           </div>
 
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- PRICING TIERS                                            -->
-    <!-- ======================================================== -->
-    <section class="py-20 bg-zinc-950/40 border-t border-zinc-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Transparent Pricing</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Less than 1/5th the cost of one human employee.</h2>
-          <p class="text-zinc-400 text-base">Zero commission per booking. All plans include automated setup and live support.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          <!-- Tier 1 -->
-          <div class="p-8 rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-6 flex flex-col justify-between">
-            <div class="space-y-4">
+          <!-- Result Display Column -->
+          <div class="md:col-span-5 p-8 rounded-3xl bg-blue-50/70 border border-blue-200/80 text-center space-y-5">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-800">Estimated Extra Monthly Revenue</span>
+            <div id="calc-recovered-revenue" class="text-4xl sm:text-5xl font-extrabold font-mono text-[#0031f4]">+$2,100/mo</div>
+            
+            <div class="pt-3 border-t border-blue-200/60 grid grid-cols-2 gap-3 text-left">
               <div>
-                <h3 class="text-xl font-bold text-white">Starter Receptionist</h3>
-                <p class="text-xs text-zinc-400 mt-1">For boutique salons & solo practitioners</p>
+                <div class="text-[10px] text-slate-500">After-hours bookings</div>
+                <div id="calc-afterhours-count" class="text-xs font-mono font-bold text-slate-800 mt-0.5">+35 appointments</div>
               </div>
-              <div class="flex items-baseline gap-1">
-                <span class="text-4xl font-extrabold text-white">$49</span>
-                <span class="text-zinc-400 text-sm">/ month</span>
+              <div>
+                <div class="text-[10px] text-slate-500">No-shows saved</div>
+                <div id="calc-noshow-saved" class="text-xs font-mono font-bold text-slate-800 mt-0.5">+25 recovered</div>
               </div>
-              <p class="text-xs text-zinc-500">+ $149 one-time onboarding</p>
-              <ul class="space-y-3 text-xs text-zinc-300 pt-4 border-t border-zinc-800">
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 1: 24/7 AI Receptionist</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Text, voice notes & image support</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Calendar live slot booking</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Sheets CRM sync</li>
-              </ul>
             </div>
-            <button onclick="openTrialModal('Starter Receptionist')" class="w-full py-3 rounded-xl font-semibold text-sm bg-zinc-800 hover:bg-zinc-700 text-white transition">
-              Choose Starter
+
+            <button onclick="openTrialModal()" class="w-full py-3.5 rounded-full text-xs font-semibold finzo-btn-primary transition">
+              Recover This Revenue Now →
             </button>
           </div>
 
-          <!-- Tier 2 (Highlighted) -->
-          <div class="p-8 rounded-3xl bg-zinc-900 border-2 border-emerald-500 shadow-2xl shadow-emerald-500/10 space-y-6 flex flex-col justify-between relative">
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: TRANSPARENT 3-TIER PRICING -->
+    <section class="py-20 md:py-28 bg-slate-50/60 border-t border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        
+        <div class="text-center max-w-xl mx-auto space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Simple, Transparent Pricing</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
+            Less than 1/5th the cost of <em class="font-serif italic font-normal text-[#0031f4]">human staff</em>
+          </h2>
+          <p class="text-sm text-slate-600">Zero hidden fees. Free 7-day trial on your actual business number.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          
+          <!-- Tier 1 -->
+          <div class="finzo-card p-8 space-y-6 flex flex-col justify-between bg-white border border-slate-200">
+            <div class="space-y-4">
+              <div>
+                <h3 class="font-bold text-slate-900 text-lg">Starter</h3>
+                <p class="text-xs text-slate-500 mt-1">24/7 AI WhatsApp Receptionist</p>
+              </div>
+              <div class="flex items-baseline gap-1">
+                <span class="text-4xl font-extrabold font-mono text-slate-900">$49</span>
+                <span class="text-xs text-slate-500">/ month</span>
+              </div>
+              <ul class="space-y-3 text-xs text-slate-700 pt-4 border-t border-slate-100">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Engine 1: WhatsApp AI Receptionist</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Multilingual & voice note transcription</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Self-service Google Sheet FAQ</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Automatic lead saving</li>
+              </ul>
+            </div>
+            <button onclick="openTrialModal('Starter')" class="w-full py-3 rounded-full font-semibold text-xs finzo-btn-outline transition">
+              Start Free Trial
+            </button>
+          </div>
+
+          <!-- Tier 2 (Highlighted Finzo Cobalt Card) -->
+          <div class="finzo-card p-8 space-y-6 flex flex-col justify-between relative shadow-xl shadow-blue-500/10 border-2 border-blue-600 bg-white">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-[10px] uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
               Most Popular
             </div>
             <div class="space-y-4">
               <div>
-                <h3 class="text-xl font-bold text-white">Growth Engine</h3>
-                <p class="text-xs text-zinc-400 mt-1">For busy clinics, salons & consultancies</p>
+                <h3 class="font-bold text-slate-900 text-lg">Growth Engine</h3>
+                <p class="text-xs text-slate-500 mt-1">For busy salons, clinics & studios</p>
               </div>
               <div class="flex items-baseline gap-1">
-                <span class="text-4xl font-extrabold text-white">$99</span>
-                <span class="text-zinc-400 text-sm">/ month</span>
+                <span class="text-4xl font-extrabold font-mono text-slate-900">$99</span>
+                <span class="text-xs text-slate-500">/ month</span>
               </div>
-              <p class="text-xs text-zinc-500">+ $249 one-time onboarding</p>
-              <ul class="space-y-3 text-xs text-zinc-300 pt-4 border-t border-zinc-800">
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Everything in Starter</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 2: Smart Lead Follow-Up</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 3: No-Show Killer Reminders</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> 1-Tap Confirm & Reschedule buttons</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Telegram handoff for angry clients</li>
+              <ul class="space-y-3 text-xs text-slate-700 pt-4 border-t border-slate-100">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-600"></i> Everything in Starter</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-600"></i> Engine 2: Smart Lead Follow-Up</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-600"></i> Engine 3: 1-Tap Reminders</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-600"></i> Google Calendar live booking</li>
               </ul>
             </div>
-            <button onclick="openTrialModal('Growth Engine')" class="w-full py-3 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/25 transition">
+            <button onclick="openTrialModal('Growth')" class="w-full py-3.5 rounded-full font-semibold text-xs finzo-btn-primary transition">
               Start 7-Day Free Trial
             </button>
           </div>
 
           <!-- Tier 3 -->
-          <div class="p-8 rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-6 flex flex-col justify-between">
+          <div class="finzo-card p-8 space-y-6 flex flex-col justify-between bg-white border border-slate-200">
             <div class="space-y-4">
               <div>
-                <h3 class="text-xl font-bold text-white">Full AI Employee</h3>
-                <p class="text-xs text-zinc-400 mt-1">The complete business autopilot suite</p>
+                <h3 class="font-bold text-slate-900 text-lg">Full AI Employee</h3>
+                <p class="text-xs text-slate-500 mt-1">Complete autonomous operations</p>
               </div>
               <div class="flex items-baseline gap-1">
-                <span class="text-4xl font-extrabold text-white">$149</span>
-                <span class="text-zinc-400 text-sm">/ month</span>
+                <span class="text-4xl font-extrabold font-mono text-slate-900">$149</span>
+                <span class="text-xs text-slate-500">/ month</span>
               </div>
-              <p class="text-xs text-zinc-500">+ $399 one-time onboarding</p>
-              <ul class="space-y-3 text-xs text-zinc-300 pt-4 border-t border-zinc-800">
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> <strong>All 6 Automations</strong> included</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 4: Invoice & Payment Chaser</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 5: Broadcast Win-Back</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Workflow 6: Daily 10 PM Owner Report</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Priority Cloud hosting & monitoring</li>
+              <ul class="space-y-3 text-xs text-slate-700 pt-4 border-t border-slate-100">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> All 6 Automation Engines</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Engine 4: Invoice & Payment Chaser</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Engine 5: 60-Day Revival Broadcast</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Engine 6: Nightly 10 PM Report</li>
               </ul>
             </div>
-            <button onclick="openTrialModal('Full AI Employee')" class="w-full py-3 rounded-xl font-semibold text-sm bg-zinc-800 hover:bg-zinc-700 text-white transition">
-              Choose Full Employee
+            <button onclick="openTrialModal('Pro')" class="w-full py-3 rounded-full font-semibold text-xs finzo-btn-outline transition">
+              Start Free Trial
             </button>
           </div>
 
@@ -616,770 +784,576 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-12 bg-zinc-950 border-t border-zinc-900 text-xs text-zinc-500">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          © 2026 Yapli AI. Built with official WhatsApp Cloud API, Google Gemini & n8n.
+    <!-- SECTION 6: CLIENT TESTIMONIALS (FINZO TESTIMONIAL CARDS) -->
+    <section class="py-20 md:py-28 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        
+        <div class="text-center max-w-xl mx-auto space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Social Proof</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
+            Trusted by business owners <em class="font-serif italic font-normal text-[#0031f4]">worldwide</em>
+          </h2>
+          <p class="text-sm text-slate-600">Real business owners recovering revenue and saving hundreds of hours.</p>
         </div>
-        <div class="flex items-center gap-6">
-          <a href="#" onclick="setMode('dashboard')" class="hover:text-zinc-300 transition">Owner Portal</a>
-          <a href="#" onclick="openTrialModal()" class="hover:text-zinc-300 transition">Book Demo</a>
-          <a href="https://developers.facebook.com/docs/whatsapp/cloud-api" target="_blank" class="hover:text-zinc-300 transition">Meta Compliance</a>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          
+          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed italic">
+              "We used to lose 10-15 haircut bookings every weekend because no one answered the phone after 7 PM. Yapli AI closed $1,800 in extra bookings our first month."
+            </p>
+            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">SJ</div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Sarah Jenkins</div>
+                <div class="text-[11px] text-slate-500">Owner, Glow Studio Salon</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed italic">
+              "The 1-tap WhatsApp reminders eliminated our patient no-shows almost entirely. Patients love how easy it is to confirm or reschedule without calling."
+            </p>
+            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">DR</div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Dr. Rajesh Kumar</div>
+                <div class="text-[11px] text-slate-500">Director, Apex Dental Clinic</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
+            <div class="flex items-center gap-1 text-amber-400">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed italic">
+              "Updating my Google Sheet changes prices in real time on WhatsApp. The nightly 10 PM WhatsApp report gives me peace of mind every single day."
+            </p>
+            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs">AK</div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Ananya Kapoor</div>
+                <div class="text-[11px] text-slate-500">Founder, Urban Fitness Studio</div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 7: MINIMALIST FAQ ACCORDION -->
+    <section class="py-20 md:py-28 bg-slate-50/60 border-t border-slate-200/60">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <div class="text-center space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">FAQ</span>
+          <h2 class="has-italic-text text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
+            The future of business automation, <em class="font-serif italic font-normal text-[#0031f4]">explained</em>
+          </h2>
+          <p class="text-xs text-slate-600">Simple answers to how Yapli AI operates for your business.</p>
+        </div>
+
+        <div class="space-y-3.5 text-xs">
+          
+          <details class="finzo-card p-5 cursor-pointer group bg-white border border-slate-200">
+            <summary class="font-bold text-slate-900 flex items-center justify-between">
+              <span>Can I use my existing WhatsApp Business number?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition"></i>
+            </summary>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Yes. You can connect an existing number via Meta WhatsApp Cloud API, or register a dedicated business SIM. Meta's official API ensures your number is safe from bans.
+            </p>
+          </details>
+
+          <details class="finzo-card p-5 cursor-pointer group bg-white border border-slate-200">
+            <summary class="font-bold text-slate-900 flex items-center justify-between">
+              <span>How do I update prices, services or salon hours?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition"></i>
+            </summary>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Simply edit your Google Sheet! In the <code class="text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded font-mono">Business Info</code> tab, type your new price or timing. The AI Receptionist reads it in real-time on the very next customer message. Zero coding needed.
+            </p>
+          </details>
+
+          <details class="finzo-card p-5 cursor-pointer group bg-white border border-slate-200">
+            <summary class="font-bold text-slate-900 flex items-center justify-between">
+              <span>Does it understand voice notes and regional languages?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition"></i>
+            </summary>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Yes! Powered by Gemini 3.8 Flash, Yapli AI downloads customer audio voice notes, transcribes them automatically, and responds naturally in Tamil, Hindi, Tanglish/Hinglish, or English.
+            </p>
+          </details>
+
+          <details class="finzo-card p-5 cursor-pointer group bg-white border border-slate-200">
+            <summary class="font-bold text-slate-900 flex items-center justify-between">
+              <span>What happens if a customer wants to talk to a human?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition"></i>
+            </summary>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              If a customer has a complaint or asks for a manager, the bot gracefully hands off, notifies you immediately via Telegram or WhatsApp, and pauses autopilot so you can reply manually.
+            </p>
+          </details>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 8: FINZO CALL TO ACTION BANNER -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white rounded-4xl p-8 sm:p-12 md:p-16 relative overflow-hidden shadow-2xl">
+          
+          <div class="relative z-10 max-w-2xl space-y-5">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight leading-[1.15]">
+              Automate your customer operations on WhatsApp <span class="font-serif italic font-normal text-amber-300">starting today</span>
+            </h2>
+            <p class="text-sm sm:text-base text-blue-100/90 leading-relaxed">
+              Deploy your 24/7 AI Receptionist in 10 minutes. Receive your first automated Nightly Owner Digest tonight at 10 PM.
+            </p>
+            <div class="pt-4 flex flex-wrap items-center gap-4">
+              <button onclick="openTrialModal()" class="px-8 py-4 rounded-full font-bold text-xs sm:text-sm bg-white text-blue-700 hover:bg-slate-100 transition shadow-lg">
+                GET A FREE TRIAL NOW
+              </button>
+              <button onclick="scrollToDemo()" class="px-6 py-4 rounded-full font-semibold text-xs sm:text-sm text-white border border-white/30 hover:bg-white/10 transition">
+                WATCH LIVE DEMO
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-10 sm:mt-12 pt-8 border-t border-white/20 flex flex-wrap items-center gap-6">
+            <div class="text-2xl font-bold font-mono">500+</div>
+            <div class="text-xs text-blue-100">Active businesses automating their WhatsApp customer inquiries and booking pipeline.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 9: FINZO FOOTER -->
+    <footer class="py-14 border-t border-slate-200/80 bg-slate-50 text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xs">Y</div>
+            <span class="text-lg font-bold text-slate-900">Yapli<span class="text-blue-600 font-extrabold">.ai</span></span>
+            <span class="text-slate-400">|</span>
+            <span class="text-slate-500">24/7 AI WhatsApp Employee & Multi-Engine Operations Hub</span>
+          </div>
+
+          <div class="flex items-center gap-6 text-slate-600 font-medium">
+            <a href="#" onclick="scrollToDemo()" class="hover:text-blue-600 transition">Simulator</a>
+            <a href="#" onclick="setMode('dashboard')" class="hover:text-blue-600 transition">Owner Portal</a>
+            <a href="#" onclick="setMode('admin')" class="hover:text-blue-600 transition">Agency Hub</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+          <div>© 2026 Yapli AI. Official Meta WhatsApp Cloud API Partner. All rights reserved.</div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-slate-600 font-medium">All Automation Engines Operational</span>
+          </div>
+        </div>
+
       </div>
     </footer>
 
   </main>
 
-  <!-- ======================================================== -->
-  <!-- VIEW 2: OWNER OPERATIONS DASHBOARD PORTAL                -->
-  <!-- ======================================================== -->
-  <main id="view-dashboard" class="hidden min-h-[calc(100vh-64px)] bg-[#09090b]">
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<main id="view-dashboard" class="hidden min-h-[calc(100vh-64px)] bg-[#09090b] py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
       
       <!-- Dashboard Top Header Bar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
-        <div>
-          <div class="flex items-center gap-2.5">
-            <h1 class="text-2xl font-bold text-white tracking-tight">Glow Studio</h1>
-            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live • WhatsApp Connected
-            </span>
-          </div>
-          <p class="text-xs text-zinc-400 mt-1">Phone ID: 15550001234 • Google Sheet CRM: Yapli CRM (Connected)</p>
-        </div>
-
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
         <div class="flex items-center gap-3">
-          <!-- Manual Trigger Daily Report button -->
-          <button onclick="triggerOwnerReport()" id="btn-trigger-report" class="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition">
-            <i data-lucide="send" class="w-3.5 h-3.5 text-purple-400"></i>
-            Send 10 PM Report Now
+          <div id="dash-avatar" class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/20">
+            GS
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="dash-business-name" class="font-bold text-white text-base">Glow Studio</h2>
+              <span id="dash-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">● Active</span>
+            </div>
+            <p id="dash-business-details" class="text-xs text-zinc-400 mt-0.5 font-mono">WhatsApp ID: 15550001234 • Sheet: Yapli CRM (Connected)</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <!-- Admin Client Picker (visible only when logged in as admin) -->
+          <div id="admin-client-picker-wrap" class="hidden flex items-center gap-2 bg-zinc-950/80 px-3 py-1.5 rounded-xl border border-purple-500/30">
+            <span class="text-[11px] text-purple-300 font-medium">Viewing Client:</span>
+            <select id="admin-client-picker" onchange="handleAdminClientChange(this.value)" class="bg-zinc-900 text-white text-xs px-2.5 py-1 rounded-lg border border-zinc-700 focus:outline-none focus:ring-1 focus:ring-purple-500">
+              <option value="glow_studio">Glow Studio (Salon)</option>
+              <option value="apex_dental">Apex Dental Clinic</option>
+              <option value="urban_fitness_studio">Urban Fitness Studio</option>
+            </select>
+          </div>
+
+          <button onclick="triggerOwnerReport()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition">
+            <i data-lucide="smartphone" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Send Nightly Digest Now</span>
           </button>
-          <!-- Human handoff indicator -->
-          <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
-            <span class="text-zinc-400">AI Autopilot:</span>
-            <span class="font-bold text-emerald-400">96.4%</span>
+        </div>
+      </div>
+
+      <!-- Dashboard Tabs Navigation -->
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-zinc-800 pb-2 text-xs">
+        <button id="tab-overview" onclick="setDashTab('overview')" class="px-3.5 py-1.5 rounded-lg font-semibold bg-zinc-800 text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+          <span>Overview</span>
+        </button>
+        <button id="tab-inbox" onclick="setDashTab('inbox')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+          <span>Live Inbox</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        </button>
+        <button id="tab-leads" onclick="setDashTab('leads')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="target" class="w-3.5 h-3.5"></i>
+          <span>Leads CRM</span>
+        </button>
+        <button id="tab-reminders" onclick="setDashTab('reminders')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>Appointments</span>
+        </button>
+        <button id="tab-invoices" onclick="setDashTab('invoices')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+          <span>Invoices</span>
+        </button>
+        <button id="tab-knowledge" onclick="setDashTab('knowledge')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="brain" class="w-3.5 h-3.5 text-teal-400"></i>
+          <span>AI Brain (FAQs & Tone)</span>
+        </button>
+        <button id="tab-automations" onclick="setDashTab('automations')" class="px-3.5 py-1.5 rounded-lg font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 shrink-0">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+          <span>Engines</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: OVERVIEW -->
+      <div id="dash-overview" class="space-y-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+            <span class="text-xs text-zinc-500">Monthly Revenue</span>
+            <div class="text-2xl font-bold font-mono text-emerald-400 mt-1">$4,850</div>
+            <span class="text-[10px] text-zinc-500">+$1,250 after hours</span>
+          </div>
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+            <span class="text-xs text-zinc-500">Bookings Confirmed</span>
+            <div class="text-2xl font-bold font-mono text-white mt-1">68</div>
+            <span class="text-[10px] text-emerald-400">92% attendance</span>
+          </div>
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+            <span class="text-xs text-zinc-500">New Leads</span>
+            <div class="text-2xl font-bold font-mono text-teal-400 mt-1">142</div>
+            <span class="text-[10px] text-zinc-500">Saved to Google Sheet</span>
+          </div>
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+            <span class="text-xs text-zinc-500">No-Shows Prevented</span>
+            <div class="text-2xl font-bold font-mono text-cyan-400 mt-1">19</div>
+            <span class="text-[10px] text-zinc-500">Via 1-tap reminders</span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-3">
+          <h3 class="font-bold text-white text-sm">Recent Automated Events</h3>
+          <div class="space-y-2 text-xs">
+            <div class="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-zinc-200">AI Receptionist booked <strong>Alex Smith</strong> for Standard Haircut</span>
+              </div>
+              <span class="text-zinc-500 font-mono text-[11px]">10:48 AM</span>
+            </div>
+            <div class="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+                <span class="text-zinc-200">Engine 3 dispatched reminder to <strong>Sarah Jenkins</strong> (Confirmed)</span>
+              </div>
+              <span class="text-zinc-500 font-mono text-[11px]">9:15 AM</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Dashboard Navigation Tabs -->
-      <div class="flex items-center gap-1 overflow-x-auto py-4 border-b border-zinc-800 text-xs font-semibold">
-        <button onclick="setDashTab('overview')" id="tab-overview" class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-zinc-800 text-white transition">
-          <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i> Overview
-        </button>
-        <button onclick="setDashTab('inbox')" id="tab-inbox" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="message-square" class="w-4 h-4"></i> Live Inbox <span class="px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px]">2 New</span>
-        </button>
-        <button onclick="setDashTab('leads')" id="tab-leads" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="users" class="w-4 h-4"></i> Leads Pipeline <span class="px-1.5 py-0.2 rounded-full bg-zinc-800 text-zinc-300 text-[10px]">6</span>
-        </button>
-        <button onclick="setDashTab('reminders')" id="tab-reminders" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="calendar" class="w-4 h-4"></i> Appointments & Reminders
-        </button>
-        <button onclick="setDashTab('invoices')" id="tab-invoices" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="receipt" class="w-4 h-4"></i> Invoices & Payments
-        </button>
-        <button onclick="setDashTab('knowledge')" id="tab-knowledge" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="brain" class="w-4 h-4"></i> Business AI Brain
-        </button>
-        <button onclick="setDashTab('automations')" id="tab-automations" class="flex items-center gap-2 px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition">
-          <i data-lucide="cpu" class="w-4 h-4"></i> Automation Engines
-        </button>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- TAB 1: OVERVIEW & ANALYTICS                -->
-      <!-- ========================================== -->
-      <div id="dash-overview" class="block py-6 space-y-6">
+      <!-- TAB 2: LIVE INBOX -->
+      <div id="dash-inbox" class="hidden rounded-2xl border border-zinc-800 overflow-hidden bg-zinc-900/60 grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
         
-        <!-- 5 KPI Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between text-zinc-400 text-xs">
-              <span>Today's Chats</span>
-              <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
-            </div>
-            <div class="text-2xl font-extrabold text-white">42</div>
-            <div class="text-[11px] text-emerald-400 flex items-center gap-1 font-medium">
-              <i data-lucide="trending-up" class="w-3 h-3"></i> +14% vs yesterday
-            </div>
+        <!-- Conversation List Left Column -->
+        <div class="md:col-span-4 border-r border-zinc-800 divide-y divide-zinc-800/60 bg-zinc-950/40">
+          <div class="p-3 bg-zinc-900/80 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            Active WhatsApp Conversations
           </div>
 
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between text-zinc-400 text-xs">
-              <span>Hot Leads</span>
-              <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
-            </div>
-            <div class="text-2xl font-extrabold text-white">8</div>
-            <div class="text-[11px] text-amber-400 font-medium">
-              3 need follow-up today
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between text-zinc-400 text-xs">
-              <span>Bookings Tomorrow</span>
-              <i data-lucide="calendar-check" class="w-4 h-4 text-teal-400"></i>
-            </div>
-            <div class="text-2xl font-extrabold text-white">5</div>
-            <div class="text-[11px] text-teal-400 font-medium">
-              All reminders dispatched
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between text-zinc-400 text-xs">
-              <span>Pending Invoices</span>
-              <i data-lucide="dollar-sign" class="w-4 h-4 text-cyan-400"></i>
-            </div>
-            <div class="text-2xl font-extrabold text-white">$160</div>
-            <div class="text-[11px] text-zinc-400">
-              3 active payment chases
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between text-zinc-400 text-xs">
-              <span>Est. Revenue Saved</span>
-              <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
-            </div>
-            <div class="text-2xl font-extrabold text-emerald-400">+$1,450</div>
-            <div class="text-[11px] text-zinc-400">
-              This month via Yapli AI
-            </div>
-          </div>
-
-        </div>
-
-        <!-- 2 Column Overview Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-          <!-- Recent WhatsApp Inquiries Stream -->
-          <div class="lg:col-span-7 bg-zinc-900/80 rounded-2xl border border-zinc-800 p-5 space-y-4">
+          <div onclick="selectInboxChat('venkat')" id="inbox-item-venkat" class="p-3.5 bg-zinc-800/50 cursor-pointer hover:bg-zinc-800/40 transition">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
-                Live Activity Stream
-              </h3>
-              <span class="text-[11px] text-zinc-400">Auto-refreshed via n8n</span>
+              <span class="font-bold text-xs text-white">Alex Smith</span>
+              <span class="text-[10px] text-zinc-500 font-mono">10:48 AM</span>
             </div>
-
-            <div class="space-y-3">
-              <div class="p-3 rounded-xl bg-zinc-950/70 border border-zinc-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-xs">
-                    V
-                  </div>
-                  <div>
-                    <div class="text-xs font-semibold text-white">Venkat (+91 9486929695)</div>
-                    <div class="text-[11px] text-zinc-400">"What are your haircut prices and salon opening hours?"</div>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">AI Answered & Lead Saved</span>
-                  <div class="text-[10px] text-zinc-500 mt-0.5">3m ago</div>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-xl bg-zinc-950/70 border border-zinc-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-xs">
-                    S
-                  </div>
-                  <div>
-                    <div class="text-xs font-semibold text-white">Sarah Jenkins (+1 555-019-2831)</div>
-                    <div class="text-[11px] text-zinc-400">Smart Follow-up Nudge sent: "Hi Sarah, checking in about Premium Styling..."</div>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20">Follow-up #2</span>
-                  <div class="text-[10px] text-zinc-500 mt-0.5">28m ago</div>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-xl bg-zinc-950/70 border border-zinc-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-xs">
-                    M
-                  </div>
-                  <div>
-                    <div class="text-xs font-semibold text-white">Michael Chang (+1 555-014-9923)</div>
-                    <div class="text-[11px] text-zinc-400">Reminder sent with [Confirm] & [Reschedule] buttons</div>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Reminder Dispatched</span>
-                  <div class="text-[10px] text-zinc-500 mt-0.5">1h ago</div>
-                </div>
-              </div>
-            </div>
-
+            <p class="text-[11px] text-zinc-400 truncate mt-1">Hi, do you have openings for a haircut...</p>
+            <span class="inline-block mt-1 text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded">Hot Lead</span>
           </div>
 
-          <!-- Quick Owner Actions & CRM Health -->
-          <div class="lg:col-span-5 bg-zinc-900/80 rounded-2xl border border-zinc-800 p-5 space-y-4">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-              System Health & Quick Links
-            </h3>
-
-            <div class="space-y-2.5 text-xs">
-              <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between">
-                <span class="text-zinc-300">Meta WhatsApp Cloud API</span>
-                <span class="text-emerald-400 font-bold flex items-center gap-1">● Online (200 OK)</span>
-              </div>
-              <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between">
-                <span class="text-zinc-300">Google Sheets CRM</span>
-                <span class="text-emerald-400 font-bold flex items-center gap-1">● Synced (5 Tabs)</span>
-              </div>
-              <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between">
-                <span class="text-zinc-300">Google Gemini Model</span>
-                <span class="text-emerald-400 font-bold flex items-center gap-1">gemini-3.8-flash</span>
-              </div>
-              <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between">
-                <span class="text-zinc-300">Google Calendar</span>
-                <span class="text-emerald-400 font-bold flex items-center gap-1">● Connected</span>
-              </div>
+          <div onclick="selectInboxChat('sarah')" id="inbox-item-sarah" class="p-3.5 cursor-pointer hover:bg-zinc-800/40 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xs text-white">Sarah Jenkins</span>
+              <span class="text-[10px] text-zinc-500 font-mono">2:15 PM</span>
             </div>
-
-            <div class="pt-2">
-              <button onclick="setDashTab('knowledge')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2">
-                <i data-lucide="edit-3" class="w-4 h-4"></i> Edit Salon Prices & FAQs
-              </button>
-            </div>
+            <p class="text-[11px] text-zinc-400 truncate mt-1">Do you have openings for hair coloring...</p>
+            <span class="inline-block mt-1 text-[9px] font-semibold text-teal-400 bg-teal-500/10 px-1.5 py-0.2 rounded">Warm Lead</span>
           </div>
 
+          <div onclick="selectInboxChat('michael')" id="inbox-item-michael" class="p-3.5 cursor-pointer hover:bg-zinc-800/40 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xs text-white">Michael Chang</span>
+              <span class="text-[10px] text-zinc-500 font-mono">Yesterday</span>
+            </div>
+            <p class="text-[11px] text-zinc-400 truncate mt-1">How much is the scalp treatment?</p>
+            <span class="inline-block mt-1 text-[9px] font-semibold text-zinc-400 bg-zinc-800 px-1.5 py-0.2 rounded">Cold Lead</span>
+          </div>
         </div>
 
-      </div>
-
-      <!-- ========================================== -->
-      <!-- TAB 2: LIVE WHATSAPP INBOX                 -->
-      <!-- ========================================== -->
-      <div id="dash-inbox" class="hidden py-6">
-        <div class="grid grid-cols-1 md:grid-cols-12 rounded-2xl border border-zinc-800 bg-zinc-900/90 overflow-hidden h-[600px]">
+        <!-- Active Chat Right Column -->
+        <div class="md:col-span-8 flex flex-col justify-between bg-zinc-950/60">
           
-          <!-- Conversations List (Left) -->
-          <div class="md:col-span-4 border-r border-zinc-800 flex flex-col h-full">
-            <div class="p-3 border-b border-zinc-800 bg-zinc-950/50">
-              <input type="text" placeholder="Search chats by name or phone..." class="w-full bg-zinc-900 text-xs px-3 py-2 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-white placeholder-zinc-500">
+          <!-- Chat Top Bar -->
+          <div class="p-3.5 border-b border-zinc-800 bg-zinc-900/60 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-xs text-white flex items-center gap-2">
+                <span id="active-chat-name">Alex Smith</span>
+                <span id="active-chat-phone" class="text-[10px] text-zinc-500 font-mono">+1 555-0199</span>
+              </div>
+              <div class="text-[10px] text-emerald-400">Status: Hot Lead • Service Interest: Standard Haircut</div>
             </div>
 
-            <div class="flex-1 overflow-y-auto divide-y divide-zinc-800/50">
-              
-              <!-- Conversation Item 1 (Selected) -->
-              <div onclick="selectInboxChat('venkat')" id="inbox-item-venkat" class="p-3.5 bg-zinc-800/50 cursor-pointer hover:bg-zinc-800 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-white">Venkat</span>
-                  <span class="text-[10px] text-emerald-400 font-medium">10:48 AM</span>
-                </div>
-                <div class="text-[11px] text-zinc-400 truncate mt-1">What are your haircut prices and salon opening hours?</div>
-                <div class="flex items-center gap-2 mt-2">
-                  <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Hot Lead</span>
-                  <span class="px-1.5 py-0.5 rounded text-[9px] bg-zinc-800 text-zinc-400">AI Handled</span>
-                </div>
-              </div>
-
-              <!-- Conversation Item 2 -->
-              <div onclick="selectInboxChat('sarah')" id="inbox-item-sarah" class="p-3.5 cursor-pointer hover:bg-zinc-800 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-white">Sarah Jenkins</span>
-                  <span class="text-[10px] text-zinc-500">Yesterday</span>
-                </div>
-                <div class="text-[11px] text-zinc-400 truncate mt-1">Would Thursday at 3 PM work for Premium Styling?</div>
-                <div class="flex items-center gap-2 mt-2">
-                  <span class="px-1.5 py-0.5 rounded text-[9px] bg-teal-500/10 text-teal-400 border border-teal-500/20">Follow-up #2</span>
-                </div>
-              </div>
-
-              <!-- Conversation Item 3 -->
-              <div onclick="selectInboxChat('michael')" id="inbox-item-michael" class="p-3.5 cursor-pointer hover:bg-zinc-800 transition">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-xs text-white">Michael Chang</span>
-                  <span class="text-[10px] text-zinc-500">Oct 30</span>
-                </div>
-                <div class="text-[11px] text-zinc-400 truncate mt-1">Confirmed! See you Saturday.</div>
-                <div class="flex items-center gap-2 mt-2">
-                  <span class="px-1.5 py-0.5 rounded text-[9px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Confirmed</span>
-                </div>
-              </div>
-
+            <!-- Autopilot Toggle -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-zinc-400">AI Autopilot:</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="autopilot-toggle" checked onchange="toggleAutopilot(this)" class="sr-only peer">
+                <div class="w-8 h-4 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
             </div>
           </div>
 
-          <!-- Active Chat View (Center & Right) -->
-          <div class="md:col-span-8 flex flex-col h-full bg-zinc-950/60">
-            
-            <!-- Chat Header -->
-            <div class="p-3.5 border-b border-zinc-800 bg-zinc-900/60 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
-                  V
-                </div>
-                <div>
-                  <div class="font-bold text-xs text-white flex items-center gap-2">
-                    <span id="active-chat-name">Venkat</span>
-                    <span id="active-chat-phone" class="text-[10px] text-zinc-400 font-mono">+91 9486929695</span>
-                  </div>
-                  <div class="text-[10px] text-emerald-400">Status: Hot Lead • Service Interest: Standard Haircut</div>
-                </div>
-              </div>
-
-              <!-- Autopilot Toggle -->
-              <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-zinc-400 font-medium">AI Autopilot:</span>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" id="autopilot-toggle" checked onchange="toggleAutopilot(this)" class="sr-only peer">
-                    <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
-                  </label>
-                </div>
+          <!-- Messages Stream -->
+          <div id="inbox-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+            <div class="flex justify-start">
+              <div class="bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[75%] shadow">
+                Hi, what are your haircut prices and salon opening hours?
+                <div class="text-[9px] text-zinc-400 text-right mt-1">10:48 AM</div>
               </div>
             </div>
-
-            <!-- Chat History -->
-            <div id="inbox-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-              
-              <div class="flex justify-start">
-                <div class="bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[75%] shadow">
-                  Hi, what are your haircut prices and salon opening hours?
-                  <div class="text-[9px] text-zinc-400 text-right mt-1">10:48 AM</div>
-                </div>
+            <div class="flex justify-end">
+              <div class="bg-emerald-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">
+                Hi Alex! Our Standard Haircut is $25, and Premium Styling is $50 (consultation is free). We're open Monday to Saturday, 9:00 AM to 6:00 PM (closed on Sundays). Would you like to book a slot for today? 😊
+                <div class="text-[9px] text-emerald-200 text-right mt-1">10:48 AM • Sent by AI Receptionist</div>
               </div>
-
-              <div class="flex justify-end">
-                <div class="bg-emerald-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">
-                  Hi Venkat! Our Standard Haircut is $25, and Premium Styling is $50 (consultation is free). We're open Monday to Saturday, 9:00 AM to 6:00 PM (closed on Sundays). Would you like to book a slot for today? 😊
-                  <div class="text-[9px] text-emerald-200 text-right mt-1">10:48 AM • Sent by AI Receptionist</div>
-                </div>
-              </div>
-
             </div>
+          </div>
 
-            <!-- Manual Reply Input (if human takeover) -->
-            <div class="p-3 border-t border-zinc-800 bg-zinc-900/60 flex items-center gap-2">
-              <input type="text" id="manual-reply-input" onkeydown="if(event.key==='Enter') sendManualReply()" placeholder="Type a manual response (or leave AI on autopilot)..." class="flex-1 bg-zinc-950 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-white">
-              <button onclick="sendManualReply()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs flex items-center gap-1.5 transition">
-                <span>Send</span>
-                <i data-lucide="send" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-
+          <!-- Manual Reply Box -->
+          <div class="p-3 border-t border-zinc-800 bg-zinc-900/60 flex items-center gap-2">
+            <input type="text" id="manual-reply-input" onkeydown="if(event.key==='Enter') sendManualReply()" placeholder="Type a manual response (or leave AI on autopilot)..." class="flex-1 bg-zinc-950 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-white">
+            <button onclick="sendManualReply()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs flex items-center gap-1.5 transition">
+              <span>Send</span>
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </button>
           </div>
 
         </div>
+
       </div>
 
-      <!-- ========================================== -->
-      <!-- TAB 3: LEADS PIPELINE CRM                  -->
-      <!-- ========================================== -->
-      <div id="dash-leads" class="hidden py-6 space-y-4">
-        
+      <!-- TAB 3: LEADS CRM -->
+      <div id="dash-leads" class="hidden space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h3 class="text-base font-bold text-white">Leads CRM Pipeline</h3>
-            <p class="text-xs text-zinc-400">Live synchronized with Google Sheet tab: <code>Leads</code></p>
+            <h3 class="text-sm font-bold text-white">Leads CRM Pipeline</h3>
+            <p class="text-xs text-zinc-400">Live synchronized with Google Sheet tab: <code class="text-emerald-400">Leads</code></p>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="filterLeads('all')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 text-white">All (6)</button>
-            <button onclick="filterLeads('hot')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-400 hover:text-white">Hot (2)</button>
-            <button onclick="filterLeads('warm')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-400 hover:text-white">Warm (2)</button>
-            <button onclick="filterLeads('booked')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-400 hover:text-white">Won (1)</button>
+          <div class="flex items-center gap-1.5">
+            <button onclick="filterLeads('all')" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-800 text-white">All</button>
+            <button onclick="filterLeads('hot')" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-400 hover:text-white">Hot</button>
+            <button onclick="filterLeads('warm')" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-400 hover:text-white">Warm</button>
+            <button onclick="filterLeads('booked')" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-zinc-400 hover:text-white">Won</button>
           </div>
         </div>
 
-        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/80 overflow-hidden">
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 overflow-hidden">
           <table class="w-full text-left text-xs">
             <thead class="bg-zinc-950/70 text-zinc-400 uppercase tracking-wider text-[10px] border-b border-zinc-800">
               <tr>
                 <th class="p-3.5">Lead Name</th>
                 <th class="p-3.5">Phone Number</th>
-                <th class="p-3.5">Service Interest</th>
+                <th class="p-3.5">Interest</th>
                 <th class="p-3.5">Status</th>
-                <th class="p-3.5">Follow-ups Sent</th>
-                <th class="p-3.5">Last Message</th>
+                <th class="p-3.5">Follow-ups</th>
                 <th class="p-3.5 text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="leads-table-body" class="divide-y divide-zinc-800/60 text-zinc-300">
-              
               <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold text-white">Venkat</td>
+                <td class="p-3.5 font-bold text-white">Alex Smith</td>
                 <td class="p-3.5 font-mono text-zinc-400">15551234567</td>
-                <td class="p-3.5">Standard Haircut & Beard</td>
+                <td class="p-3.5">Standard Haircut</td>
                 <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">hot</span></td>
-                <td class="p-3.5 font-semibold">2 / 3</td>
-                <td class="p-3.5 text-zinc-400">2026-11-01 10:48</td>
+                <td class="p-3.5 font-mono">1 / 2</td>
                 <td class="p-3.5 text-right">
                   <button onclick="triggerFollowUp('15551234567')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-semibold text-[11px] border border-zinc-700">Send Nudge</button>
                 </td>
               </tr>
-
               <tr class="hover:bg-zinc-800/40 transition">
                 <td class="p-3.5 font-bold text-white">Sarah Jenkins</td>
                 <td class="p-3.5 font-mono text-zinc-400">+1 555-019-2831</td>
                 <td class="p-3.5">Premium Styling</td>
                 <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20">warm</span></td>
-                <td class="p-3.5 font-semibold">1 / 3</td>
-                <td class="p-3.5 text-zinc-400">2026-10-31 14:15</td>
+                <td class="p-3.5 font-mono">0 / 2</td>
                 <td class="p-3.5 text-right">
-                  <button class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-semibold text-[11px] border border-zinc-700">Send Nudge</button>
+                  <button onclick="triggerFollowUp('+1 555-019-2831')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-semibold text-[11px] border border-zinc-700">Send Nudge</button>
                 </td>
               </tr>
-
-              <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold text-white">Michael Chang</td>
-                <td class="p-3.5 font-mono text-zinc-400">+1 555-014-9923</td>
-                <td class="p-3.5">Standard Haircut</td>
-                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">hot</span></td>
-                <td class="p-3.5 font-semibold">2 / 3</td>
-                <td class="p-3.5 text-zinc-400">2026-10-30 09:30</td>
-                <td class="p-3.5 text-right">
-                  <button class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-semibold text-[11px] border border-zinc-700">Send Nudge</button>
-                </td>
-              </tr>
-
-              <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold text-white">Jessica Alba</td>
-                <td class="p-3.5 font-mono text-zinc-400">+1 555-012-3849</td>
-                <td class="p-3.5">Standard Haircut</td>
-                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Won</span></td>
-                <td class="p-3.5 font-semibold">1 / 3</td>
-                <td class="p-3.5 text-zinc-400">2026-10-27 13:00</td>
-                <td class="p-3.5 text-right">
-                  <span class="text-zinc-500 text-[11px]">Booked</span>
-                </td>
-              </tr>
-
             </tbody>
           </table>
         </div>
-
       </div>
 
-      <!-- ========================================== -->
-      <!-- TAB 4: APPOINTMENTS & REMINDERS            -->
-      <!-- ========================================== -->
-      <div id="dash-reminders" class="hidden py-6 space-y-4">
-        
+      <!-- TAB 4: APPOINTMENTS -->
+      <div id="dash-reminders" class="hidden space-y-4">
         <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-base font-bold text-white">Upcoming Bookings & Reminders</h3>
-            <p class="text-xs text-zinc-400">Powered by Workflow 3 (No-Show Killer Engine) • Google Calendar Synced</p>
-          </div>
-          <button onclick="triggerReminderRun()" class="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-cyan-400 text-xs font-semibold flex items-center gap-2 border border-zinc-700">
-            <i data-lucide="play" class="w-3.5 h-3.5"></i> Trigger Reminders Run
-          </button>
+          <h3 class="text-sm font-bold text-white">Upcoming Bookings & 1-Tap Reminders</h3>
+          <button onclick="triggerReminderRun()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500 text-zinc-950 font-semibold">Trigger Reminder Run</button>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Venkat</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">reminder_sent</span>
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 space-y-2 text-xs">
+          <div class="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">Alex Smith • Standard Haircut</div>
+              <div class="text-zinc-500 text-[11px] font-mono">Tomorrow at 4:00 PM • Stylist Sarah</div>
             </div>
-            <div class="space-y-1 text-xs text-zinc-400">
-              <div class="flex items-center gap-1.5"><i data-lucide="scissors" class="w-3.5 h-3.5 text-emerald-400"></i> Signature Haircut & Beard Trim</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-zinc-500"></i> Tomorrow at 10:00 AM</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-zinc-500"></i> 15551234567</div>
-            </div>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-[11px]">
-              <span class="text-zinc-500">Status: Waiting for 1-tap tap</span>
-              <button class="text-emerald-400 font-semibold hover:underline">Re-send</button>
-            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">✓ Confirmed on WhatsApp</span>
           </div>
-
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Michael Chang</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Confirmed</span>
-            </div>
-            <div class="space-y-1 text-xs text-zinc-400">
-              <div class="flex items-center gap-1.5"><i data-lucide="scissors" class="w-3.5 h-3.5 text-cyan-400"></i> Standard Haircut</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-zinc-500"></i> Nov 2 at 11:30 AM</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-zinc-500"></i> +1 555-014-9923</div>
-            </div>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-[11px]">
-              <span class="text-emerald-400">✓ Customer tapped [Confirm]</span>
-              <button class="text-zinc-400 font-semibold hover:underline">Details</button>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Sarah Jenkins</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Scheduled</span>
-            </div>
-            <div class="space-y-1 text-xs text-zinc-400">
-              <div class="flex items-center gap-1.5"><i data-lucide="scissors" class="w-3.5 h-3.5 text-amber-400"></i> Premium Styling</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-zinc-500"></i> Nov 2 at 10:00 AM</div>
-              <div class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-zinc-500"></i> +1 555-019-2831</div>
-            </div>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-[11px]">
-              <span class="text-zinc-500">Reminder scheduled 6 PM</span>
-              <button class="text-zinc-400 font-semibold hover:underline">Details</button>
-            </div>
-          </div>
-
         </div>
-
       </div>
 
-      <!-- ========================================== -->
-      <!-- TAB 5: INVOICES & PAYMENT CHASER           -->
-      <!-- ========================================== -->
-      <div id="dash-invoices" class="hidden py-6 space-y-4">
-        
+      <!-- TAB 5: INVOICES -->
+      <div id="dash-invoices" class="hidden space-y-4">
         <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-base font-bold text-white">Invoice & Payment Chaser</h3>
-            <p class="text-xs text-zinc-400">Powered by Workflow 4 • Automated 3-stage polite follow-up until paid</p>
+          <h3 class="text-sm font-bold text-white">Invoices & Payment Chaser</h3>
+          <button onclick="triggerInvoiceRun()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 text-zinc-200 border border-zinc-700">Run Payment Chaser</button>
+        </div>
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 space-y-2 text-xs">
+          <div class="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">INV-1006 • $35.00 (Alex Smith)</div>
+              <div class="text-zinc-500 text-[11px]">Due Today • Stage: Friendly reminder sent</div>
+            </div>
+            <div class="space-x-1">
+              <button onclick="sendInvoiceWhatsApp('INV-1006')" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-semibold text-[10px] border border-zinc-700">Send Link</button>
+              <button onclick="markInvoicePaid('INV-1006')" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-[10px] border border-zinc-700">Mark Paid</button>
+            </div>
           </div>
-          <button onclick="triggerInvoiceRun()" class="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-xs font-semibold flex items-center gap-2 border border-zinc-700">
-            <i data-lucide="play" class="w-3.5 h-3.5"></i> Run Payment Chaser Now
-          </button>
         </div>
-
-        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/80 overflow-hidden">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-zinc-950/70 text-zinc-400 uppercase tracking-wider text-[10px] border-b border-zinc-800">
-              <tr>
-                <th class="p-3.5">Invoice #</th>
-                <th class="p-3.5">Customer Name</th>
-                <th class="p-3.5">Phone</th>
-                <th class="p-3.5">Amount</th>
-                <th class="p-3.5">Due Date</th>
-                <th class="p-3.5">Status</th>
-                <th class="p-3.5">Stage Sent</th>
-                <th class="p-3.5 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-800/60 text-zinc-300">
-              
-              <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold font-mono text-white">INV-1006</td>
-                <td class="p-3.5 font-semibold text-white">Venkat</td>
-                <td class="p-3.5 font-mono text-zinc-400">15551234567</td>
-                <td class="p-3.5 font-bold text-emerald-400">$35.00</td>
-                <td class="p-3.5 text-zinc-400">2026-11-02</td>
-                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">pending</span></td>
-                <td class="p-3.5 text-zinc-300 font-medium">reminder_dispatched</td>
-                <td class="p-3.5 text-right space-x-2">
-                  <button onclick="markInvoicePaid('INV-1006')" class="px-2.5 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30">Mark Paid</button>
-                  <button onclick="sendInvoiceWhatsApp('INV-1006')" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-[11px] border border-zinc-700">Send WhatsApp</button>
-                </td>
-              </tr>
-
-              <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold font-mono text-white">INV-1003</td>
-                <td class="p-3.5 font-semibold text-white">Michael Chang</td>
-                <td class="p-3.5 font-mono text-zinc-400">+1 555-014-9923</td>
-                <td class="p-3.5 font-bold text-emerald-400">$25.00</td>
-                <td class="p-3.5 text-zinc-400">2026-11-06</td>
-                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">Overdue</span></td>
-                <td class="p-3.5 text-zinc-300 font-medium">Reminder 1 (Firm)</td>
-                <td class="p-3.5 text-right space-x-2">
-                  <button class="px-2.5 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30">Mark Paid</button>
-                </td>
-              </tr>
-
-              <tr class="hover:bg-zinc-800/40 transition">
-                <td class="p-3.5 font-bold font-mono text-white">INV-1001</td>
-                <td class="p-3.5 font-semibold text-white">Jessica Alba</td>
-                <td class="p-3.5 font-mono text-zinc-400">+1 555-012-3849</td>
-                <td class="p-3.5 font-bold text-zinc-400">$25.00</td>
-                <td class="p-3.5 text-zinc-400">2026-11-05</td>
-                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Paid</span></td>
-                <td class="p-3.5 text-zinc-400">Final Receipt</td>
-                <td class="p-3.5 text-right">
-                  <span class="text-zinc-500 text-[11px]">Settled</span>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-
       </div>
 
-      <!-- ========================================== -->
-      <!-- TAB 6: BUSINESS AI BRAIN (FAQ & PRICING)   -->
-      <!-- ========================================== -->
-      <div id="dash-knowledge" class="hidden py-6 space-y-6">
-        
+      <!-- TAB 6: AI BRAIN (KNOWLEDGE & PERSONALITY) -->
+      <div id="dash-knowledge" class="hidden space-y-4">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-base font-bold text-white">Business AI Brain & Knowledge Base</h3>
-            <p class="text-xs text-zinc-400">What your AI Receptionist knows. Edits here synchronize live with Google Sheet tab: <code>Business Info</code>.</p>
+            <h3 class="text-sm font-bold text-white">Business AI Brain & Personality</h3>
+            <p class="text-xs text-zinc-400">Edits automatically synchronize with your Google Sheet <code class="text-emerald-400">Business Info</code> and <code class="text-emerald-400">AI Settings</code> tabs.</p>
           </div>
-          <button onclick="saveBrainConfig()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-500/20 transition">
-            <i data-lucide="save" class="w-4 h-4"></i> Save & Sync to Google Sheets
-          </button>
+          <button onclick="saveBrainConfig()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-sm transition">Save to Sheet</button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <!-- Services & Pricing -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-white uppercase tracking-wider text-emerald-400 flex items-center gap-2">
-                <i data-lucide="scissors" class="w-4 h-4"></i> Services & Pricing (topic: pricing)
-              </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-3">
+            <h4 class="font-bold text-white">Services & Prices</h4>
+            <div>
+              <label class="text-zinc-400 block mb-1">Price List & Services</label>
+              <textarea class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-white text-xs h-28 focus:outline-none focus:border-emerald-500 font-mono">Standard Haircut: $25
+Premium Styling: $50
+Detox Scalp Spa: $45
+Beard Grooming: $15</textarea>
             </div>
-            <textarea id="brain-pricing" rows="4" class="w-full bg-zinc-950 text-xs p-3 rounded-xl border border-zinc-800 text-white font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed">Consultation is free, Standard Haircut is $25, Premium Styling is $50, Deluxe Hair Spa is $45.</textarea>
-            <p class="text-[11px] text-zinc-500">The AI will never quote a price not listed in this exact sentence.</p>
           </div>
 
-          <!-- Operating Hours & Timings -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-white uppercase tracking-wider text-teal-400 flex items-center gap-2">
-                <i data-lucide="clock" class="w-4 h-4"></i> Operating Hours (topic: timing)
-              </h4>
+          <div class="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-3">
+            <h4 class="font-bold text-white">AI Tone & Language</h4>
+            <div>
+              <label class="text-zinc-400 block mb-1">Preferred Language</label>
+              <select class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white text-xs">
+                <option>Auto-Detect (Customer's native language: Tamil, Hindi, English)</option>
+                <option>English Only</option>
+                <option>Tamil Preferred</option>
+                <option>Hindi Preferred</option>
+              </select>
             </div>
-            <textarea id="brain-timing" rows="4" class="w-full bg-zinc-950 text-xs p-3 rounded-xl border border-zinc-800 text-white font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed">Monday to Saturday from 9:00 AM to 6:00 PM. Closed on Sundays.</textarea>
-            <p class="text-[11px] text-zinc-500">Inbound booking requests outside these hours will be politely guided to next open slots.</p>
-          </div>
-
-          <!-- Location & Parking -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-white uppercase tracking-wider text-cyan-400 flex items-center gap-2">
-                <i data-lucide="map-pin" class="w-4 h-4"></i> Address & Parking (topic: address)
-              </h4>
+            <div>
+              <label class="text-zinc-400 block mb-1">Personality Tone</label>
+              <select class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white text-xs">
+                <option>Warm & Friendly Receptionist (Recommended)</option>
+                <option>Polite & Formal Executive</option>
+                <option>Casual & Upbeat with Emojis</option>
+              </select>
             </div>
-            <textarea id="brain-address" rows="4" class="w-full bg-zinc-950 text-xs p-3 rounded-xl border border-zinc-800 text-white font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed">123 Grand Trunk Road, Suite 4B, Chennai. Free valet parking available directly in front of the salon building.</textarea>
-            <p class="text-[11px] text-zinc-500">Sent when customers ask "Where are you located?" or "Is there parking?"</p>
           </div>
-
-          <!-- Cancellation Policy -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-white uppercase tracking-wider text-amber-400 flex items-center gap-2">
-                <i data-lucide="shield-alert" class="w-4 h-4"></i> Cancellation Policy (topic: cancellation)
-              </h4>
-            </div>
-            <textarea id="brain-cancellation" rows="4" class="w-full bg-zinc-950 text-xs p-3 rounded-xl border border-zinc-800 text-white font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 leading-relaxed">Free cancellation and rescheduling up to 2 hours before the scheduled time. Customers can tap Reschedule directly on their WhatsApp reminder.</textarea>
-            <p class="text-[11px] text-zinc-500">Protects your staff schedule while keeping customer experience smooth.</p>
-          </div>
-
         </div>
-
       </div>
 
-      <!-- ========================================== -->
-      <!-- TAB 7: AUTOMATION ENGINES MANAGER          -->
-      <!-- ========================================== -->
-      <div id="dash-automations" class="hidden py-6 space-y-6">
-        
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-base font-bold text-white">n8n Automation Engines</h3>
-            <p class="text-xs text-zinc-400">All 6 PRD automations running live on your n8n instance.</p>
+      <!-- TAB 7: AUTOMATION ENGINES -->
+      <div id="dash-automations" class="hidden space-y-4">
+        <h3 class="text-sm font-bold text-white">Automation Engine Diagnostics</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">WF 1: AI Receptionist</div>
+              <span class="text-emerald-400 text-[10px]">● 100% Healthy</span>
+            </div>
+            <button onclick="testEngine(1)" class="px-2 py-1 rounded bg-zinc-800 text-[10px] text-zinc-300">Test Run</button>
           </div>
-          <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">6 / 6 Active</span>
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">WF 2: Lead Follow-up</div>
+              <span class="text-emerald-400 text-[10px]">● 100% Healthy</span>
+            </div>
+            <button onclick="testEngine(2)" class="px-2 py-1 rounded bg-zinc-800 text-[10px] text-zinc-300">Test Run</button>
+          </div>
+          <div class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white">WF 3: Reminders</div>
+              <span class="text-emerald-400 text-[10px]">● 100% Healthy</span>
+            </div>
+            <button onclick="testEngine(3)" class="px-2 py-1 rounded bg-zinc-800 text-[10px] text-zinc-300">Test Run</button>
+          </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          
-          <!-- Engine 1 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">1. WhatsApp AI Receptionist</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: YsCFPr3CQYHlffvQ</div>
-            <p class="text-xs text-zinc-400">Trigger: WhatsApp Cloud Webhook • Inbound 24/7 text, voice notes & images</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #30)</span>
-              <button onclick="testEngine(1)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-          <!-- Engine 2 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">2. Salon Lead Follow-up</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: Z5cp2bh2oiSzQcCD</div>
-            <p class="text-xs text-zinc-400">Trigger: Daily Cron • Nudges hot/warm leads who haven't booked</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #37)</span>
-              <button onclick="testEngine(2)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-          <!-- Engine 3 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">3. Appointment Reminders</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: jNIyrxx3fa84z8p3</div>
-            <p class="text-xs text-zinc-400">Trigger: Daily 8 AM • Sends reminder with 1-tap Confirm/Reschedule</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #38)</span>
-              <button onclick="testEngine(3)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-          <!-- Engine 4 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">4. Invoice & Payment Chaser</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: 7LO7LMnl5Ta1KhCe</div>
-            <p class="text-xs text-zinc-400">Trigger: Every 2 Days • Friendly $\to$ Firm $\to$ Final Notice sequence</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #39)</span>
-              <button onclick="testEngine(4)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-          <!-- Engine 5 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">5. Broadcast Revival Campaign</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: 0QMpI5NPzaQmelq1</div>
-            <p class="text-xs text-zinc-400">Trigger: Weekly Monday • AI personal line + 10% win-back offer</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #40)</span>
-              <button onclick="testEngine(5)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-          <!-- Engine 6 -->
-          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">6. Daily 10 PM Owner Report</span>
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            </div>
-            <div class="text-[11px] text-zinc-400 font-mono">ID: C5YTaQLs0pygeQ8X</div>
-            <p class="text-xs text-zinc-400">Trigger: Every Night 10 PM • Sends summary & hot leads to owner WhatsApp</p>
-            <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
-              <span class="text-emerald-400 font-medium">100% Success (Execution #42)</span>
-              <button onclick="testEngine(6)" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-[11px] border border-zinc-700">Test Run</button>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
     </div>
-
   </main>
-
 
   <!-- ======================================================== -->
   <!-- VIEW 3: AGENCY MULTI-TENANT CLIENT MANAGEMENT HUB        -->
@@ -1417,7 +1391,7 @@
             <span class="text-xs font-medium text-zinc-400">Total Clients</span>
             <i data-lucide="users" class="w-4 h-4 text-zinc-500"></i>
           </div>
-          <div id="admin-stat-total" class="text-2xl font-bold text-white mt-2">--</div>
+          <div id="admin-stat-total" class="text-2xl font-bold font-mono text-white mt-2">--</div>
           <div class="text-[11px] text-zinc-500 mt-1">Multi-tenant registered</div>
         </div>
         <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
@@ -1425,7 +1399,7 @@
             <span class="text-xs font-medium text-zinc-400">Active Retainers</span>
             <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
           </div>
-          <div id="admin-stat-active" class="text-2xl font-bold text-emerald-400 mt-2">--</div>
+          <div id="admin-stat-active" class="text-2xl font-bold font-mono text-emerald-400 mt-2">--</div>
           <div class="text-[11px] text-emerald-500/80 mt-1">Paying full price</div>
         </div>
         <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
@@ -1433,7 +1407,7 @@
             <span class="text-xs font-medium text-zinc-400">7-Day Free Trials</span>
             <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
           </div>
-          <div id="admin-stat-trials" class="text-2xl font-bold text-amber-400 mt-2">--</div>
+          <div id="admin-stat-trials" class="text-2xl font-bold font-mono text-amber-400 mt-2">--</div>
           <div class="text-[11px] text-amber-500/80 mt-1">Conversion pipeline</div>
         </div>
         <div class="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
@@ -1441,23 +1415,23 @@
             <span class="text-xs font-medium text-zinc-400">Current MRR</span>
             <i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i>
           </div>
-          <div id="admin-stat-mrr" class="text-2xl font-bold text-cyan-400 mt-2">$--/mo</div>
-          <div id="admin-stat-arr" class="text-[11px] text-zinc-500 mt-1">$--/yr ARR</div>
+          <div id="admin-stat-mrr" class="text-2xl font-bold font-mono text-cyan-400 mt-2">$--/mo</div>
+          <div id="admin-stat-arr" class="text-[11px] text-zinc-500 mt-1 font-mono">$--/yr ARR</div>
         </div>
       </div>
 
-      <!-- Quick Concept Helper Box -->
+      <!-- Self-Service Helper Box -->
       <div class="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div class="flex items-start gap-3">
           <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
             <i data-lucide="sparkles" class="w-4 h-4"></i>
           </div>
           <div class="text-xs leading-relaxed text-zinc-300">
-            <strong class="text-white">Self-Service Customization:</strong> Business owners customize their AI Receptionist simply by editing their Google Sheet! FAQs in <code class="text-emerald-400 font-mono">Business Info</code> and tone/language preferences in <code class="text-emerald-400 font-mono">AI Settings</code> take effect instantly.
+            <strong class="text-white">Self-Service Client Control:</strong> Business owners customize their AI Receptionist simply by editing their Google Sheet! FAQs in <code class="text-emerald-400 font-mono">Business Info</code> and tone/language in <code class="text-emerald-400 font-mono">AI Settings</code> take effect instantly.
           </div>
         </div>
         <div class="text-[11px] text-zinc-400 bg-zinc-900/80 px-3 py-1.5 rounded-lg border border-zinc-800 font-mono shrink-0">
-          CLI: node onboard.js
+          CLI: npm run onboard
         </div>
       </div>
 
@@ -1624,12 +1598,12 @@
 
         <div>
           <label class="block text-zinc-300 font-semibold mb-1">WhatsApp Business Phone Number</label>
-          <input type="tel" required placeholder="+91 94869 29695" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono">
+          <input type="tel" required placeholder="+1 555-0199" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono">
         </div>
 
         <div>
           <label class="block text-zinc-300 font-semibold mb-1">Your Personal Mobile (for Daily 10 PM WhatsApp Digest)</label>
-          <input type="tel" required placeholder="+91 94869 29695" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono">
+          <input type="tel" required placeholder="+1 555-0199" class="w-full bg-zinc-950 text-white px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono">
         </div>
 
         <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/20 transition mt-2">
@@ -1640,6 +1614,148 @@
       <div class="text-[11px] text-zinc-500 text-center">
         Zero payment required today. If it doesn't book you extra appointments, you owe nothing.
       </div>
+
+    </div>
+  </div>
+
+
+  <!-- ======================================================== -->
+  <!-- MODAL: AUTHENTICATION (LOGIN & SIGNUP)                   -->
+  <!-- ======================================================== -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="nexa-blur-card rounded-[32px] p-6 sm:p-8 max-w-md w-full border border-white/15 shadow-2xl relative space-y-6">
+      
+      <!-- Close button -->
+      <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Brand Header -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-purple-600 to-amber-500 p-[1px] shadow-lg shadow-purple-500/20 mb-1">
+          <div class="w-full h-full bg-[#0a0514] rounded-[15px] flex items-center justify-center">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="10" stroke="url(#auth-logo)" stroke-width="2.5" />
+              <path d="M10 14L13 17L18 11" stroke="url(#auth-logo)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              <defs>
+                <linearGradient id="auth-logo" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#3b82f6" />
+                  <stop offset="0.45" stop-color="#a855f7" />
+                  <stop offset="1" stop-color="#f59e0b" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-2xl font-extrabold text-white tracking-tight">Yapli<span class="nexa-grad-text">.ai</span></h3>
+        <p class="text-xs text-[var(--nexa-lavender)]">Sign in to your business operations portal or start your trial.</p>
+      </div>
+
+      <!-- Segmented Tab Header: Sign In vs Create Account -->
+      <div class="grid grid-cols-2 p-1 rounded-2xl bg-white/5 border border-white/10 text-xs">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="py-2 rounded-xl font-semibold transition bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-500 text-white shadow-sm">
+          Sign In
+        </button>
+        <button id="auth-tab-signup" onclick="switchAuthTab('signup')" class="py-2 rounded-xl font-medium text-zinc-400 hover:text-white transition">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Error alert banner -->
+      <div id="auth-error-message" class="hidden p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 text-red-400 shrink-0"></i>
+        <span id="auth-error-text">Authentication failed</span>
+      </div>
+
+      <!-- FORM 1: LOGIN -->
+      <form id="auth-form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-zinc-300 font-medium mb-1">Email Address</label>
+          <input id="auth-login-email" type="email" required placeholder="owner@yourbusiness.com" class="w-full bg-[#05020a] text-white px-3.5 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-zinc-300 font-medium">Password</label>
+            <span class="text-[10px] text-zinc-500">Encrypted PBKDF2</span>
+          </div>
+          <input id="auth-login-password" type="password" required placeholder="••••••••" class="w-full bg-[#05020a] text-white px-3.5 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+        </div>
+
+        <!-- 1-Click Demo Fill Buttons -->
+        <div class="pt-1">
+          <div class="text-[10px] text-[var(--nexa-lavender-3)] mb-1.5 font-medium">Quick Demo Credentials:</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="fillDemoAuth('admin')" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-purple-500/30 text-[10px] text-purple-200 text-left transition flex items-center gap-1.5">
+              <span>👑</span>
+              <span class="truncate">Agency Admin</span>
+            </button>
+            <button type="button" onclick="fillDemoAuth('glow')" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-emerald-500/30 text-[10px] text-emerald-200 text-left transition flex items-center gap-1.5">
+              <span>💇</span>
+              <span class="truncate">Glow Studio (Owner)</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-full font-semibold text-xs bg-gradient-to-r from-blue-600 via-purple-600 to-amber-500 hover:opacity-95 text-white shadow-lg shadow-purple-600/30 transition transform active:scale-95 flex items-center justify-center gap-2 mt-2">
+          <span>Sign In to Portal</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </form>
+
+      <!-- FORM 2: SIGNUP -->
+      <form id="auth-form-signup" onsubmit="handleSignupSubmit(event)" class="hidden space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">Your Full Name</label>
+            <input id="auth-signup-name" type="text" required placeholder="e.g. John Doe" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+          </div>
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">Business Name</label>
+            <input id="auth-signup-business" type="text" required placeholder="e.g. Bella Salon" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">Business Type</label>
+            <select id="auth-signup-type" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+              <option>Hair & Beauty Salon</option>
+              <option>Dental Clinic</option>
+              <option>Gym / Fitness Studio</option>
+              <option>Real Estate Agency</option>
+              <option>Restaurant & Cafe</option>
+              <option>Healthcare & Wellness</option>
+              <option>Other Business</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">City</label>
+            <input id="auth-signup-city" type="text" required placeholder="e.g. Chennai" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-zinc-300 font-medium mb-1">WhatsApp Phone Number</label>
+          <input id="auth-signup-phone" type="tel" required placeholder="+91 98765 43210" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs font-mono">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">Email Address</label>
+            <input id="auth-signup-email" type="email" required placeholder="john@bellasalon.com" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+          </div>
+          <div>
+            <label class="block text-zinc-300 font-medium mb-1">Password</label>
+            <input id="auth-signup-password" type="password" required minlength="6" placeholder="At least 6 chars" class="w-full bg-[#05020a] text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 text-xs">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-full font-semibold text-xs bg-gradient-to-r from-blue-600 via-purple-600 to-amber-500 hover:opacity-95 text-white shadow-lg shadow-purple-600/30 transition transform active:scale-95 flex items-center justify-center gap-2 mt-2">
+          <span>Create Account & Start 7-Day Trial</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </form>
 
     </div>
   </div>
@@ -1657,11 +1773,330 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Global clients cache
+    // Global clients cache & Auth State
     let cachedClients = [];
+    let currentAuthUser = null;
+    let authToken = localStorage.getItem('yapli_auth_token') || null;
+    let authTargetMode = null;
+    let currentViewingClientId = 'glow_studio';
+
+    // -------------------------------------------------------------------------
+    // AUTHENTICATION & RBAC STATE MANAGEMENT
+    // -------------------------------------------------------------------------
+
+    async function initAuth() {
+      if (authToken) {
+        try {
+          const res = await fetch('/api/auth/me', {
+            headers: { 'Authorization': 'Bearer ' + authToken }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            currentAuthUser = data.user;
+            if (currentAuthUser.clientId) {
+              currentViewingClientId = currentAuthUser.clientId;
+            }
+            updateAuthUI();
+            return;
+          } else {
+            localStorage.removeItem('yapli_auth_token');
+            authToken = null;
+          }
+        } catch (e) {
+          console.warn('Auth check error:', e);
+        }
+      }
+      currentAuthUser = null;
+      updateAuthUI();
+    }
+
+    function updateAuthUI() {
+      const unauthActions = document.getElementById('nav-unauth-actions');
+      const authProfile = document.getElementById('nav-auth-profile');
+      const userNameEl = document.getElementById('nav-auth-user-name');
+      const userRoleEl = document.getElementById('nav-auth-user-role');
+      const avatarEl = document.getElementById('nav-auth-avatar');
+      const navAdminBtn = document.getElementById('nav-mode-admin');
+      const adminPickerWrap = document.getElementById('admin-client-picker-wrap');
+
+      if (currentAuthUser) {
+        if (unauthActions) unauthActions.classList.add('hidden');
+        if (authProfile) {
+          authProfile.classList.remove('hidden');
+          authProfile.classList.add('flex');
+        }
+        if (userNameEl) userNameEl.textContent = currentAuthUser.name || currentAuthUser.email;
+        if (userRoleEl) {
+          if (currentAuthUser.role === 'admin') {
+            userRoleEl.textContent = 'Agency Admin';
+            userRoleEl.className = 'px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30';
+          } else {
+            userRoleEl.textContent = 'Business Owner';
+            userRoleEl.className = 'px-1.5 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          }
+        }
+        if (avatarEl) {
+          const initials = (currentAuthUser.businessName || currentAuthUser.name || 'U').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+          avatarEl.textContent = initials;
+          if (currentAuthUser.role === 'admin') {
+            avatarEl.className = 'w-6 h-6 rounded-full bg-purple-600/40 text-purple-200 border border-purple-500/30 flex items-center justify-center font-bold text-[10px]';
+          } else {
+            avatarEl.className = 'w-6 h-6 rounded-full bg-emerald-600/40 text-emerald-200 border border-emerald-500/30 flex items-center justify-center font-bold text-[10px]';
+          }
+        }
+
+        // Role-based navigation access
+        if (currentAuthUser.role === 'admin') {
+          if (navAdminBtn) navAdminBtn.classList.remove('hidden');
+          if (adminPickerWrap) {
+            adminPickerWrap.classList.remove('hidden');
+            adminPickerWrap.classList.add('flex');
+          }
+        } else {
+          // Owner: Hide agency hub and client picker
+          if (navAdminBtn) navAdminBtn.classList.add('hidden');
+          if (adminPickerWrap) {
+            adminPickerWrap.classList.remove('flex');
+            adminPickerWrap.classList.add('hidden');
+          }
+          const viewAdmin = document.getElementById('view-admin');
+          if (viewAdmin && !viewAdmin.classList.contains('hidden')) {
+            setMode('dashboard');
+          }
+        }
+      } else {
+        // Unauthenticated
+        if (unauthActions) unauthActions.classList.remove('hidden');
+        if (authProfile) {
+          authProfile.classList.remove('flex');
+          authProfile.classList.add('hidden');
+        }
+        if (navAdminBtn) navAdminBtn.classList.remove('hidden');
+        if (adminPickerWrap) {
+          adminPickerWrap.classList.remove('flex');
+          adminPickerWrap.classList.add('hidden');
+        }
+      }
+      lucide.createIcons();
+    }
+
+    function openAuthModal(tab = 'login', targetMode = null) {
+      authTargetMode = targetMode;
+      const modal = document.getElementById('auth-modal');
+      const errEl = document.getElementById('auth-error-message');
+      if (errEl) errEl.classList.add('hidden');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+      switchAuthTab(tab);
+      lucide.createIcons();
+    }
+
+    function closeAuthModal() {
+      const modal = document.getElementById('auth-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const btnLogin = document.getElementById('auth-tab-login');
+      const btnSignup = document.getElementById('auth-tab-signup');
+      const formLogin = document.getElementById('auth-form-login');
+      const formSignup = document.getElementById('auth-form-signup');
+      const errEl = document.getElementById('auth-error-message');
+      if (errEl) errEl.classList.add('hidden');
+
+      if (tab === 'signup') {
+        if (btnLogin) {
+          btnLogin.className = 'py-2 rounded-xl font-medium text-zinc-400 hover:text-white transition';
+        }
+        if (btnSignup) {
+          btnSignup.className = 'py-2 rounded-xl font-semibold transition bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-500 text-white shadow-sm';
+        }
+        if (formLogin) formLogin.classList.add('hidden');
+        if (formSignup) formSignup.classList.remove('hidden');
+      } else {
+        if (btnSignup) {
+          btnSignup.className = 'py-2 rounded-xl font-medium text-zinc-400 hover:text-white transition';
+        }
+        if (btnLogin) {
+          btnLogin.className = 'py-2 rounded-xl font-semibold transition bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-500 text-white shadow-sm';
+        }
+        if (formSignup) formSignup.classList.add('hidden');
+        if (formLogin) formLogin.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    function fillDemoAuth(type) {
+      const emailInput = document.getElementById('auth-login-email');
+      const passInput = document.getElementById('auth-login-password');
+      if (type === 'admin') {
+        if (emailInput) emailInput.value = 'admin@yapliai.com';
+        if (passInput) passInput.value = 'admin123';
+        showToast('Loaded Agency Admin credentials');
+      } else if (type === 'glow') {
+        if (emailInput) emailInput.value = 'owner@glowstudio.com';
+        if (passInput) passInput.value = 'glow123';
+        showToast('Loaded Glow Studio Owner credentials');
+      } else if (type === 'apex') {
+        if (emailInput) emailInput.value = 'owner@apexdental.com';
+        if (passInput) passInput.value = 'apex123';
+        showToast('Loaded Apex Dental Owner credentials');
+      }
+    }
+
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('auth-login-email').value.trim();
+      const password = document.getElementById('auth-login-password').value;
+      const errEl = document.getElementById('auth-error-message');
+      const errText = document.getElementById('auth-error-text');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          authToken = data.token;
+          localStorage.setItem('yapli_auth_token', authToken);
+          currentAuthUser = data.user;
+          if (currentAuthUser.clientId) {
+            currentViewingClientId = currentAuthUser.clientId;
+          }
+          closeAuthModal();
+          updateAuthUI();
+          showToast('Welcome back, ' + (currentAuthUser.name || currentAuthUser.email) + '!');
+
+          if (authTargetMode) {
+            setMode(authTargetMode);
+            authTargetMode = null;
+          } else {
+            setMode(currentAuthUser.role === 'admin' ? 'admin' : 'dashboard');
+          }
+        } else {
+          if (errText) errText.textContent = data.error || 'Invalid email or password';
+          if (errEl) errEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        if (errText) errText.textContent = 'Server connection error. Please try again.';
+        if (errEl) errEl.classList.remove('hidden');
+      }
+    }
+
+    async function handleSignupSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('auth-signup-name').value.trim();
+      const businessName = document.getElementById('auth-signup-business').value.trim();
+      const businessType = document.getElementById('auth-signup-type').value;
+      const city = document.getElementById('auth-signup-city').value.trim();
+      const phone = document.getElementById('auth-signup-phone').value.trim();
+      const email = document.getElementById('auth-signup-email').value.trim();
+      const password = document.getElementById('auth-signup-password').value;
+
+      const errEl = document.getElementById('auth-error-message');
+      const errText = document.getElementById('auth-error-text');
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, businessName, businessType, city, phone, email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          authToken = data.token;
+          localStorage.setItem('yapli_auth_token', authToken);
+          currentAuthUser = data.user;
+          currentViewingClientId = currentAuthUser.clientId;
+          closeAuthModal();
+          updateAuthUI();
+          showToast('🎉 Account created! 7-day trial activated for ' + businessName);
+          setMode('dashboard');
+        } else {
+          if (errText) errText.textContent = data.error || 'Failed to create account';
+          if (errEl) errEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        if (errText) errText.textContent = 'Server connection error. Please try again.';
+        if (errEl) errEl.classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('yapli_auth_token');
+      authToken = null;
+      currentAuthUser = null;
+      updateAuthUI();
+      setMode('website');
+      showToast('You have been signed out.');
+    }
+
+    function loadOwnerPortalData(clientId) {
+      currentViewingClientId = clientId;
+      const client = cachedClients.find(c => c.clientId === clientId) || {
+        businessName: (currentAuthUser && currentAuthUser.businessName) || 'Glow Studio',
+        status: 'active',
+        whatsappPhoneId: '15550001234',
+        sheetId: 'Yapli CRM (Connected)'
+      };
+
+      const nameEl = document.getElementById('dash-business-name');
+      const badgeEl = document.getElementById('dash-status-badge');
+      const detailsEl = document.getElementById('dash-business-details');
+      const avatarEl = document.getElementById('dash-avatar');
+
+      if (nameEl) nameEl.textContent = client.businessName || 'Business Portal';
+      if (badgeEl) {
+        const isActive = (client.status === 'active');
+        badgeEl.textContent = '● ' + (client.status || 'Active').toUpperCase();
+        badgeEl.className = 'px-2 py-0.5 rounded-full text-[10px] font-semibold ' +
+          (isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20');
+      }
+      if (detailsEl) {
+        detailsEl.textContent = 'WhatsApp ID: ' + (client.whatsappPhoneId || 'Not connected') + ' • Sheet: ' + (client.sheetId ? 'Connected' : 'Pending');
+      }
+      if (avatarEl) {
+        const initials = (client.businessName || 'GS').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        avatarEl.textContent = initials;
+      }
+
+      const picker = document.getElementById('admin-client-picker');
+      if (picker && picker.value !== clientId) {
+        picker.value = clientId;
+      }
+    }
+
+    function handleAdminClientChange(selectedClientId) {
+      loadOwnerPortalData(selectedClientId);
+      showToast('Switched to client: ' + selectedClientId);
+    }
 
     // Mode Switcher: Website vs Dashboard vs Agency Admin
     function setMode(mode) {
+      if (mode === 'dashboard') {
+        if (!currentAuthUser) {
+          openAuthModal('login', 'dashboard');
+          return;
+        }
+        loadOwnerPortalData(currentViewingClientId);
+      } else if (mode === 'admin') {
+        if (!currentAuthUser) {
+          openAuthModal('login', 'admin');
+          return;
+        }
+        if (currentAuthUser.role !== 'admin') {
+          showToast('⚠️ Access Denied: Agency Admin privilege required');
+          return;
+        }
+      }
+
       const viewWebsite = document.getElementById('view-website');
       const viewDashboard = document.getElementById('view-dashboard');
       const viewAdmin = document.getElementById('view-admin');
@@ -1688,7 +2123,8 @@
           btnDash.classList.add('bg-emerald-500', 'text-zinc-950', 'font-semibold', 'shadow-sm');
           btnDash.classList.remove('text-zinc-400');
         }
-        showToast('Switched to Glow Studio Owner Operations Portal');
+        const bName = (currentAuthUser && currentAuthUser.businessName) || 'Business';
+        showToast('Viewing ' + bName + ' Operations Portal');
       } else if (mode === 'admin') {
         if (viewAdmin) viewAdmin.classList.remove('hidden');
         if (btnAdmin) {
@@ -1779,12 +2215,12 @@
       const msgDiv = document.createElement('div');
       if (sender === 'user') {
         msgDiv.className = 'flex justify-end';
-        msgDiv.innerHTML = '<div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
-          text + '<div class="text-[9px] text-emerald-200 text-right mt-1">' + time + ' ✓✓</div></div>';
+        msgDiv.innerHTML = '<div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-2.5 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
+          text + '<div class="text-[9px] text-emerald-200 text-right mt-1 font-mono">' + time + ' ✓✓</div></div>';
       } else {
         msgDiv.className = 'flex justify-start';
-        msgDiv.innerHTML = '<div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
-          text + '<div class="text-[9px] text-zinc-400 text-right mt-1">' + time + '</div></div>';
+        msgDiv.innerHTML = '<div class="bg-[#202c33] text-zinc-200 rounded-2xl rounded-tl-none p-2.5 max-w-[85%] shadow-sm leading-relaxed text-xs">' +
+          text + '<div class="text-[9px] text-zinc-400 text-right mt-1 font-mono">' + time + '</div></div>';
       }
       box.appendChild(msgDiv);
       box.scrollTop = box.scrollHeight;
@@ -1796,7 +2232,7 @@
       const indicator = document.createElement('div');
       indicator.id = 'typing-indicator';
       indicator.className = 'flex justify-start';
-      indicator.innerHTML = '<div class="bg-[#202c33] text-emerald-400 px-3 py-2 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">' +
+      indicator.innerHTML = '<div class="bg-[#202c33] text-emerald-400 px-3 py-1.5 rounded-2xl rounded-tl-none text-[11px] font-medium flex items-center gap-1.5 shadow-sm">' +
         '<span>AI Receptionist typing</span><span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span></div>';
       box.appendChild(indicator);
       box.scrollTop = box.scrollHeight;
@@ -1902,10 +2338,10 @@
         msgBox.innerHTML = data.messages.map(m => {
           if (m.sender === 'user') {
             return '<div class="flex justify-start"><div class="bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-none p-3 max-w-[75%] shadow">' +
-              m.text + '<div class="text-[9px] text-zinc-400 text-right mt-1">' + m.time + '</div></div></div>';
+              m.text + '<div class="text-[9px] text-zinc-400 text-right mt-1 font-mono">' + m.time + '</div></div></div>';
           } else {
             return '<div class="flex justify-end"><div class="bg-emerald-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">' +
-              m.text + '<div class="text-[9px] text-emerald-200 text-right mt-1">' + m.time + '</div></div></div>';
+              m.text + '<div class="text-[9px] text-emerald-200 text-right mt-1 font-mono">' + m.time + '</div></div></div>';
           }
         }).join('');
       }
@@ -1925,7 +2361,7 @@
         const div = document.createElement('div');
         div.className = 'flex justify-end';
         div.innerHTML = '<div class="bg-cyan-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[75%] shadow">' +
-          text + '<div class="text-[9px] text-cyan-200 text-right mt-1">' + time + ' • Sent manually by Owner</div></div>';
+          text + '<div class="text-[9px] text-cyan-200 text-right mt-1 font-mono">' + time + ' • Sent manually by Owner</div></div>';
         msgBox.appendChild(div);
         msgBox.scrollTop = msgBox.scrollHeight;
       }
@@ -2053,13 +2489,26 @@
 
     async function fetchClients() {
       try {
-        const res = await fetch('/api/clients');
+        const headers = {};
+        if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+        const res = await fetch('/api/clients', { headers });
         if (!res.ok) return;
         const data = await res.json();
         cachedClients = data.clients || [];
 
         const badge = document.getElementById('badge-client-count');
         if (badge) badge.innerText = cachedClients.length;
+
+        const picker = document.getElementById('admin-client-picker');
+        if (picker && cachedClients.length > 0) {
+          const currentVal = picker.value;
+          picker.innerHTML = cachedClients.map(c => 
+            '<option value="' + c.clientId + '">' + c.businessName + ' (' + (c.businessType || 'Client') + ')</option>'
+          ).join('');
+          if (currentVal && cachedClients.some(c => c.clientId === currentVal)) {
+            picker.value = currentVal;
+          }
+        }
 
         renderClientsTable(cachedClients);
       } catch (err) {
@@ -2204,13 +2653,17 @@
       }
     }
 
-    // Auto-fetch clients count on page load
-    setTimeout(() => {
+    // Auto-fetch and init auth on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initAuth();
       fetchClients();
       fetchStats();
-    }, 500);
-  
+    });
+    setTimeout(() => {
+      if (!currentAuthUser) initAuth();
+      fetchClients();
+      fetchStats();
+    }, 300);
   </script>
 </body>
 </html>
-
