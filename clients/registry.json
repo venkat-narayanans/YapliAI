@@ -49,5 +49,277 @@
     "deployedAt": "2026-11-04T04:34:04.815Z",
     "workflowIds": [],
     "updatedAt": "2026-11-04T04:34:04.821Z"
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_194",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-07T12:25:35.969Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_184",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-07T12:42:06.418Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_591",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-07T12:59:02.366Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_397",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-07T13:22:20.698Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_352",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-07T13:45:03.964Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_198",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-08T12:47:37.416Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_903",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-08T12:54:13.432Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_437",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T04:43:51.238Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_584",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T04:57:59.183Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_498",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:06:19.267Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_844",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:06:53.574Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_avyyon_technologies_567",
+    "businessName": "AVYYON TECHNOLOGIES",
+    "businessType": "Professional Services",
+    "city": "puducherry",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "PENDING_SETUP",
+    "ownerWhatsAppNumber": "",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:12:58.125Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_924",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:16:38.354Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_269",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:17:10.484Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_231",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:21:03.543Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_349",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:26:26.958Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_572",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-09T05:28:10.989Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
   }
 ]

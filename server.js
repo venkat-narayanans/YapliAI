@@ -5,6 +5,7 @@ const auth = require('./auth');
 
 const PORT = process.env.PORT || 3000;
 const WEB_DIR = path.join(__dirname, 'web');
+const ADMIN_DIR = path.join(__dirname, 'admin');
 const REGISTRY_PATH = path.join(__dirname, 'clients', 'registry.json');
 
 const MIME_TYPES = {
@@ -233,7 +234,7 @@ async function handleApi(req, res, pathname) {
   // GET /api/stats
   if (pathname === '/api/stats' && req.method === 'GET') {
     const registry = loadRegistry();
-    const TIER_PRICES = { 'AI Receptionist': 49, 'Growth Engine': 99, 'Full AI Employee': 149 };
+    const TIER_PRICES = { 'AI Receptionist': 3999, 'Growth Engine': 7999, 'Full AI Employee': 11999 };
     let monthlyRevenue = 0;
     for (const c of registry.filter(c => c.status === 'active')) {
       monthlyRevenue += TIER_PRICES[c.tier] || 0;
@@ -282,6 +283,53 @@ const server = http.createServer(async (req, res) => {
   }
 
   // --- Static File Serving ---
+  // 1. Admin Portal Routing (/admin, /admin/*)
+  if (pathname === '/admin' || pathname === '/admin/') {
+    pathname = '/admin/index.html';
+  }
+  if (pathname.startsWith('/admin/')) {
+    const relAdminPath = pathname.substring('/admin'.length);
+    const safeAdminPath = path.normalize(relAdminPath).replace(/^(\.\.[\/\\])+/, '');
+    const adminFilePath = path.join(ADMIN_DIR, safeAdminPath);
+
+    if (!adminFilePath.startsWith(ADMIN_DIR)) {
+      res.writeHead(403, { 'Content-Type': 'text/plain' });
+      res.end('403 Forbidden');
+      return;
+    }
+
+    fs.stat(adminFilePath, (err, stats) => {
+      if (err || !stats.isFile()) {
+        const adminIndexPath = path.join(ADMIN_DIR, 'index.html');
+        fs.readFile(adminIndexPath, (readErr, content) => {
+          if (readErr) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('404 Not Found');
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+            res.end(content);
+          }
+        });
+        return;
+      }
+
+      const ext = path.extname(adminFilePath).toLowerCase();
+      const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+
+      fs.readFile(adminFilePath, (readErr, data) => {
+        if (readErr) {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('500 Internal Server Error');
+        } else {
+          res.writeHead(200, { 'Content-Type': contentType });
+          res.end(data);
+        }
+      });
+    });
+    return;
+  }
+
+  // 2. Client Website & Business Owner Portal Routing
   if (pathname === '/' || pathname === '') {
     pathname = '/index.html';
   }
@@ -330,10 +378,11 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`\n======================================================`);
   console.log(`  🚀 Yapli AI Platform Server Running!`);
-  console.log(`  🌐 Website & Dashboard:  http://localhost:${PORT}`);
-  console.log(`  📡 Health Endpoint:      http://localhost:${PORT}/api/health`);
-  console.log(`  🔐 Auth Endpoints:       http://localhost:${PORT}/api/auth/login`);
-  console.log(`  👥 Clients API:          http://localhost:${PORT}/api/clients`);
-  console.log(`  📊 Stats API:            http://localhost:${PORT}/api/stats`);
+  console.log(`  🏢 Business Portal & Site: http://localhost:${PORT}`);
+  console.log(`  🔒 Standalone Admin Hub:   http://localhost:${PORT}/admin`);
+  console.log(`  📡 Health Endpoint:        http://localhost:${PORT}/api/health`);
+  console.log(`  🔐 Auth Endpoints:         http://localhost:${PORT}/api/auth/login`);
+  console.log(`  👥 Clients API:            http://localhost:${PORT}/api/clients`);
+  console.log(`  📊 Stats API:              http://localhost:${PORT}/api/stats`);
   console.log(`======================================================\n`);
 });
