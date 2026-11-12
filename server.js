@@ -170,14 +170,26 @@ async function handleApi(req, res, pathname) {
         sheetId: body.sheetId,
         whatsappPhoneId: body.whatsappPhoneId,
         ownerWhatsAppNumber: body.ownerWhatsAppNumber,
-        telegramChatId: body.telegramChatId || '',
-        calendarId: body.calendarId || 'primary',
-        geminiModel: body.geminiModel || 'models/gemini-3.8-flash'
+        telegramChatId: body.telegramChatId || '1999726968',
+        calendarId: body.calendarId || 'venkatnarayanan10.10@gmail.com',
+        geminiModel: body.geminiModel || 'models/gemini-3-flash-preview'
       };
 
       // Save config file
       const configPath = path.join(__dirname, 'clients', `${clientId}.json`);
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
+
+      // Auto-deploy workflows to n8n if available
+      let workflowIds = [];
+      try {
+        const { provisionClient } = require('./provision_client.js');
+        const provRes = await provisionClient(config, { silent: true });
+        if (provRes && provRes.workflowIds) {
+          workflowIds = provRes.workflowIds;
+        }
+      } catch (provErr) {
+        console.warn('[Auto-Provision Warning]', provErr.message);
+      }
 
       // Register
       const registry = loadRegistry();
@@ -193,7 +205,7 @@ async function handleApi(req, res, pathname) {
         tier: body.tier || 'Full AI Employee',
         status: body.status || 'active',
         deployedAt: new Date().toISOString(),
-        workflowIds: []
+        workflowIds
       };
 
       if (existingIdx >= 0) {

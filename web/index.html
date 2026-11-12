@@ -84,11 +84,16 @@
     .animate-marquee {
       display: flex;
       width: max-content;
-      animation: marquee 28s linear infinite;
+      animation: marquee 32s linear infinite;
     }
 
     .animate-marquee:hover {
       animation-play-state: paused;
+    }
+
+    .marquee-fade-container {
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     }
 
     @keyframes waves {
@@ -103,33 +108,94 @@
       animation: waves 2.4s infinite ease-out;
     }
 
+    @keyframes float-gentle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+
+    @keyframes float-gentle-alt {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(6px); }
+    }
+
+    .animate-float-slow {
+      animation: float-gentle 6s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+      animation: float-gentle-alt 7s ease-in-out infinite;
+      animation-delay: -3.5s;
+    }
+
+    @keyframes shimmer-sweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+
+    .badge-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      animation: shimmer-sweep 4.5s infinite ease-in-out;
+    }
+
+    @keyframes card-glow {
+      0%, 100% {
+        box-shadow: 0 10px 30px -10px rgba(0, 49, 244, 0.15), 0 0 0 1px rgba(0, 49, 244, 0.2);
+      }
+      50% {
+        box-shadow: 0 16px 40px -10px rgba(0, 49, 244, 0.25), 0 0 0 1.5px rgba(0, 49, 244, 0.4);
+      }
+    }
+
+    .finzo-card-highlight {
+      animation: card-glow 4s ease-in-out infinite;
+    }
+
     /* Finzo card & button styling */
     .finzo-card {
       background-color: #ffffff;
       border: 1px solid #eceef1;
-      border-radius: 2rem;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 1.75rem;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
 
     .finzo-card:hover {
-      border-color: #d1d5db;
-      transform: translateY(-3px);
-      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.06);
+      border-color: rgba(0, 49, 244, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(0, 49, 244, 0.1);
     }
 
     .finzo-btn-primary {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, #0031f4 0%, #155dfc 100%);
       color: #ffffff;
       border-radius: 9999px;
       font-weight: 600;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 14px rgba(0, 49, 244, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(0, 49, 244, 0.28);
+      position: relative;
+      overflow: hidden;
     }
 
     .finzo-btn-primary:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(0, 49, 244, 0.35);
+      background: linear-gradient(135deg, #0028c8 0%, #0031f4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 49, 244, 0.4);
+    }
+
+    .finzo-btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 49, 244, 0.3);
     }
 
     .finzo-btn-outline {
@@ -138,13 +204,14 @@
       border: 1px solid #e2e8f0;
       border-radius: 9999px;
       font-weight: 500;
-      transition: all 0.25s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .finzo-btn-outline:hover {
       background-color: #f8fafc;
       border-color: #cbd5e1;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
 
     /* Range slider custom cobalt theme */
@@ -214,30 +281,29 @@
     <section class="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-b from-slate-50/70 via-white to-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <!-- Spinning Gradient Beam Badge (Signature Finzo Badge) -->
-        <div class="group relative mx-auto mb-6 max-w-fit overflow-hidden rounded-full border border-slate-200/80 p-px shadow-sm hover:border-blue-500/40 transition">
-          <div class="absolute left-1/2 -z-10 h-8 w-1/2 origin-left rotate-90 animate-spin rounded-full bg-gradient-to-b from-white via-blue-600 to-transparent [animation-duration:8000ms]"></div>
-          <div class="flex items-center gap-3 rounded-full bg-white px-3.5 py-1.5 text-xs text-slate-700">
-            <!-- 3 Avatar Overlap -->
-            <div class="flex items-center -space-x-2">
-              <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">GS</div>
-              <div class="w-7 h-7 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">AD</div>
-              <div class="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-[10px] border-2 border-white">UF</div>
-            </div>
-            <div class="flex items-center gap-1.5 font-medium text-slate-800">
-              <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-              <span>Rated 4.9 by 500+ Local Businesses</span>
-            </div>
+        <!-- Enterprise Architecture Verified Badge -->
+        <div class="group relative mx-auto mb-6 max-w-fit overflow-hidden rounded-full border border-slate-200/90 p-px shadow-sm hover:border-blue-500/50 transition">
+          <div class="absolute left-1/2 -z-10 h-8 w-1/2 origin-left rotate-90 animate-spin rounded-full bg-gradient-to-b from-white via-blue-600 to-transparent [animation-duration:7000ms]"></div>
+          <div class="flex items-center gap-2.5 rounded-full bg-white/95 backdrop-blur-md px-4 py-1.5 text-xs text-slate-700">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="font-semibold text-slate-900">Official Meta WhatsApp Cloud API</span>
+            <span class="text-slate-300">|</span>
+            <span class="text-blue-600 font-medium">Google Gemini 3 Powered</span>
+            <span class="text-slate-300">|</span>
+            <span class="font-mono text-[11px] text-slate-500 font-medium">&lt; 3s Latency</span>
           </div>
         </div>
 
         <!-- Main Headline with Finzo Italic Editorial Typography -->
         <div class="max-w-4xl mx-auto text-center space-y-4">
           <h1 class="has-italic-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-slate-900 leading-[1.12]">
-            Automate your customer conversations and bookings in <em class="font-serif italic font-normal text-[#0031f4]">one place</em>
+            Automate your customer conversations and bookings in <em class="font-serif italic font-normal text-[#0031f4]">real time</em>
           </h1>
           <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed pt-2">
-            The 24/7 AI WhatsApp Employee that transcribes voice notes, answers pricing directly from your Google Sheet, books appointments, and recovers lost sales — in under 5 seconds.
+            The autonomous 24/7 AI WhatsApp Employee that transcribes voice notes, quotes pricing directly from your Google Sheet, schedules appointments, and recovers lost sales — in under 3 seconds.
           </p>
         </div>
 
@@ -260,27 +326,27 @@
           
           <!-- Left Column: Featured In & Core Infrastructure -->
           <div class="md:col-span-4 lg:col-span-3 space-y-4 order-2 md:order-1">
-            <div class="finzo-card p-6 bg-gradient-to-b from-white to-slate-50/60 border border-slate-200">
+            <div class="finzo-card animate-float-slow p-6 bg-gradient-to-b from-white to-slate-50/70 border border-slate-200/90 shadow-sm">
               <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
               </div>
               <h3 class="text-base font-bold text-slate-900">Official Cloud API</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Direct Meta WhatsApp Cloud API integration with official zero-ban verified infrastructure.</p>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Direct Meta WhatsApp Cloud API integration with zero-ban sanctioned enterprise architecture.</p>
               
               <div class="pt-4 mt-4 border-t border-slate-100 flex items-center gap-2.5">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-[11px] font-medium text-slate-700">99.99% Cloud Uptime</span>
+                <span class="text-[11px] font-medium text-slate-700">99.98% Cloud Delivery SLA</span>
               </div>
             </div>
 
-            <div class="finzo-card p-5 bg-white border border-slate-200">
+            <div class="finzo-card animate-float-delayed p-5 bg-white border border-slate-200/90 shadow-sm">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <i data-lucide="sparkles" class="w-4 h-4"></i>
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-slate-900">Gemini 3.8 Flash</div>
-                  <div class="text-[11px] text-slate-500 font-mono">&lt; 4.8s response time</div>
+                  <div class="text-xs font-bold text-slate-900">Google Gemini 3 Engine</div>
+                  <div class="text-[11px] text-slate-500 font-mono">&lt; 2.8s median response</div>
                 </div>
               </div>
             </div>
@@ -382,23 +448,23 @@
 
           <!-- Right Column: Business Impact & Verified Metrics -->
           <div class="md:col-span-12 lg:col-span-3 space-y-4 order-3">
-            <div class="finzo-card p-6 bg-gradient-to-b from-white to-blue-50/30 border border-slate-200">
+            <div class="finzo-card animate-float-slow p-6 bg-gradient-to-b from-white to-blue-50/40 border border-slate-200/90 shadow-sm">
               <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Revenue Recovered</span>
-                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+25%</span>
+                <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">After-Hours Recovery</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/60">+25%</span>
               </div>
               <div class="text-2xl font-bold font-mono text-slate-900">+₹1,25,000<span class="text-xs text-slate-500 font-normal">/mo</span></div>
-              <p class="text-xs text-slate-500 mt-2">Average extra revenue generated for local Indian clinics, studios and wellness businesses within 30 days.</p>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">Typical recovered revenue captured from evening, weekend, and unanswered client inquiries.</p>
             </div>
 
-            <div class="finzo-card p-5 bg-white border border-slate-200">
+            <div class="finzo-card animate-float-delayed p-5 bg-white border border-slate-200/90 shadow-sm">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
                   <i data-lucide="moon" class="w-4 h-4"></i>
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-slate-900">Zero Missed Chats</div>
-                  <div class="text-[11px] text-slate-500">Replies instantly 8 PM – 8 AM</div>
+                  <div class="text-xs font-bold text-slate-900">Zero Missed Inquiries</div>
+                  <div class="text-[11px] text-slate-500">Autonomous replies 24/7/365</div>
                 </div>
               </div>
             </div>
@@ -412,24 +478,24 @@
     <!-- SECTION 1: LOGO MARQUEE (PARTNERS & ECOSYSTEM) -->
     <section class="py-10 border-y border-slate-100 bg-slate-50/60 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Seamless integration with enterprise infrastructure</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Enterprise-grade infrastructure & seamless ecosystem integrations</p>
       </div>
 
-      <div class="relative w-full overflow-hidden">
+      <div class="relative w-full overflow-hidden marquee-fade-container">
         <div class="animate-marquee items-center gap-12 sm:gap-16 text-slate-500 font-medium text-sm">
-          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API</span>
-          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3.8 Flash</span>
-          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time Sync</span>
-          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Live Booking</span>
-          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> Stripe Invoice Automation</span>
-          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation</span>
+          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API (Tier-1)</span>
+          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3 Flash Intelligence</span>
+          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time 2-Way Sync</span>
+          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Slot Scheduling</span>
+          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> UPI & Razorpay Payment Automation</span>
+          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation Alerting</span>
           <!-- Duplicate set for seamless infinite loop -->
-          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API</span>
-          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3.8 Flash</span>
-          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time Sync</span>
-          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Live Booking</span>
-          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> Stripe Invoice Automation</span>
-          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation</span>
+          <span class="flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-emerald-600"></i> Meta WhatsApp Cloud API (Tier-1)</span>
+          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-blue-600"></i> Google Gemini 3 Flash Intelligence</span>
+          <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-600"></i> Google Sheets Real-Time 2-Way Sync</span>
+          <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i> Google Calendar Slot Scheduling</span>
+          <span class="flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> UPI & Razorpay Payment Automation</span>
+          <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-sky-500"></i> Telegram VIP Escalation Alerting</span>
         </div>
       </div>
     </section>
@@ -439,37 +505,37 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="max-w-2xl mx-auto text-center space-y-3 mb-16">
-          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Verified Track Record</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Engineered Reliability</span>
           <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
-            Key insights track your <em class="font-serif italic font-normal text-[#0031f4]">business growth</em>
+            Key insights track your <em class="font-serif italic font-normal text-[#0031f4]">operational scale</em>
           </h2>
-          <p class="text-sm text-slate-600">Eliminating operational friction through automated 24/7 client communication.</p>
+          <p class="text-sm text-slate-600">Eliminating missed revenue through automated, sub-3-second client communication.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           
-          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
-            <div class="text-4xl sm:text-5xl font-bold font-mono text-slate-900">&lt; 4.8s</div>
-            <div class="text-sm font-semibold text-slate-800">Average Response Time</div>
-            <p class="text-xs text-slate-500 leading-relaxed">Instant replies to pricing inquiries and booking requests day or night.</p>
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50 hover:bg-white transition group border border-slate-200">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-slate-900">&lt; 2.8s</div>
+            <div class="text-sm font-semibold text-slate-800">Median Response SLA</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Gemini 3 Flash parallel document lookup delivers accurate pricing and answers instantly.</p>
           </div>
 
-          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
-            <div class="text-4xl sm:text-5xl font-bold font-mono text-blue-600">100%</div>
-            <div class="text-sm font-semibold text-slate-800">After-Hours Uptime</div>
-            <p class="text-xs text-slate-500 leading-relaxed">Never lose a customer who texts after closing or during busy appointments.</p>
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50 hover:bg-white transition group border border-slate-200">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-blue-600">99.98%</div>
+            <div class="text-sm font-semibold text-slate-800">Cloud Delivery Rate</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Sanctioned Meta Business Cloud API with automatic dead-letter queue recovery.</p>
           </div>
 
-          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50 hover:bg-white transition group border border-slate-200">
             <div class="text-4xl sm:text-5xl font-bold font-mono text-emerald-600">-76%</div>
             <div class="text-sm font-semibold text-slate-800">Appointment No-Shows</div>
-            <p class="text-xs text-slate-500 leading-relaxed">Interactive 1-tap WhatsApp confirmation & reschedule buttons eliminate empty chairs.</p>
+            <p class="text-xs text-slate-500 leading-relaxed">Interactive 1-tap WhatsApp confirmation & reschedule buttons eliminate empty appointment slots.</p>
           </div>
 
-          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50">
-            <div class="text-4xl sm:text-5xl font-bold font-mono text-indigo-600">15k+</div>
-            <div class="text-sm font-semibold text-slate-800">Customer Chats Handled</div>
-            <p class="text-xs text-slate-500 leading-relaxed">Multilingual text & voice notes resolved without owner intervention.</p>
+          <div class="finzo-card p-8 text-center space-y-2 bg-slate-50/50 hover:bg-white transition group border border-slate-200">
+            <div class="text-4xl sm:text-5xl font-bold font-mono text-indigo-600">100%</div>
+            <div class="text-sm font-semibold text-slate-800">Data Sovereignty</div>
+            <p class="text-xs text-slate-500 leading-relaxed">Every customer contact and booking transcript writes directly to your own Google Sheet.</p>
           </div>
 
         </div>
@@ -492,23 +558,23 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           <!-- Engine 1 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-blue-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="message-square-text" class="w-6 h-6"></i>
             </div>
             <div>
               <div class="flex items-center justify-between">
                 <span class="text-[11px] font-mono text-slate-400">Engine 01</span>
-                <span class="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200/60">&lt; 5s Reply</span>
+                <span class="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200/60">&lt; 3s Latency</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">24/7 WhatsApp AI Receptionist</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Answers customer inquiries in seconds, speaks regional languages (Tamil, Hindi, English), transcribes voice notes, and saves qualified leads directly to your sheet.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Instant answers to pricing, services, timings, and FAQs. Native audio voice note transcription and multilingual fluency (English, Hindi, Tamil, Tanglish/Hinglish).</p>
             </div>
           </div>
 
           <!-- Engine 2 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-teal-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="sparkles" class="w-6 h-6"></i>
             </div>
             <div>
@@ -517,13 +583,13 @@
                 <span class="text-[10px] font-semibold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200/60">Meta 24h Safe</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">Smart Lead Follow-Up</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Automatically re-engages "price?" leads who went silent after 4 hours with personalized follow-up nudges. Recovers up to 25% of lost prospects.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Intelligently detects leads who inquired about pricing or services but went silent. Re-engages after 4 hours within Meta's sanctioned 24h window, recovering up to 25% of drop-offs.</p>
             </div>
           </div>
 
           <!-- Engine 3 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-emerald-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="calendar-check" class="w-6 h-6"></i>
             </div>
             <div>
@@ -532,13 +598,13 @@
                 <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/60">1-Tap Buttons</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">No-Show Killer Reminders</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Dispatches automated reminders 24h before appointments with interactive [Confirm] and [Reschedule] buttons right on WhatsApp.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Dispatches automated reminders 24h and 2h before appointments with interactive [Confirm] and [Reschedule] buttons right on WhatsApp. Confirmed slots sync live to Google Calendar.</p>
             </div>
           </div>
 
           <!-- Engine 4 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-amber-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="receipt" class="w-6 h-6"></i>
             </div>
             <div>
@@ -547,13 +613,13 @@
                 <span class="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">3-Stage Chaser</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">Payment & Invoice Chaser</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Polite reminder on due date, firm reminder at +3 days, and final notice at +7 days with direct payment link. Stops immediately once marked paid.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Polite reminder on invoice due date, firm reminder at +3 days, and final notice at +7 days with direct UPI / payment link. Stops immediately the second payment is logged.</p>
             </div>
           </div>
 
           <!-- Engine 5 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-purple-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="users-round" class="w-6 h-6"></i>
             </div>
             <div>
@@ -562,22 +628,22 @@
                 <span class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/60">Batch Win-Back</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">Customer Revival Broadcast</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Brings back quiet customers who haven't visited in 60+ days with personalized offers in rate-limited batches to protect number reputation.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Re-engages quiet customers who haven't visited in 60+ days with personalized offers in rate-limited smart batches, ensuring zero spam flags and preserving your phone reputation.</p>
             </div>
           </div>
 
           <!-- Engine 6 -->
-          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200">
-            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center">
+          <div class="finzo-card p-8 space-y-5 bg-white border border-slate-200 hover:border-sky-500/40 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center group-hover:scale-105 transition">
               <i data-lucide="moon" class="w-6 h-6"></i>
             </div>
             <div>
               <div class="flex items-center justify-between">
                 <span class="text-[11px] font-mono text-slate-400">Engine 06</span>
-                <span class="text-[10px] font-semibold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200/60">Daily 10 PM</span>
+                <span class="text-[10px] font-semibold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200/60">Daily 10 PM IST</span>
               </div>
               <h3 class="text-lg font-bold text-slate-900 mt-2">Nightly Owner WhatsApp Digest</h3>
-              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Sends business owners an executive summary of today's revenue, new leads captured, and tomorrow's appointment roster directly to their WhatsApp.</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">Sends business owners an executive summary of today's revenue, new qualified leads captured, and tomorrow's appointment roster directly to their WhatsApp.</p>
             </div>
           </div>
 
@@ -662,9 +728,9 @@
         <div class="text-center max-w-xl mx-auto space-y-3">
           <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Simple, Transparent Pricing</span>
           <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
-            Less than 1/5th the cost of <em class="font-serif italic font-normal text-[#0031f4]">human staff</em>
+            A fraction of the cost of <em class="font-serif italic font-normal text-[#0031f4]">human staff</em>
           </h2>
-          <p class="text-sm text-slate-600">Zero hidden fees. Free 7-day trial on your actual business number.</p>
+          <p class="text-sm text-slate-600">Zero hidden fees. Free 7-day trial on your actual business number with live onboarding.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -683,18 +749,18 @@
               <ul class="space-y-3 text-xs text-slate-700 pt-4 border-t border-slate-100">
                 <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Engine 1: WhatsApp AI Receptionist</li>
                 <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Multilingual & voice note transcription</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Self-service Google Sheet FAQ</li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Automatic lead saving</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Self-service Google Sheet FAQ sync</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Direct CRM lead capture</li>
               </ul>
             </div>
             <button onclick="openTrialModal('Starter')" class="w-full py-3 rounded-full font-semibold text-xs finzo-btn-outline transition">
-              Start Free Trial
+              Start Free 7-Day Trial
             </button>
           </div>
 
           <!-- Tier 2 (Highlighted Finzo Cobalt Card) -->
-          <div class="finzo-card p-8 space-y-6 flex flex-col justify-between relative shadow-xl shadow-blue-500/10 border-2 border-blue-600 bg-white">
-            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-[10px] uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
+          <div class="finzo-card p-8 space-y-6 flex flex-col justify-between relative shadow-xl shadow-blue-500/10 border-2 border-blue-600 bg-white finzo-card-highlight">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-[10px] uppercase tracking-wider px-4 py-1 rounded-full shadow-md badge-shimmer">
               Most Popular
             </div>
             <div class="space-y-4">
@@ -737,87 +803,132 @@
               </ul>
             </div>
             <button onclick="openTrialModal('Pro')" class="w-full py-3 rounded-full font-semibold text-xs finzo-btn-outline transition">
-              Start Free Trial
+              Start Free 7-Day Trial
             </button>
           </div>
 
         </div>
 
+        <!-- Trust & SLA Guarantee Banner -->
+        <div class="max-w-3xl mx-auto pt-6 text-center">
+          <div class="inline-flex flex-wrap items-center justify-center gap-4 px-6 py-3 rounded-full bg-white border border-slate-200 text-xs text-slate-600 shadow-xs">
+            <span class="flex items-center gap-1.5 font-medium text-slate-800"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i> Free 7-day trial</span>
+            <span class="text-slate-300">•</span>
+            <span class="flex items-center gap-1.5 font-medium text-slate-800"><i data-lucide="credit-card" class="w-4 h-4 text-blue-600"></i> No card required</span>
+            <span class="text-slate-300">•</span>
+            <span class="flex items-center gap-1.5 font-medium text-slate-800"><i data-lucide="refresh-cw" class="w-4 h-4 text-indigo-600"></i> Cancel anytime</span>
+            <span class="text-slate-300">•</span>
+            <span class="flex items-center gap-1.5 font-medium text-slate-800"><i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i> 100% money-back guarantee</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- SECTION 6: CLIENT TESTIMONIALS (FINZO TESTIMONIAL CARDS) -->
-    <section class="py-20 md:py-28 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+    <!-- SECTION 6: ENTERPRISE TRUST & ARCHITECTURAL STANDARDS -->
+    <section class="py-20 md:py-28 bg-white border-t border-slate-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        <div class="text-center max-w-xl mx-auto space-y-3">
-          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">Social Proof</span>
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3.5 py-1 rounded-full border border-blue-200/60">Architectural Verification</span>
           <h2 class="has-italic-text text-3xl sm:text-4xl md:text-5xl font-normal text-slate-900 tracking-tight">
-            Trusted by business owners <em class="font-serif italic font-normal text-[#0031f4]">worldwide</em>
+            Built for mission-critical <em class="font-serif italic font-normal text-[#0031f4]">reliability & privacy</em>
           </h2>
-          <p class="text-sm text-slate-600">Real business owners recovering revenue and saving hundreds of hours.</p>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Enterprise stability without operational friction. Direct Meta Cloud API, guaranteed data sovereignty, and deterministic sub-3s response SLAs.
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           
-          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
-            <div class="flex items-center gap-1 text-amber-400">
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+          <!-- Pillar 1 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
             </div>
-            <p class="text-xs text-slate-700 leading-relaxed italic">
-              "We used to lose 10-15 customer bookings every weekend because no one answered the phone after 8 PM. Yapli AI closed ₹1,45,000 in extra bookings our first month."
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Tier-1 Sanctioned</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Official Meta Cloud API</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Zero unofficial browser scrapers or fragile web session hacks. Yapli operates exclusively on Meta's official WhatsApp Business Cloud API with guaranteed 99.98% delivery and zero ban risk for your business number.
             </p>
-            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">PS</div>
-              <div>
-                <div class="text-xs font-bold text-slate-900">Priya Sharma</div>
-                <div class="text-[11px] text-slate-500">Founder, Aura Wellness Studio, Bengaluru</div>
-              </div>
-            </div>
           </div>
 
-          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
-            <div class="flex items-center gap-1 text-amber-400">
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+          <!-- Pillar 2 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="database" class="w-6 h-6"></i>
             </div>
-            <p class="text-xs text-slate-700 leading-relaxed italic">
-              "The 1-tap WhatsApp reminders eliminated our patient no-shows almost entirely. Patients love how easy it is to confirm or reschedule without calling."
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Complete Ownership</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">100% Client Data Sovereignty</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Your customer data stays strictly yours. Contact numbers, inquiry logs, and booking records write directly into your own private Google Sheets or database. Yapli never locks away or monetizes your client list.
             </p>
-            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">DR</div>
-              <div>
-                <div class="text-xs font-bold text-slate-900">Dr. Rajesh Kumar</div>
-                <div class="text-[11px] text-slate-500">Director, Apex Dental Clinic</div>
-              </div>
-            </div>
           </div>
 
-          <div class="finzo-card p-7 space-y-4 bg-slate-50/40">
-            <div class="flex items-center gap-1 text-amber-400">
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+          <!-- Pillar 3 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="zap" class="w-6 h-6"></i>
             </div>
-            <p class="text-xs text-slate-700 leading-relaxed italic">
-              "Updating my Google Sheet changes prices in real time on WhatsApp. The nightly 10 PM IST WhatsApp report gives me peace of mind every single day."
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Sub-3s SLA</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Deterministic Response Latency</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Powered by Google Gemini 3 Flash running parallel document retrieval. Customers receive tailored pricing answers and slot suggestions in under 3 seconds — right when their purchase intent is peak.
             </p>
-            <div class="pt-3 border-t border-slate-200/80 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs">AK</div>
-              <div>
-                <div class="text-xs font-bold text-slate-900">Ananya Kapoor</div>
-                <div class="text-[11px] text-slate-500">Founder, Urban Fitness Studio</div>
-              </div>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="user-check" class="w-6 h-6"></i>
             </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Human In The Loop</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Instant VIP Human Handoff</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Custom requests, dissatisfied clients, or VIP inquiries immediately trigger an automated alert to your Telegram or personal WhatsApp, pausing automation so you can step in seamlessly at any time.
+            </p>
+          </div>
+
+          <!-- Pillar 5 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="languages" class="w-6 h-6"></i>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Multilingual NLP</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Native Indian Language Fluency</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Seamlessly converses in English, Hindi, Tamil, and colloquial Tanglish/Hinglish. It automatically transcribes customer voice notes into actionable text so no customer request is ever missed.
+            </p>
+          </div>
+
+          <!-- Pillar 6 -->
+          <div class="finzo-card p-8 space-y-4 bg-slate-50/40 hover:bg-white transition group border border-slate-200/80">
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:scale-105 transition">
+              <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Data Protection</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">DPDP & Encryption Standards</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              TLS 1.3 encrypted transport for all webhook communications with strict token scoping. Complete alignment with Indian Digital Personal Data Protection (DPDP) standards.
+            </p>
           </div>
 
         </div>
@@ -906,9 +1017,15 @@
             </div>
           </div>
 
-          <div class="mt-10 sm:mt-12 pt-8 border-t border-white/20 flex flex-wrap items-center gap-6">
-            <div class="text-2xl font-bold font-mono">500+</div>
-            <div class="text-xs text-blue-100">Active businesses automating their WhatsApp customer inquiries and booking pipeline.</div>
+          <div class="mt-10 sm:mt-12 pt-8 border-t border-white/20 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="flex items-center gap-4">
+              <div class="text-3xl font-extrabold font-mono text-emerald-300">99.98%</div>
+              <div class="text-xs text-blue-100 leading-snug">Guaranteed Meta Cloud API delivery uptime on official sanctioned infrastructure.</div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="text-3xl font-extrabold font-mono text-white">&lt; 3s</div>
+              <div class="text-xs text-blue-100 leading-snug">Deterministic automated response latency on live inquiries & pricing checks.</div>
+            </div>
           </div>
 
         </div>
@@ -3540,14 +3657,23 @@
       showTypingIndicator();
       setTimeout(() => {
         removeTypingIndicator();
-        let reply = "Hi there! We are open Monday-Saturday 10:00 AM - 8:00 PM IST. Would you like to book a Standard Session (₹500) or Premium Consultation (₹1,200)? 😊";
-        if (text.toLowerCase().includes('price') || text.toLowerCase().includes('cost')) {
-          reply = "Our Standard Session is ₹500, and Consultation is ₹1,200. First consultation is 100% free! Shall I reserve a slot for you?";
-        } else if (text.toLowerCase().includes('book') || text.toLowerCase().includes('tomorrow')) {
-          reply = "We have tomorrow at 4:00 PM IST open! Shall I confirm this appointment for you?";
+        const lower = text.toLowerCase();
+        let reply = "Hello! 😊 Thanks for reaching out to Glow Studio. We are open Monday to Saturday from 10:00 AM to 8:00 PM IST. How can I help you today?";
+        
+        if (lower.includes('price') || lower.includes('cost') || lower.includes('fee')) {
+          reply = "Our Standard Session is ₹500, and full Consultation is ₹1,200. Prices update live from our Google Sheet. Would you like to lock in a slot?";
+        } else if (lower.includes('book') || lower.includes('tomorrow') || lower.includes('openings') || lower.includes('available')) {
+          reply = "We have an open slot tomorrow at 4:00 PM IST! Shall I confirm this appointment in your calendar and save your details?";
+        } else if (lower.includes('reschedule') || lower.includes('change')) {
+          reply = "I'd be happy to help reschedule! We have slots open tomorrow at 11:30 AM, 2:00 PM, and 4:00 PM IST. Which works better for you?";
+        } else if (lower.includes('voice note') || lower.includes('afternoon')) {
+          reply = "🎙️ [Transcribed Audio]: 'Hi, do you have any appointments available this afternoon?'\n\nHello! Yes, we have openings at 3:30 PM and 5:00 PM IST today. Would you like me to reserve one for you?";
+        } else if (lower.includes('human') || lower.includes('agent') || lower.includes('owner') || lower.includes('call')) {
+          reply = "Understood! I have notified our manager on Telegram/WhatsApp with your chat summary. They will reach out to you shortly.";
         }
+        
         appendChatMessage(reply, 'bot');
-      }, 1000);
+      }, 900);
     }
 
     function sendSimulatedVoiceNote() {

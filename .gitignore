@@ -23,3 +23,7 @@ npm-debug.log*
 dist/
 .DS_Store
 Thumbs.db
+
+# Binaries
+*.exe
+cloudflared.exe

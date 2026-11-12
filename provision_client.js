@@ -58,9 +58,9 @@ async function provisionClient(config, opts = {}) {
   }
 
   // Defaults
-  config.geminiModel = config.geminiModel || 'models/gemini-3.8-flash';
-  config.calendarId = config.calendarId || 'primary';
-  config.telegramChatId = config.telegramChatId || '';
+  config.geminiModel = config.geminiModel || 'models/gemini-3-flash-preview';
+  config.calendarId = config.calendarId || 'venkatnarayanan10.10@gmail.com';
+  config.telegramChatId = config.telegramChatId || '1999726968';
 
   log('===============================================================');
   log(`🚀 YAPLI AI: PROVISIONING CLIENT: "${config.businessName}"`);
@@ -104,6 +104,15 @@ async function provisionClient(config, opts = {}) {
     const wfJson = JSON.parse(content);
     const clientWfName = `[${config.businessName}] ${t.name}`;
     wfJson.name = clientWfName;
+
+    // Ensure every webhook node receives a unique webhookId to avoid conflict errors
+    if (Array.isArray(wfJson.nodes)) {
+      wfJson.nodes.forEach(node => {
+        if (node.webhookId) {
+          node.webhookId = require('crypto').randomUUID();
+        }
+      });
+    }
 
     if (dryRun) {
       log(`[DRY RUN] ✓ Prepared workflow: "${clientWfName}"`);

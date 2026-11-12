@@ -274,7 +274,7 @@
         "options": {},
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-3.8-flash",
+          "value": "models/gemini-3-flash-preview",
           "mode": "id"
         }
       },
@@ -375,7 +375,7 @@
         "options": {},
         "modelId": {
           "__rl": true,
-          "value": "models/gemini-3.8-flash",
+          "value": "models/gemini-3-flash-preview",
           "mode": "id"
         }
       },
@@ -445,7 +445,7 @@
         "promptType": "define",
         "text": "=Customer name: {{ $('Only Customer Messages').item.json.contacts[0].profile.name }}\nCustomer phone: {{ $('Only Customer Messages').item.json.messages[0].from }}\nTime now: {{ $now.toFormat('cccc d LLL, h:mm a') }}\n\nMessage: {{ $json.message }}",
         "options": {
-          "systemMessage": "You are the WhatsApp receptionist for Glow Studio (Hair & Beauty Salon in Chennai). You help customers with appointment inquiries, haircut/styling prices, bookings, and salon policies. Nothing else.\n\nHow to talk:\n- Follow any 	one, language, or greeting instructions configured in **Business Info**. If not specified, reply naturally in the customer's language (Tamil, Hindi, English, Roman Urdu, Tanglish/Hinglish). Keep it short, warm, like a friendly front-desk receptionist. 1-3 short lines. Max 1 emoji.\n- Never invent prices, timings or policies. Always check **Business Info** first.\n\nWhat to do:\n- Services, haircut/styling prices, timings, location, policies → read **Business Info**.\n- Customer wants to book an appointment → ask for preferred day/time and name → use **Check Availability** → offer the slot → use **Book Appointment** (save their phone number in the calendar description).\n- Customer tapped \"Reschedule\" → ask for the new preferred slot, check availability, and update the booking.\n- Real customer interest (asks price, wants to book a haircut/treatment) → call **Save Lead** with status hot/warm.\n- Angry customer, complaint, refund, or complex issue → call **Talk to Owner**, and tell the customer a team member will reply shortly.\n- Off-topic questions (coding, general knowledge, homework) → politely mention you can only assist with salon appointments and services.\n- If customer says STOP or unsubscribe → acknowledge and call **Save Lead** with status opted_out.",
+          "systemMessage": "You are the WhatsApp receptionist for Glow Studio (Hair & Beauty Salon in Chennai). You help customers with appointment inquiries, haircut/styling prices, bookings, and salon policies. Nothing else.\n\nHow to talk:\n- Follow any tone, language, or greeting instructions configured in **Business Info**. If not specified, reply naturally in the customer's language (Tamil, Hindi, English, Roman Urdu, Tanglish/Hinglish). Keep it short, warm, like a friendly front-desk receptionist. 1-3 short lines. Max 1 emoji.\n- Never invent prices, timings or policies. Always check **Business Info** first.\n\nWhat to do:\n- Services, haircut/styling prices, timings, location, policies → read **Business Info**.\n- Customer wants to book an appointment → ask for preferred day/time and name → use **Check Availability** → offer the slot → use **Book Appointment** (save their phone number in the calendar description).\n- Customer tapped \"Reschedule\" → ask for the new preferred slot, check availability, and update the booking.\n- Real customer interest (asks price, wants to book a haircut/treatment) → call **Save Lead** with status hot/warm.\n- Angry customer, complaint, refund, or complex issue → call **Talk to Owner**, and tell the customer a team member will reply shortly.\n- Off-topic questions (coding, general knowledge, homework) → politely mention you can only assist with salon appointments and services.\n- If customer says STOP or unsubscribe → acknowledge and call **Save Lead** with status opted_out.",
           "maxIterations": 8
         }
       }
@@ -484,7 +484,7 @@
         700
       ],
       "parameters": {
-        "modelName": "models/gemini-3.8-flash",
+        "modelName": "models/gemini-3-flash-preview",
         "options": {
           "temperature": 0.4
         }
@@ -1328,7 +1328,7 @@
           "options": {},
           "modelId": {
             "__rl": true,
-            "value": "models/gemini-3.8-flash",
+            "value": "models/gemini-3-flash-preview",
             "mode": "id"
           }
         },
@@ -1429,7 +1429,7 @@
           "options": {},
           "modelId": {
             "__rl": true,
-            "value": "models/gemini-3.8-flash",
+            "value": "models/gemini-3-flash-preview",
             "mode": "id"
           }
         },
@@ -1538,7 +1538,7 @@
           700
         ],
         "parameters": {
-          "modelName": "models/gemini-3.8-flash",
+          "modelName": "models/gemini-3-flash-preview",
           "options": {
             "temperature": 0.4
           }
