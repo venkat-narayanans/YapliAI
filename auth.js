@@ -76,16 +76,48 @@ function verifyToken(token) {
 // ---------------------------------------------------------------------------
 
 function loadUsers() {
-  if (!fs.existsSync(USERS_PATH)) {
-    const defaultUsers = seedDefaultUsers();
-    saveUsers(defaultUsers);
-    return defaultUsers;
+  let users = [];
+  if (fs.existsSync(USERS_PATH)) {
+    try {
+      users = JSON.parse(fs.readFileSync(USERS_PATH, 'utf8'));
+    } catch {
+      users = [];
+    }
   }
-  try {
-    return JSON.parse(fs.readFileSync(USERS_PATH, 'utf8'));
-  } catch {
-    return [];
+
+  // Ensure default accounts exist with valid salts and hashes
+  const defaultSeeds = seedDefaultUsers();
+  let modified = false;
+
+  for (const def of defaultSeeds) {
+    const existingIdx = users.findIndex(u => u.email.toLowerCase() === def.email.toLowerCase());
+    if (existingIdx === -1) {
+      users.push(def);
+      modified = true;
+    } else {
+      // Fix missing salt or invalid passwordHash
+      if (!users[existingIdx].salt || !users[existingIdx].passwordHash || users[existingIdx].passwordHash.length < 32) {
+        users[existingIdx].salt = def.salt;
+        users[existingIdx].passwordHash = def.passwordHash;
+        modified = true;
+      }
+    }
   }
+
+  // Ensure every user has salt
+  for (const u of users) {
+    if (!u.salt) {
+      u.salt = generateSalt();
+      u.passwordHash = hashPassword(u.password || 'yapli2026', u.salt);
+      modified = true;
+    }
+  }
+
+  if (modified || !fs.existsSync(USERS_PATH)) {
+    saveUsers(users);
+  }
+
+  return users;
 }
 
 function saveUsers(users) {
@@ -144,7 +176,7 @@ function authenticate(email, password) {
   }
   const users = loadUsers();
   const user = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
-  if (!user) {
+  if (!user || !user.salt || !user.passwordHash) {
     throw new Error('Invalid email or password');
   }
 

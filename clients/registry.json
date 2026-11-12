@@ -18,5 +18,67 @@
       "nJVWgRFEzeC93sjb",
       "1NM6e0ztOZ41nDKC"
     ]
+  },
+  {
+    "clientId": "glow_studio",
+    "businessName": "Glow Studio",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "1jc4_a9NjtTb5pw6Bor8SO79WFrDvjPDvqeT_XivJXCs",
+    "whatsappPhoneId": "1357841077412201",
+    "ownerWhatsAppNumber": "+91 9486929695",
+    "tier": "Full AI Employee",
+    "status": "active",
+    "deployedAt": "2026-11-04T04:04:50.285Z",
+    "workflowIds": [
+      "COWExaZ7AbVhwgYF"
+    ]
+  },
+  {
+    "clientId": "apex_dental",
+    "businessName": "Apex Dental Clinic",
+    "businessType": "Dental Clinic",
+    "city": "Mumbai",
+    "sheetId": "1jc4_a9NjtTb5pw6Bor8SO79WFrDvjPDvqeT_XivJXCs",
+    "whatsappPhoneId": "1357841077412201",
+    "ownerWhatsAppNumber": "+91 9486929695",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-04T04:04:50.285Z",
+    "workflowIds": [
+      "COWExaZ7AbVhwgYF"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_761",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-12T10:51:44.704Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
+  },
+  {
+    "clientId": "client_zenith_luxury_salon_638",
+    "businessName": "Zenith Luxury Salon",
+    "businessType": "Hair & Beauty Salon",
+    "city": "Chennai",
+    "sheetId": "PROVISIONING_PENDING",
+    "whatsappPhoneId": "+919988776655",
+    "ownerWhatsAppNumber": "+919988776655",
+    "tier": "Growth Engine",
+    "status": "trial",
+    "deployedAt": "2026-11-12T10:54:27.492Z",
+    "workflowIds": [
+      "wf1_trial",
+      "wf2_trial"
+    ]
   }
 ]
